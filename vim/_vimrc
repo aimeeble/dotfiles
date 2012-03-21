@@ -1,0 +1,130 @@
+" see http://www.8t8.us/configs/vimrc
+" see http://eseth.org/filez/prefs/vimrc
+
+" General {{{
+set nocompatible                 " vi is old, vim is new.
+if has("gui") && has("win32")    " make alt-space work in windows
+   noremap <M-Space> :simalt ~<CR>
+   inoremap <M-Space> <C-O>:simalt ~<CR>
+   cnoremap <M-Space> <C-O>:simalt ~<CR>
+endif
+set nobackup
+set ttyfast                      " faster redraw on new computers
+set showcmd                      " show typed commands
+set showmode                     " show editing mode
+" }}}
+
+" Searching {{{
+set wildmode=longest,list        " make tab work like bash tab completion
+set nohls                        " don't highlight search results
+set is                           " search as you type
+set ignorecase                   " ignore case during search...
+set smartcase                    " ...unless you change case, then respect it
+" }}}
+
+" Colours {{{
+color darkblue
+set bg=light                     " fixes up some colours to be better
+set bg=dark                      " fix (cont.)
+hi CursorLine guibg=#000080 term=underline cterm=underline
+" }}}
+
+" Decoration {{{
+set cmdheight=1                  " command editor only 1 row
+set laststatus=2                 " always show the status bar
+set cursorline                   " highlight current line
+set nu                           " line numbering
+set list                         " enable whitespace display
+set listchars=tab:>>,trail:-,extends:>,precedes:<
+set ruler                        " show the cursor pos and buffer pos
+set rulerformat=%30(%=b%n\ %y%m%r%w\ %l,%c%V\ %P\%)
+" }}}
+
+" Editing {{{
+syn on                           " syntax highlighting on
+filetype on                      " detect the file type
+set showmatch                    " highlight matching brace
+set tabstop=8                    " tab stops set to 8 columns
+set shiftwidth=3                 " auto-indent width
+set softtabstop=3                " treat as a single tab wrt backspace                 testing long line colouring.... asdjfaskjf djla jdf
+set expandtab                    " use spaces instead of tab character
+set nowrap                       " do not wrap long lines
+set shiftround                   " auto-indent to multiples of shiftwidth
+set sidescroll=1                 " scroll horizontally 1 cols at a time
+set sidescrolloff=15             " 15 cols between cursor and screen edge causes scroll
+set scrolloff=2                  " 2 rows between cursor and screen edge
+set hidden                       " allow unsaved bufs in the background
+set backspace=indent,eol,start   " allow BS over them all
+set textwidth=0                  " no auto line wrap
+if has("win32")
+   set directory=$TMP
+else
+   set directory=~/tmp,/tmp         " .swp files go here
+endif
+
+" spell checking
+set spellfile=~/.vimspell.add
+set spelllang=en_us
+
+" indent based on type
+if has("autocmd")
+   filetype plugin on
+
+   " recognize SCons files as Python
+   au BufNewFile,BufRead,BufEnter *.sc setf python
+endif
+
+" highlight in yellow things after 80 columns
+" **NOTE** this slows things down considerably in some files.
+"hi rightWarnMargin guibg=#505000
+"match rightWarnMargin '\%>80v.\+'
+"au BufEnter * let w:m1=matchadd('rightWarnMargin', '\%>80v.\+', -1)
+
+" highlight in red things after 90 columns
+"hi rightMargin guibg=#500000
+"match rightMargin '\%>90v.\+'
+"au BufEnter * let w:m1=matchadd('rightMargin', '\%>90v.\+', -1)
+" }}}
+
+" GUI Options {{{
+set guioptions-=m                " menu
+set guioptions-=T                " toolbar
+set guioptions-=rL               " scrollbars
+set guifont=Terminus\ Bold\ 12
+" }}}
+
+if has("autocmd")
+   filetype plugin indent on
+else
+   set autoindent
+endif
+
+" Keybindings {{{
+" Toggle spellcheck
+map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
+
+" Toggle NERDTree file browser
+map <F4> :NERDTreeToggle<CR>
+
+" Paste mode
+set pastetoggle=<F5>
+" }}}
+
+" Macros {{{
+function! VMcomment()
+   let last=line(".")
+   execute "normal v/(\<CR>hykkO\<CR>/*\<CR>\<BS>\<ESC>"
+   execute "normal 76a-\<ESC>"
+   execute "normal A\<CR>*\<CR>\<ESC>"
+   execute "normal A \<ESC>pA --\<CR>\<CR>\<ESC>"
+   execute "normal 76a-\<ESC>"
+   execute "normal A\<CR>*/"
+   return last+8
+endfunction
+
+map ,vmc :exec VMcomment()<cr>
+" }}}
+
+"let g:yankring_history_dir = "$HOME/.vim"
+"source ~/.vim/plugins/NERD_tree.vim
+"source ~/.vim/plugins/yankring.vim

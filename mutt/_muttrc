@@ -1,0 +1,85 @@
+set charset="utf-8"
+set send_charset="utf-8"
+
+# MUTT NG STUFF
+#set sidebar_width=35
+#set sidebar_visible="yes"
+#color sidebar_new red default
+
+#bind index h noop
+#macro index h "<enter-command>bind index j sidebar-next<enter> \
+#<enter-command>bind index k sidebar-prev<enter>"
+#bind index l noop
+#macro index l "<enter-command>bind index j next-undeleted<enter> \
+#<enter-command>bind index k prev-undeleted<enter>"
+#
+# MUTT NG STUFF
+
+# stuff to make IMAP work a bit better
+set timeout=30
+set mail_check=90
+set imap_idle=yes
+set imap_keepalive=240
+
+# Misc
+set beep_new=yes
+set mark_old=no
+set quit=ask-no
+set auto_tag=yes
+set delete=yes
+
+# Viewing
+set pager=builtin
+set pager_index_lines=5
+set pager_context=2           # next page shows 2 lines of last
+set pager_stop=yes            # don't auto go to the next msg
+unset markers                 # don't want + on wrapped lines
+set smart_wrap                # word-wrap on word boundaries
+set tilde                     # empty lines at end shown as ~
+
+set sort=threads              # sort by threads, and sort threads by their newest message date
+set sort_aux=last-date
+
+#set index_format="%C %Z %"
+set index_format="%3C %Z %-15.15F (%5c) %s %> %Y%D"
+set date_format="%Y-%m-%d %H:%M"
+set ascii_chars=yes
+
+# replying/sending
+unset reply_self
+set indent_str="> "
+
+# outgoing
+set edit_headers=yes
+set editor="vim +/^$ ++1"
+#set abort_unmodified=no
+
+# question defaults
+set move=no
+set confirmappend=no
+
+# headers
+ignore *
+unignore From: To: Cc: Subject: Date: Reply-To: List-Id: X-Mailer: User-Agent: X-Bugzilla-Assigned-To:
+unmy_hdr Bcc:
+unmy_hdr Reply-To:
+hdr_order From: To: Cc: Subject:
+
+# key bindings
+bind index <home> first-entry
+bind index <end> last-entry
+bind index d noop
+bind index F flag-message
+
+bind pager n next-undeleted
+bind pager p previous-undeleted
+bind pager <down> next-line
+bind pager <up> previous-line
+bind pager j next-line
+bind pager k previous-line
+bind pager / search
+
+# Other files...
+source ~/.mutt/colours
+source ~/.mutt/aliases
+source ~/.mutt/muttrc
