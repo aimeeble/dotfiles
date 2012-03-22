@@ -21,6 +21,7 @@ set nohls                        " don't highlight search results
 set is                           " search as you type
 set ignorecase                   " ignore case during search...
 set smartcase                    " ...unless you change case, then respect it
+set gdefault                     " apply substitution to all occurrences
 " }}}
 
 " Colours {{{
