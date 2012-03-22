@@ -16,6 +16,7 @@ set showmode                     " show editing mode
 
 " Searching {{{
 set wildmode=longest,list        " make tab work like bash tab completion
+set wildignore+=*.o,*~,*.pyc
 set nohls                        " don't highlight search results
 set is                           " search as you type
 set ignorecase                   " ignore case during search...
@@ -38,6 +39,7 @@ set list                         " enable whitespace display
 set listchars=tab:>>,trail:-,extends:>,precedes:<
 set ruler                        " show the cursor pos and buffer pos
 set rulerformat=%30(%=b%n\ %y%m%r%w\ %l,%c%V\ %P\%)
+set title                        " update terminal title bar
 " }}}
 
 " Editing {{{
@@ -59,8 +61,12 @@ set textwidth=0                  " no auto line wrap
 if has("win32")
    set directory=$TMP
 else
-   set directory=~/tmp,/tmp         " .swp files go here
+   set directory=~/tmp,/tmp      " .swp files go here
 endif
+
+set fo+=n                        " format numbered lists properly
+set flp=^\\s*#\\=\\d\\+[\\]:.)}\\t\ ]\\s*
+                                 " standard + allow preceding number sign.
 
 " spell checking
 set spellfile=~/.vimspell.add
@@ -84,13 +90,20 @@ endif
 "hi rightMargin guibg=#500000
 "match rightMargin '\%>90v.\+'
 "au BufEnter * let w:m1=matchadd('rightMargin', '\%>90v.\+', -1)
+set colorcolumn=80               " draw a line at 80 columns
 " }}}
 
 " GUI Options {{{
 set guioptions-=m                " menu
 set guioptions-=T                " toolbar
 set guioptions-=rL               " scrollbars
-set guifont=Terminus\ Bold\ 12
+if has("mac")
+   set guifont=Terminus\ Bold:h12
+elseif has("linux")
+   set guifont=Terminus\ Bold\ 12
+elseif has("win32")
+   set guifont=Terminus:h12:b:cANSI
+endif
 " }}}
 
 if has("autocmd")
@@ -125,6 +138,9 @@ endfunction
 map ,vmc :exec VMcomment()<cr>
 " }}}
 
-"let g:yankring_history_dir = "$HOME/.vim"
-"source ~/.vim/plugins/NERD_tree.vim
-"source ~/.vim/plugins/yankring.vim
+let g:yankring_history_dir = "$HOME/.vim"
+source ~/.vim/plugins/NERD_tree.vim
+source ~/.vim/plugins/yankring.vim
+if exists("~/.vimrc-local")
+   source ~/.vimrc-local
+endif
