@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ST=`uname -s`
+
 if [ -z "$DOTFILE_PATH" ]; then
    DOTFILE_PATH=$1
 fi
@@ -24,6 +26,11 @@ linkit() {
       ln -s "$SRC" "$DST"
    fi
 }
+
+linkit "$DOTFILE_PATH/bash/_bashrc" "$HOME/.bashrc"
+if [ -e "$DOTFILE_PATH/bash/_bashrc-$ST" ]; then
+   linkit "$DOTFILE_PATH/bash/_bashrc-$ST" "$HOME/.bashrc-$ST"
+fi
 
 mkdir -p "$HOME/.vim"
 linkit "$DOTFILE_PATH/vim/_vimrc" "$HOME/.vimrc"
