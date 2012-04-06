@@ -3,7 +3,7 @@
 alias ls='ls -F'
 alias ll='ls -l'
 alias grep="grep --color"
-alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
+alias ame.io="curl -F 'p=<-' http://ame.io/new_paste"
 
 # Helper functions
 git_branch() {
