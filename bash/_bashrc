@@ -65,7 +65,7 @@ PS1+='-\[\033[00m\]-\[\033[01;37m\]( \[\033[00m\]\t !\! \[\033[01;37m\])\[\033[0
 PS2='\[\033[01;30m\]MOAR\[\033[00m\]> '
 export PS1 PS2
 
-. /usr/local/git/contrib/completion/git-completion.bash
+[ -f ~/.git-completion.bash ] && . ~/.git-completion.bash
 
 # Environment
 export PATH=$HOME/bin:$PATH

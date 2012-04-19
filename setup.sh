@@ -28,6 +28,7 @@ linkit() {
 }
 
 linkit "$DOTFILE_PATH/bash/_bashrc" "$HOME/.bashrc"
+linkit "$DOTFILE_PATH/bash/_git-completion.bash" "$HOME/.git-completion.bash"
 if [ -e "$DOTFILE_PATH/bash/_bashrc-$ST" ]; then
    linkit "$DOTFILE_PATH/bash/_bashrc-$ST" "$HOME/.bashrc-$ST"
 fi
