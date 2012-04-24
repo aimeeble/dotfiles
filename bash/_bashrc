@@ -49,13 +49,13 @@ calc_fill_length() {
 export PROMPT_FILL="------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 
 case "$TERM" in
-xterm*|rxvt*|screen)
-    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
+xterm*|rxvt*|screen*)
+    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007";'
     ;;
 *)
     ;;
 esac
-PROMPT_COMMAND="$PROMPT_COMMAND;git_branch;git_changes;calc_fill_length"
+PROMPT_COMMAND="${PROMPT_COMMAND}git_branch;git_changes;calc_fill_length"
 
 PS1='\[\033[01;30m\]-\[\033[00m\]-\[\033[01;37m\]( \[\033[01;32m\]\u@\h\[\033[00m\]'
 PS1+='${GIT_BRANCH:+ \[\033[01;33m\]$GIT_BRANCH\[\033[00m\]}${GIT_CHANGES:+\[\033[01;39m\]${GIT_CHANGES}\[\033[00m\]} '
