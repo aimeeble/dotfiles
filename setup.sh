@@ -47,3 +47,5 @@ linkit "$DOTFILE_PATH/top/_toprc" "$HOME/.toprc"
 mkdir -p "$HOME/.irssi/scripts/autorun"
 linkit "$DOTFILE_PATH/irssi/trackbar.pl" "$HOME/.irssi/scripts/trackbar.pl"
 linkit "$HOME/.irssi/scripts/trackbar.pl" "$HOME/.irssi/scripts/autorun/trackbar.pl"
+
+linkit "$DOTFILE_PATH/tmux/_tmux.conf" "$HOME/.tmux.conf"
