@@ -36,7 +36,7 @@ calc_fill_length() {
    local HOSTNAME=`hostname -s`
    local MYPWD=${PWD/$HOME/\~}
 
-   local MAIN="--( ${USER}@${HOSTNAME}${GIT_BRANCH:+ $GIT_BRANCH}${GIT_CHANGES:+$GIT_CHANGES} )-"
+   local MAIN="--( ${USER}@${HOSTNAME}${GIT_BRANCH:+ $GIT_BRANCH}${GIT_CHANGES:+$GIT_CHANGES}${VIRTUAL_ENV:+ `basename $VIRTUAL_ENV`} )-"
    local P="-( $MYPWD )--"
    local MAIN_LEN=${#MAIN}
    local P_LEN=${#P}
@@ -58,7 +58,8 @@ esac
 PROMPT_COMMAND="${PROMPT_COMMAND}git_branch;git_changes;calc_fill_length"
 
 PS1='\[\033[01;30m\]-\[\033[00m\]-\[\033[01;37m\]( \[\033[01;32m\]\u@\h\[\033[00m\]'
-PS1+='${GIT_BRANCH:+ \[\033[01;33m\]$GIT_BRANCH\[\033[00m\]}${GIT_CHANGES:+\[\033[01;39m\]${GIT_CHANGES}\[\033[00m\]} '
+PS1+='${GIT_BRANCH:+ \[\033[01;33m\]$GIT_BRANCH\[\033[00m\]}${GIT_CHANGES:+\[\033[01;39m\]${GIT_CHANGES}\[\033[00m\]}'
+PS1+='${VIRTUAL_ENV:+ \[\033[01;39m\]`basename $VIRTUAL_ENV`\[\033[00m\]} '
 PS1+='\[\033[01;37m\])\[\033[00m\]-\[\033[01;30m\]${PROMPT_FILL:0:$PROMPT_FILL_LEN}'
 PS1+='\[\033[00m\]-\[\033[01;37m\]( \[\033[01;34m\]\w\[\033[00m\] \[\033[01;37m\])\[\033[00m\]-\[\033[01;30m\]-\n'
 PS1+='-\[\033[00m\]-\[\033[01;37m\]( \[\033[00m\]\t !\! \[\033[01;37m\])\[\033[00m\]-\[\033[01;30m\]-\[\033[00m\]\$ '
@@ -71,6 +72,7 @@ export PS1 PS2
 export PATH=/usr/local/bin::/usr/local/share/python:$HOME/bin:$PATH
 export VISUAL=vim
 export EDITOR=vim
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # Source the platform and local bashrc files.
 PLATFORM_BASH_RC="$HOME/.bashrc-`uname -s`"
