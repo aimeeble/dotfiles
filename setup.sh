@@ -35,8 +35,16 @@ fi
 
 mkdir -p "$HOME/.vim"
 linkit "$DOTFILE_PATH/vim/_vimrc" "$HOME/.vimrc"
-linkit "$DOTFILE_PATH/vim/plugins" "$HOME/.vim/plugins"
-linkit "$DOTFILE_PATH/vim/syntax" "$HOME/.vim/syntax"
+mkdir -p "$HOME/.vim/autoload"
+for i in $DOTFILE_PATH/vim/autoload/*; do
+   BASE=`basename $i`
+   linkit "$i" "$HOME/.vim/autoload/$BASE"
+done
+mkdir -p "$HOME/.vim/bundle"
+for i in $DOTFILE_PATH/vim/bundle/*; do
+   BASE=`basename $i`
+   linkit "$i" "$HOME/.vim/bundle/$BASE"
+done
 
 linkit "$DOTFILE_PATH/mutt/_muttrc" "$HOME/.muttrc"
 

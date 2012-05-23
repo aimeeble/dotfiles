@@ -1,5 +1,8 @@
 " see http://www.8t8.us/configs/vimrc
 " see http://eseth.org/filez/prefs/vimrc
+" see https://github.com/erynofwales/dotfiles/blob/master/vimrc
+
+call pathogen#infect()
 
 " General {{{
 set nocompatible                 " vi is old, vim is new.
@@ -70,7 +73,7 @@ set flp=^\\s*#\\=\\d\\+[\\]:.)}\\t\ ]\\s*
                                  " standard + allow preceding number sign.
 
 " spell checking
-set spellfile=~/.vimspell.add
+set spellfile=~/.vim/words.add
 set spelllang=en_us
 
 " indent based on type
@@ -79,6 +82,8 @@ if has("autocmd")
 
    " recognize SCons files as Python
    au BufNewFile,BufRead,BufEnter *.sc setf python
+
+   au BufNewFile,BufRead *.ldg,*.ledger setf ledger
 endif
 
 " highlight in yellow things after 80 columns
@@ -142,8 +147,8 @@ map ,vmc :exec VMcomment()<cr>
 " }}}
 
 let g:yankring_history_dir = "$HOME/.vim"
-source ~/.vim/plugins/NERD_tree.vim
-source ~/.vim/plugins/yankring.vim
+let g:ledger_maxwidth = 80
+
 if exists("~/.vimrc-local")
    source ~/.vimrc-local
 endif
