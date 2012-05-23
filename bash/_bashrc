@@ -73,6 +73,7 @@ export PATH=/usr/local/bin::/usr/local/share/python:$HOME/bin:$PATH
 export VISUAL=vim
 export EDITOR=vim
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export WORKON_HOME=$HOME/.venvs
 
 # Source the platform and local bashrc files.
 PLATFORM_BASH_RC="$HOME/.bashrc-`uname -s`"
