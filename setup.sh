@@ -57,3 +57,5 @@ linkit "$DOTFILE_PATH/irssi/trackbar.pl" "$HOME/.irssi/scripts/trackbar.pl"
 linkit "$HOME/.irssi/scripts/trackbar.pl" "$HOME/.irssi/scripts/autorun/trackbar.pl"
 
 linkit "$DOTFILE_PATH/tmux/_tmux.conf" "$HOME/.tmux.conf"
+
+linkit "$DOTFILE_PATH/git/_gitconfig" "$HOME/.gitconfig"
