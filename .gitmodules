@@ -16,3 +16,6 @@
 [submodule "vim/bundle/striptrailingspaces"]
 	path = vim/bundle/striptrailingspaces
 	url = https://github.com/vim-scripts/StripWhiteSpaces.git
+[submodule "vim/bundle/fugitive"]
+	path = vim/bundle/fugitive
+	url = https://github.com/tpope/vim-fugitive.git
