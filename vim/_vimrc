@@ -41,8 +41,7 @@ set cursorline                   " highlight current line
 set nu                           " line numbering
 set list                         " enable whitespace display
 set listchars=tab:>>,trail:-,extends:>,precedes:<
-set ruler                        " show the cursor pos and buffer pos
-set rulerformat=%30(%=b%n\ %y%m%r%w\ %l,%c%V\ %P\%)
+set statusline=%f\ %{fugitive#statusline()}%=%30(%=b%n\ %y%m%r%w\ %l,%c%V\ %P\%)
 set title                        " update terminal title bar
 " }}}
 
