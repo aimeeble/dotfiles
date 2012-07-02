@@ -5,3 +5,6 @@ export CLICOLOR=1
 
 alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g"
 alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
+
+VENV="/usr/local/share/python/virtualenvwrapper.sh"
+[ -f $VENV ] && . $VENV
