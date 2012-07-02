@@ -36,7 +36,10 @@ calc_fill_length() {
    local HOSTNAME=`hostname -s`
    local MYPWD=${PWD/$HOME/\~}
 
-   local MAIN="--( ${USER}@${HOSTNAME}${GIT_BRANCH:+ $GIT_BRANCH}${GIT_CHANGES:+$GIT_CHANGES}${VIRTUAL_ENV:+ `basename $VIRTUAL_ENV`} )-"
+   if [ "${USER}" != "aimeeble" ]; then
+      local PSUSER=$USER
+   fi
+   local MAIN="--( ${PSUSER:+${PSUSER}}@${HOSTNAME}${GIT_BRANCH:+ $GIT_BRANCH}${GIT_CHANGES:+$GIT_CHANGES}${VIRTUAL_ENV:+ `basename $VIRTUAL_ENV`} )-"
    local P="-( $MYPWD )--"
    local MAIN_LEN=${#MAIN}
    local P_LEN=${#P}
@@ -57,7 +60,11 @@ xterm*|rxvt*|screen*)
 esac
 PROMPT_COMMAND="${PROMPT_COMMAND}git_branch;git_changes;calc_fill_length"
 
-PS1='\[\033[01;30m\]-\[\033[00m\]-\[\033[01;37m\]( \[\033[01;32m\]\u@\h\[\033[00m\]'
+if [ "${USER}" != "aimeeble" ]; then
+   PS1='\[\033[01;30m\]-\[\033[00m\]-\[\033[01;37m\]( \[\033[01;32m\]\u@\h\[\033[00m\]'
+else
+   PS1='\[\033[01;30m\]-\[\033[00m\]-\[\033[01;37m\]( \[\033[01;32m\]@\h\[\033[00m\]'
+fi
 PS1+='${GIT_BRANCH:+ \[\033[01;33m\]$GIT_BRANCH\[\033[00m\]}${GIT_CHANGES:+\[\033[01;39m\]${GIT_CHANGES}\[\033[00m\]}'
 PS1+='${VIRTUAL_ENV:+ \[\033[01;39m\]`basename $VIRTUAL_ENV`\[\033[00m\]} '
 PS1+='\[\033[01;37m\])\[\033[00m\]-\[\033[01;30m\]${PROMPT_FILL:0:$PROMPT_FILL_LEN}'
