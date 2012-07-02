@@ -76,7 +76,7 @@ export PS1 PS2
 [ -f ~/.git-completion.bash ] && . ~/.git-completion.bash
 
 # Environment
-export PATH=/usr/local/bin::/usr/local/share/python:$HOME/bin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/python:$HOME/bin:$PATH
 export VISUAL=vim
 export EDITOR=vim
 export VIRTUAL_ENV_DISABLE_PROMPT=1
