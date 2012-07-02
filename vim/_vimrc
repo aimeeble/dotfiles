@@ -81,7 +81,7 @@ if has("autocmd")
 
    " recognize SCons files as Python
    au BufNewFile,BufRead,BufEnter *.sc setf python
-
+   au BufNewFile,BufRead *.proto setf proto
    au BufNewFile,BufRead *.ldg,*.ledger setf ledger
 endif
 
