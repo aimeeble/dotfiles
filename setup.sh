@@ -35,6 +35,7 @@ fi
 
 mkdir -p "$HOME/.vim"
 linkit "$DOTFILE_PATH/vim/_vimrc" "$HOME/.vimrc"
+linkit "$DOTFILE_PATH/vim/_vimrc" "$HOME/.gvimrc"
 mkdir -p "$HOME/.vim/autoload"
 for i in $DOTFILE_PATH/vim/autoload/*; do
    BASE=`basename $i`
