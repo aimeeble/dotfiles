@@ -71,6 +71,10 @@ set fo+=n                        " format numbered lists properly
 set flp=^\\s*#\\=\\d\\+[\\]:.)}\\t\ ]\\s*
                                  " standard + allow preceding number sign.
 
+" Move around by screen lines instead of file lines
+nnoremap j gj
+nnoremap k gk
+
 " spell checking
 set spellfile=~/.vim/words.add
 set spelllang=en_us
