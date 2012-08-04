@@ -102,7 +102,9 @@ endif
 "match rightMargin '\%>90v.\+'
 "au BufEnter * let w:m1=matchadd('rightMargin', '\%>90v.\+', -1)
 if exists("+colorcolumn")
-   set colorcolumn=80               " draw a line at 80 columns
+   " draw a line at 80 columns
+   set colorcolumn=80
+   hi ColorColumn guibg=#000050
 endif
 " }}}
 
