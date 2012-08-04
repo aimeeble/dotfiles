@@ -2,6 +2,8 @@
 " see http://eseth.org/filez/prefs/vimrc
 " see https://github.com/erynofwales/dotfiles/blob/master/vimrc
 
+syn off
+filetype off
 call pathogen#infect()
 
 " General {{{
