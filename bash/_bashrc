@@ -3,7 +3,36 @@
 alias ls='ls -F'
 alias ll='ls -l'
 alias grep="grep --color"
-alias ame.io="curl -F 'p=<-' http://ame.io/new_paste"
+
+ame.io() {
+   local lang=""
+   local title=""
+   local args=`getopt t:l: $*`
+   if [ $? -ne 0 ]; then
+      return
+   fi
+   set -- $args
+   for i; do
+      case "$i" in
+         -l)
+            lang="-F 'lang=$2'"
+            shift
+            shift
+            ;;
+         -t)
+            title="-F 'title=$2'"
+            shift
+            shift
+            ;;
+         --)
+            shift
+            break
+      esac
+   done
+
+   #echo "curl -F 'p=<-' $lang $title http://ame.io/new_paste"
+   eval "curl -F 'p=<-' $lang $title http://ame.io/new_paste"
+}
 
 # Helper functions
 git_branch() {
