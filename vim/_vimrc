@@ -141,8 +141,10 @@ set pastetoggle=<F5>
 " Macros {{{
 " }}}
 
+" Settings...
 let g:yankring_history_dir = "$HOME/.vim"
 let g:ledger_maxwidth = 80
+let g:session_autoload = 'no'
 
 if exists("~/.vimrc-local")
    source ~/.vimrc-local
