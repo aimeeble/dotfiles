@@ -1,0 +1,2 @@
+# When logging out of a login shell
+echo "zlougout"

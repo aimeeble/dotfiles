@@ -1,0 +1,2 @@
+# Interactive sessions.
+[[ -f "$HOME/.zsh/interactive.zsh" ]] && . "$HOME/.zsh/interactive.zsh"

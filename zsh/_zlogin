@@ -1,0 +1,2 @@
+# When logging in to a login shell, after zshrc
+[[ -f "$HOME/.zsh/login-post.zsh" ]] && . "$HOME/.zsh/login-post.zsh"

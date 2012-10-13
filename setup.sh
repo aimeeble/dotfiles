@@ -13,6 +13,21 @@ link_bash() {
    linkit_if_exists "$DOTFILE_PATH/bash/_bashrc-$SYS" "$INSTALL_PATH/.bashrc-$SYS"
 }
 
+link_zsh() {
+   log1 "link_zsh"
+   linkit "$DOTFILE_PATH/zsh/_zshrc" "$HOME/.zshrc"
+   linkit "$DOTFILE_PATH/zsh/_zlogin" "$HOME/.zlogin"
+   linkit "$DOTFILE_PATH/zsh/_zlogout" "$HOME/.zlogout"
+   linkit "$DOTFILE_PATH/zsh/_zprofile" "$HOME/.zprofile"
+   linkit "$DOTFILE_PATH/zsh/_zshenv" "$HOME/.zshenv"
+   linkit "$DOTFILE_PATH/zsh/_zshrc" "$HOME/.zshrc"
+
+   linkit "$DOTFILE_PATH/zsh/_zsh/env.zsh" "$HOME/.zsh/env.zsh"
+   linkit "$DOTFILE_PATH/zsh/_zsh/interactive.zsh" "$HOME/.zsh/interactive.zsh"
+   linkit "$DOTFILE_PATH/zsh/_zsh/login-post.zsh" "$HOME/.zsh/login-post.zsh"
+   linkit "$DOTFILE_PATH/zsh/_zsh/login-pre.zsh" "$HOME/.zsh/login-pre.zsh"
+}
+
 link_vim() {
    log1 "link_vim"
    linkit "$DOTFILE_PATH/vim/_vimrc" "$INSTALL_PATH/.vimrc"
@@ -54,6 +69,7 @@ validate_env $*
 init_submodules
 
 link_bash
+link_zsh
 link_vim
 link_scm
 link_screen_mgmt

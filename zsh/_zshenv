@@ -1,0 +1,2 @@
+# Always run (unless -f), always first.
+[[ -f "$HOME/.zsh/env.zsh" ]] && . "$HOME/.zsh/env.zsh"

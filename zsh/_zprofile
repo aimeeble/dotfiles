@@ -1,0 +1,2 @@
+# When logging in to a login shell, prior to zshrc
+[[ -f "$HOME/.zsh/login-pre.zsh" ]] && . "$HOME/.zsh/login-pre.zsh"
