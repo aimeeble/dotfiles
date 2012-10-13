@@ -26,6 +26,9 @@ link_zsh() {
    linkit "$DOTFILE_PATH/zsh/_zsh/interactive.zsh" "$HOME/.zsh/interactive.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/login-post.zsh" "$HOME/.zsh/login-post.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/login-pre.zsh" "$HOME/.zsh/login-pre.zsh"
+
+   linkit_if_exists "$DOTFILE_PATH/zsh/_zshrc-$SYS" "$HOME/.zshrc-$SYS"
+   linkit_if_exists "$DOTFILE_PATH/zsh/_zshenv-$SYS" "$HOME/.zshenv-$SYS"
 }
 
 link_vim() {
