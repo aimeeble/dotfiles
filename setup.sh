@@ -51,14 +51,23 @@ linkit() {
    fi
 }
 
+linkit_if_exists() {
+   SRC=$1
+   DST=$2
+
+   if [ ! -e "$SRC" ]; then
+      log2 "Skipping optional file $SRC"
+      return
+   fi
+
+   linkit "$SRC" "$DST"
+}
 
 link_bash() {
    log1 "link_bash"
    linkit "$DOTFILE_PATH/bash/_bashrc" "$HOME/.bashrc"
    linkit "$DOTFILE_PATH/bash/_git-completion.bash" "$HOME/.git-completion.bash"
-   if [ -e "$DOTFILE_PATH/bash/_bashrc-$SYS" ]; then
-      linkit "$DOTFILE_PATH/bash/_bashrc-$SYS" "$HOME/.bashrc-$SYS"
-   fi
+   linkit_if_exists "$DOTFILE_PATH/bash/_bashrc-$SYS" "$HOME/.bashrc-$SYS"
 }
 
 link_vim() {
@@ -110,4 +119,3 @@ link_vim
 link_scm
 link_screen_mgmt
 link_irssi
-
