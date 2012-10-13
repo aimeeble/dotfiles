@@ -169,6 +169,12 @@ export WORKON_HOME=$HOME/.venvs
 VENV="/usr/local/share/python/virtualenvwrapper.sh"
 [ -f $VENV ] && . $VENV
 
+# Pull in various other config files
+PLATFORMRC="$HOME/.zshrc-`uname -s`"
+[ -f "$PLATFORMRC" ] && . "$PLATFORMRC"
+LOCALRC="$HOME/.zshrc-local"
+[ -f "$LOCALRC" ] && . "$LOCALRC"
+
 if [[ "$SHELL" != "/bin/zsh" ]]; then
    echo "Warning: shell not set to zsh: '$SHELL'"
 fi
