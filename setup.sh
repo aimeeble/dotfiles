@@ -38,22 +38,35 @@ init_submodules() {
 }
 
 linkit() {
-   SRC=$1
-   DST=$2
+   local SRC="$1"
+   local DST="$2"
+   local DST_DIR="`dirname $DST`"
 
    if [ -e "$DST" -a ! -L "$DST" ]; then
       log_always "WARNING! $DST exists and isn't a symlink!"
+      return
    elif [ -L "$DST" ]; then
       log2 "Already done $DST."
-   else
-      log2 "Linking $DST..."
-      ln -s "$SRC" "$DST"
+      return
    fi
+
+   # Ensure destination directory exists
+   if [ ! -d "$DST_DIR" ]; then
+      mkdir -p "$DST_DIR"
+   fi
+   if [ ! -d "$DST_DIR" || ! -w "$DST_DIR" ]; then
+      log_always "WARNING! Failed to create dest dir $DST_DIR"
+      return
+   fi
+
+   # Finally, link it!
+   log2 "Linking $DST..."
+   ln -s "$SRC" "$DST"
 }
 
 linkit_if_exists() {
-   SRC=$1
-   DST=$2
+   local SRC="$1"
+   local DST="$2"
 
    if [ ! -e "$SRC" ]; then
       log2 "Skipping optional file $SRC"
