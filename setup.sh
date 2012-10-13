@@ -14,28 +14,28 @@ log_always() {
 }
 
 validate_env() {
-   if [ "$1" == "-v" ]; then
+   if [[ "$1" == "-v" ]]; then
       VERBOSE=1
       shift
    fi
 
-   if [ -z "$DOTFILE_PATH" ]; then
+   if [[ -z "$DOTFILE_PATH" ]]; then
       DOTFILE_PATH=$1
       shift
    fi
-   if [ -z "$DOTFILE_PATH" ]; then
+   if [[ -z "$DOTFILE_PATH" ]]; then
       DOTFILE_PATH="`pwd`"
    fi
-   if [ ! -f "$DOTFILE_PATH/.dotfiles" ]; then
+   if [[ ! -f "$DOTFILE_PATH/.dotfiles" ]]; then
       echo "Cannot find dotfiles in DOTFILE_PATH=$DOTFILE_PATH"
       exit 1
    fi
 
-   if [ -z "$INSTALL_PATH" ]; then
+   if [[ -z "$INSTALL_PATH" ]]; then
       INSTALL_PATH=$1
       shift
    fi
-   if [ -z "$INSTALL_PATH" ]; then
+   if [[ -z "$INSTALL_PATH" ]]; then
       INSTALL_PATH=$HOME
    fi
    if [[ ! -d "$INSTALL_PATH" || ! -w "$INSTALL_PATH" ]]; then
@@ -60,19 +60,19 @@ linkit() {
    local DST="$2"
    local DST_DIR="`dirname $DST`"
 
-   if [ -e "$DST" -a ! -L "$DST" ]; then
+   if [[ -e "$DST" && ! -L "$DST" ]]; then
       log_always "WARNING! $DST exists and isn't a symlink!"
       return
-   elif [ -L "$DST" ]; then
+   elif [[ -L "$DST" ]]; then
       log2 "Already done $DST."
       return
    fi
 
    # Ensure destination directory exists
-   if [ ! -d "$DST_DIR" ]; then
+   if [[ ! -d "$DST_DIR" ]]; then
       mkdir -p "$DST_DIR"
    fi
-   if [ ! -d "$DST_DIR" || ! -w "$DST_DIR" ]; then
+   if [[ ! -d "$DST_DIR" || ! -w "$DST_DIR" ]]; then
       log_always "WARNING! Failed to create dest dir $DST_DIR"
       return
    fi
@@ -86,7 +86,7 @@ linkit_if_exists() {
    local SRC="$1"
    local DST="$2"
 
-   if [ ! -e "$SRC" ]; then
+   if [[ ! -e "$SRC" ]]; then
       log2 "Skipping optional file $SRC"
       return
    fi
@@ -96,50 +96,46 @@ linkit_if_exists() {
 
 link_bash() {
    log1 "link_bash"
-   linkit "$DOTFILE_PATH/bash/_bashrc" "$HOME/.bashrc"
-   linkit "$DOTFILE_PATH/bash/_git-completion.bash" "$HOME/.git-completion.bash"
-   linkit_if_exists "$DOTFILE_PATH/bash/_bashrc-$SYS" "$HOME/.bashrc-$SYS"
+   linkit "$DOTFILE_PATH/bash/_bashrc" "$INSTALL_PATH/.bashrc"
+   linkit "$DOTFILE_PATH/bash/_git-completion.bash" "$INSTALL_PATH/.git-completion.bash"
+   linkit_if_exists "$DOTFILE_PATH/bash/_bashrc-$SYS" "$INSTALL_PATH/.bashrc-$SYS"
 }
 
 link_vim() {
    log1 "link_vim"
-   mkdir -p "$HOME/.vim"
-   linkit "$DOTFILE_PATH/vim/_vimrc" "$HOME/.vimrc"
-   linkit "$DOTFILE_PATH/vim/_vimrc" "$HOME/.gvimrc"
-   mkdir -p "$HOME/.vim/autoload"
+   linkit "$DOTFILE_PATH/vim/_vimrc" "$INSTALL_PATH/.vimrc"
+   linkit "$DOTFILE_PATH/vim/_vimrc" "$INSTALL_PATH/.gvimrc"
    for i in $DOTFILE_PATH/vim/autoload/*; do
       BASE=`basename $i`
-      linkit "$i" "$HOME/.vim/autoload/$BASE"
+      linkit "$i" "$INSTALL_PATH/.vim/autoload/$BASE"
    done
-   mkdir -p "$HOME/.vim/bundle"
    for i in $DOTFILE_PATH/vim/bundle/*; do
       BASE=`basename $i`
-      linkit "$i" "$HOME/.vim/bundle/$BASE"
+      linkit "$i" "$INSTALL_PATH/.vim/bundle/$BASE"
    done
 }
 
 link_screen_mgmt() {
    log1 "link_screen_mgmt"
-   linkit "$DOTFILE_PATH/screen/_screenrc" "$HOME/.screenrc"
-   linkit "$DOTFILE_PATH/tmux/_tmux.conf" "$HOME/.tmux.conf"
+   linkit "$DOTFILE_PATH/screen/_screenrc" "$INSTALL_PATH/.screenrc"
+   linkit "$DOTFILE_PATH/tmux/_tmux.conf" "$INSTALL_PATH/.tmux.conf"
 }
 
 link_scm() {
    log1 "link_scm"
-   linkit "$DOTFILE_PATH/git/_gitconfig" "$HOME/.gitconfig"
+   linkit "$DOTFILE_PATH/git/_gitconfig" "$INSTALL_PATH/.gitconfig"
 }
 
 link_irssi() {
    log1 "link_irssi"
-   mkdir -p "$HOME/.irssi/scripts/autorun"
-   linkit "$DOTFILE_PATH/irssi/trackbar.pl" "$HOME/.irssi/scripts/trackbar.pl"
-   linkit "$HOME/.irssi/scripts/trackbar.pl" "$HOME/.irssi/scripts/autorun/trackbar.pl"
+   linkit "$DOTFILE_PATH/irssi/trackbar.pl" "$INSTALL_PATH/.irssi/scripts/trackbar.pl"
+   linkit "$INSTALL_PATH/.irssi/scripts/trackbar.pl" "$INSTALL_PATH/.irssi/scripts/autorun/trackbar.pl"
 }
 
 link_misc() {
    log1 "link_misc"
-   linkit "$DOTFILE_PATH/mutt/_muttrc" "$HOME/.muttrc"
-   linkit "$DOTFILE_PATH/top/_toprc" "$HOME/.toprc"
+   linkit "$DOTFILE_PATH/mutt/_muttrc" "$INSTALL_PATH/.muttrc"
+   linkit "$DOTFILE_PATH/top/_toprc" "$INSTALL_PATH/.toprc"
 }
 
 validate_env $*
