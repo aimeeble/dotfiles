@@ -156,8 +156,7 @@ setopt \
    COMPLETE_IN_WORD \
    AUTO_LIST \
    LIST_AMBIGUOUS \
-   LIST_TYPES \
-   REC_EXACT
+   LIST_TYPES
 # don't cycle completion options
 unsetopt \
    MENU_COMPLETE \
