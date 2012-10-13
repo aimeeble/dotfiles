@@ -21,6 +21,7 @@ validate_env() {
 
    if [ -z "$DOTFILE_PATH" ]; then
       DOTFILE_PATH=$1
+      shift
    fi
    if [ -z "$DOTFILE_PATH" ]; then
       DOTFILE_PATH="`pwd`"
@@ -29,6 +30,23 @@ validate_env() {
       echo "Cannot find dotfiles in DOTFILE_PATH=$DOTFILE_PATH"
       exit 1
    fi
+
+   if [ -z "$INSTALL_PATH" ]; then
+      INSTALL_PATH=$1
+      shift
+   fi
+   if [ -z "$INSTALL_PATH" ]; then
+      INSTALL_PATH=$HOME
+   fi
+   if [[ ! -d "$INSTALL_PATH" || ! -w "$INSTALL_PATH" ]]; then
+      echo "Cannot find write to destination directory $INSTALL_PATH"
+      exit 1
+   fi
+
+   log1 "validate_env"
+   log2 "VERBOSE ....... $VERBOSE"
+   log2 "source ........ $DOTFILE_PATH"
+   log2 "destination ... $INSTALL_PATH"
 }
 
 init_submodules() {
