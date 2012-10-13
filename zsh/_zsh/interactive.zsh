@@ -114,6 +114,11 @@ create_prompt() {
    PS3="%B%F{black}${PR_SHIFT_IN}${PR_VBAR}${PR_SHIFT_OUT}%f%b %_> "
 }
 
+TRAPWINCH() {
+   create_prompt
+   zle reset-prompt
+}
+
 pre_xterm() {
    print -Pn "\e]0;%n@%m: %~\a"
 }
