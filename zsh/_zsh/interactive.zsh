@@ -7,6 +7,7 @@
 #   http://superuser.com/questions/49092/how-to-format-the-path-in-a-zsh-prompt
 #   http://aperiodic.net/phil/prompt/
 #   http://shreevatsa.wordpress.com/2008/03/30/zshbash-startup-files-loading-order-bashrc-zshrc-etc/
+#   http://zsh.sourceforge.net/Guide/zshguide06.html
 #
 
 echo "interactive"
@@ -128,53 +129,85 @@ precmd() {
    create_prompt "vi-ins"
 }
 
-export CLICOLOR=1
+setup_prompt() {
+   bindkey -v
+   create_prompt "vi-ins"
+   zle -N zle-keymap-select zle_keymap_select
+   setopt \
+      PROMPT_SUBST \
+      EXTENDED_GLOB
+}
 
-# Initialize the prompt and zle
-zle -N zle-keymap-select zle_keymap_select
-setopt \
-   PROMPT_SUBST \
-   EXTENDED_GLOB
+setup_completion() {
+   # Load up completion
+   autoload -U compinit
+   compinit
 
-# Command history
-setopt \
-   APPEND_HISTORY \
-   EXTENDED_HISTORY \
-   HIST_FIND_NO_DUPS \
-   HIST_IGNORE_SPACE \
-   HIST_NO_STORE \
-   HIST_REDUCE_BLANKS
-HIST_SIZE=1000000
-SAVEHIST=1000000
-HISTFILE="$HOME/.zsh/history"
+   # Completion options and zle
+   setopt \
+      AUTO_REMOVE_SLASH \
+      COMPLETE_IN_WORD \
+      AUTO_LIST \
+      LIST_AMBIGUOUS \
+      LIST_TYPES
+   # don't cycle completion options
+   unsetopt \
+      MENU_COMPLETE \
+      AUTO_MENU
+}
 
-# Completion and zle
-bindkey -v
-create_prompt "vi-ins"
-setopt \
-   AUTO_REMOVE_SLASH \
-   COMPLETE_IN_WORD \
-   AUTO_LIST \
-   LIST_AMBIGUOUS \
-   LIST_TYPES
-# don't cycle completion options
-unsetopt \
-   MENU_COMPLETE \
-   AUTO_MENU
-zstyle ':completion:*:ls:*' ignore-line yes
+setup_history() {
+   setopt \
+      APPEND_HISTORY \
+      EXTENDED_HISTORY \
+      HIST_FIND_NO_DUPS \
+      HIST_IGNORE_SPACE \
+      HIST_NO_STORE \
+      HIST_REDUCE_BLANKS
+   HIST_SIZE=1000000
+   SAVEHIST=1000000
+   HISTFILE="$HOME/.zsh/history"
+}
 
-# Python virtualenv
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-export WORKON_HOME=$HOME/.venvs
-VENV="/usr/local/share/python/virtualenvwrapper.sh"
-[ -f $VENV ] && . $VENV
+setup_ls() {
+   # Set up ls and colors
+   export CLICOLOR=1
+   if [[ -x /usr/local/bin/gdircolors ]]; then
+      eval `gdircolors`
+      zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-# Pull in various other config files
-PLATFORMRC="$HOME/.zshrc-`uname -s`"
-[ -f "$PLATFORMRC" ] && . "$PLATFORMRC"
-LOCALRC="$HOME/.zshrc-local"
-[ -f "$LOCALRC" ] && . "$LOCALRC"
+      alias ls='gls --color'
+      alias ll='gls -l --color'
+   else
+      alias ll='ls -l'
+   fi
+}
 
-if [[ "$SHELL" != "/bin/zsh" ]]; then
-   echo "Warning: shell not set to zsh: '$SHELL'"
-fi
+setup_virtualenv() {
+   # Python virtualenv
+   export VIRTUAL_ENV_DISABLE_PROMPT=1
+   export WORKON_HOME=$HOME/.venvs
+   VENV="/usr/local/share/python/virtualenvwrapper.sh"
+   [ -f $VENV ] && . $VENV
+}
+
+setup_local_config() {
+   # Pull in various other config files
+   PLATFORMRC="$HOME/.zshrc-`uname -s`"
+   [ -f "$PLATFORMRC" ] && . "$PLATFORMRC"
+   LOCALRC="$HOME/.zshrc-local"
+   [ -f "$LOCALRC" ] && . "$LOCALRC"
+}
+
+setup_warnings() {
+   if [[ "$SHELL" != "/bin/zsh" ]]; then
+      echo "Warning: shell not set to zsh: '$SHELL'"
+   fi
+}
+
+setup_prompt
+setup_completion
+setup_history
+setup_ls
+setup_virtualenv
+setup_warnings
