@@ -116,7 +116,7 @@ create_prompt() {
 }
 
 TRAPWINCH() {
-   create_prompt
+   create_prompt "vi-ins"
    zle reset-prompt
 }
 
