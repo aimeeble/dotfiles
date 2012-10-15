@@ -170,17 +170,35 @@ setup_history() {
 }
 
 setup_ls() {
-   # Set up ls and colors
-   export CLICOLOR=1
-   if [[ -x /usr/local/bin/gdircolors ]]; then
-      eval `gdircolors`
-      zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+   local LS="ls"
+   local LS_OPTS=""
 
-      alias ls='gls --color'
-      alias ll='gls -l --color'
-   else
-      alias ll='ls -l'
-   fi
+   case `uname -s` in
+      "Linux")
+         LS="ls"
+         LS_OPTS="--color=auto"
+         ;;
+      "Darwin")
+         if [[ -x "/usr/local/bin/gdircolors" ]]; then
+            eval `gdircolors`
+            zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+            LS="gls"
+            LS_OPTS="--color=auto"
+         else
+            # Use built-in ls, but at least enable colors :-)
+            export CLICOLOR=1
+         fi
+         ;;
+      *)
+         echo "unknown system `uname -s`"
+         ;;
+   esac
+
+   alias ls="$LS $LS_OPTS"
+   alias ll="$LS $LS_OPTS -l"
+   alias la="$LS $LS_OPTS -a"
+   alias lla="$LS $LS_OPTS -la"
+   alias l.="$LS $LS_OPTS -d .*"
 }
 
 setup_virtualenv() {
