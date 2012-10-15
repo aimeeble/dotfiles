@@ -1,1 +1,1 @@
-echo "login-pre"
+# run before the interactive script

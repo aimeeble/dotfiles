@@ -1,1 +1,1 @@
-echo "login-post"
+# run after the interactive script

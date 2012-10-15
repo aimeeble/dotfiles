@@ -10,8 +10,6 @@
 #   http://zsh.sourceforge.net/Guide/zshguide06.html
 #
 
-echo "interactive"
-
 zle_get_mode() {
    case "$KEYMAP" in
       "main"|"viins")
