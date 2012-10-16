@@ -15,20 +15,19 @@ link_bash() {
 
 link_zsh() {
    log1 "link_zsh"
-   linkit "$DOTFILE_PATH/zsh/_zshrc" "$HOME/.zshrc"
-   linkit "$DOTFILE_PATH/zsh/_zlogin" "$HOME/.zlogin"
-   linkit "$DOTFILE_PATH/zsh/_zlogout" "$HOME/.zlogout"
-   linkit "$DOTFILE_PATH/zsh/_zprofile" "$HOME/.zprofile"
-   linkit "$DOTFILE_PATH/zsh/_zshenv" "$HOME/.zshenv"
-   linkit "$DOTFILE_PATH/zsh/_zshrc" "$HOME/.zshrc"
+   linkit "$DOTFILE_PATH/zsh/_zshrc" "$INSTALL_PATH/.zshrc"
+   linkit "$DOTFILE_PATH/zsh/_zlogin" "$INSTALL_PATH/.zlogin"
+   linkit "$DOTFILE_PATH/zsh/_zlogout" "$INSTALL_PATH/.zlogout"
+   linkit "$DOTFILE_PATH/zsh/_zprofile" "$INSTALL_PATH/.zprofile"
+   linkit "$DOTFILE_PATH/zsh/_zshenv" "$INSTALL_PATH/.zshenv"
 
-   linkit "$DOTFILE_PATH/zsh/_zsh/env.zsh" "$HOME/.zsh/env.zsh"
-   linkit "$DOTFILE_PATH/zsh/_zsh/interactive.zsh" "$HOME/.zsh/interactive.zsh"
-   linkit "$DOTFILE_PATH/zsh/_zsh/login-post.zsh" "$HOME/.zsh/login-post.zsh"
-   linkit "$DOTFILE_PATH/zsh/_zsh/login-pre.zsh" "$HOME/.zsh/login-pre.zsh"
+   linkit "$DOTFILE_PATH/zsh/_zsh/env.zsh" "$INSTALL_PATH/.zsh/env.zsh"
+   linkit "$DOTFILE_PATH/zsh/_zsh/interactive.zsh" "$INSTALL_PATH/.zsh/interactive.zsh"
+   linkit "$DOTFILE_PATH/zsh/_zsh/login-post.zsh" "$INSTALL_PATH/.zsh/login-post.zsh"
+   linkit "$DOTFILE_PATH/zsh/_zsh/login-pre.zsh" "$INSTALL_PATH/.zsh/login-pre.zsh"
 
-   linkit_if_exists "$DOTFILE_PATH/zsh/_zshrc-$SYS" "$HOME/.zshrc-$SYS"
-   linkit_if_exists "$DOTFILE_PATH/zsh/_zshenv-$SYS" "$HOME/.zshenv-$SYS"
+   linkit_if_exists "$DOTFILE_PATH/zsh/_zshrc-$SYS" "$INSTALL_PATH/.zshrc-$SYS"
+   linkit_if_exists "$DOTFILE_PATH/zsh/_zshenv-$SYS" "$INSTALL_PATH/.zshenv-$SYS"
 }
 
 link_vim() {
