@@ -226,6 +226,13 @@ setup_ls() {
    alias l.="$LS $LS_OPTS -d .*"
 }
 
+setup_vim() {
+   if [[ -d "/Applications/MacVim.app" ]]; then
+      alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
+      alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g"
+   fi
+}
+
 setup_virtualenv() {
    # Python virtualenv
    export VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -258,5 +265,6 @@ setup_prompt
 setup_completion
 setup_history
 setup_ls
+setup_vim
 setup_virtualenv
 setup_warnings
