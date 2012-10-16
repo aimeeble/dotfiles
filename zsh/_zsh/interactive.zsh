@@ -129,8 +129,26 @@ precmd() {
    create_prompt "vi-ins"
 }
 
-setup_prompt() {
+setup_keybindings() {
+   # vi-mode
    bindkey -v
+   # ...but keep ^R for searching command history
+   bindkey '^R' history-incremental-search-backward
+
+   # Fix some stuff that Debian distros like to mess with. Basically, it likes
+   # to set vi-up-line-or-history, which places the cursor at the beginning of
+   # the line. I prefer having the cursor at the end of the line.
+   #
+   # Ref: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=383737
+   #
+   (( ${+terminfo[cuu1]}  )) && bindkey -M viins "$terminfo[cuu1]" up-line-or-history
+   (( ${+terminfo[kcuu1]} )) && bindkey -M viins "$terminfo[kcuu1]" up-line-or-history
+   [[ "${terminfo[kcuu1]:-}" == "[O"* ]] && bindkey -M viins "${terminfo[kcuu1]/O/[}" up-line-or-history
+   (( ${+terminfo[kcud1]} )) && bindkey -M viins "$terminfo[kcud1]" down-line-or-history
+   [[ "${terminfo[kcud1]:-}" == "[O"* ]] && bindkey -M viins "${terminfo[kcud1]/O/[}" down-line-or-history
+}
+
+setup_prompt() {
    create_prompt "vi-ins"
    zle -N zle-keymap-select zle_keymap_select
    setopt \
@@ -230,6 +248,12 @@ setup_warnings() {
    fi
 }
 
+setup_functions() {
+   fpath=("$HOME/.zsh/fpath" $fpath)
+}
+
+setup_functions
+setup_keybindings
 setup_prompt
 setup_completion
 setup_history
