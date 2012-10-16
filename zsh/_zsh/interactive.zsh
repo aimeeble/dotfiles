@@ -243,7 +243,7 @@ setup_local_config() {
 }
 
 setup_warnings() {
-   if [[ "$SHELL" != "/bin/zsh" ]]; then
+   if [[ ! "$SHELL" =~ "zsh" ]]; then
       echo "Warning: shell not set to zsh: '$SHELL'"
    fi
 }
