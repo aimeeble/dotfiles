@@ -21,6 +21,7 @@ link_zsh() {
    linkit "$DOTFILE_PATH/zsh/_zprofile" "$INSTALL_PATH/.zprofile"
    linkit "$DOTFILE_PATH/zsh/_zshenv" "$INSTALL_PATH/.zshenv"
 
+   linkit "$DOTFILE_PATH/zsh/_zsh/fpath" "$INSTALL_PATH/.zsh/fpath"
    linkit "$DOTFILE_PATH/zsh/_zsh/env.zsh" "$INSTALL_PATH/.zsh/env.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/interactive.zsh" "$INSTALL_PATH/.zsh/interactive.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/login-post.zsh" "$INSTALL_PATH/.zsh/login-post.zsh"
