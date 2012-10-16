@@ -95,3 +95,26 @@ linkit_if_exists() {
 
    linkit "$SRC" "$DST"
 }
+
+make_dir() {
+   local DIR="$1"
+
+   if [[ -e "$DIR" && ! -d "$DIR" ]]; then
+      log_always "WARNING: $DIR exists and isn't a directory"
+      return
+   fi
+
+   if [[ -d "$DIR" && -r "$DIR" ]]; then
+      # done!
+      log2 "Skipping existing directory $DIR"
+      return
+   fi
+
+   log2 "Creating directory $DIR"
+   mkdir -p "$DIR"
+
+   if [[ ! -d "$DIR" ]]; then
+      log_always "WARNING: failed to create directory $DIR"
+      return
+   fi
+}

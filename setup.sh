@@ -28,6 +28,9 @@ link_zsh() {
 
    linkit_if_exists "$DOTFILE_PATH/zsh/_zshrc-$SYS" "$INSTALL_PATH/.zshrc-$SYS"
    linkit_if_exists "$DOTFILE_PATH/zsh/_zshenv-$SYS" "$INSTALL_PATH/.zshenv-$SYS"
+
+   make_dir "$INSTALL_PATH/.zsh/history"
+   make_dir "$INSTALL_PATH/.zsh/cache"
 }
 
 link_vim() {

@@ -8,6 +8,8 @@
 #   http://aperiodic.net/phil/prompt/
 #   http://shreevatsa.wordpress.com/2008/03/30/zshbash-startup-files-loading-order-bashrc-zshrc-etc/
 #   http://zsh.sourceforge.net/Guide/zshguide06.html
+#   http://www.xsteve.at/prg/zsh/.zshrc
+#   http://grml.org/zsh/zsh-lovers.html
 #
 
 zle_get_mode() {
@@ -152,6 +154,13 @@ setup_completion() {
    unsetopt \
       MENU_COMPLETE \
       AUTO_MENU
+
+   zstyle ':completion:*' use-cache on
+   zstyle ':completion:*' cache-path "$HOME/.zsh/cache/$HOST.cache"
+
+   # Colorize the PID and give menu selection for kill auto-completion.
+   zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+   zstyle ':completion:*:*:kill:*' menu yes select
 }
 
 setup_history() {
@@ -164,7 +173,7 @@ setup_history() {
       HIST_REDUCE_BLANKS
    HIST_SIZE=1000000
    SAVEHIST=1000000
-   HISTFILE="$HOME/.zsh/history"
+   HISTFILE="$HOME/.zsh/history/$HOST.history"
 }
 
 setup_ls() {
