@@ -12,6 +12,9 @@
 #   http://grml.org/zsh/zsh-lovers.html
 #
 
+typeset -a PROMPT_ERRORS
+PROMPT_ERRORS=()
+
 zle_get_mode() {
    case "$KEYMAP" in
       "main"|"viins")
@@ -72,6 +75,32 @@ prompt_username() {
    fi
 }
 
+add_prompt_error() {
+   PROMPT_ERRORS+=("$1")
+}
+
+get_prompt_errors() {
+   if [[ -z $prompt_error_check_functions ]]; then
+      return
+   fi
+
+   PROMPT_ERRORS=""
+   for fun in $prompt_error_check_functions; do
+      eval $fun
+   done
+
+   if [[ -z "$PROMPT_ERRORS" ]]; then
+      return
+   fi
+
+   if [[ -n "$1" ]]; then
+      echo "Errors:($PROMPT_ERRORS ) "
+      return
+   fi
+
+   print -P "%B%F{red}Errors:($PROMPT_ERRORS )%f%b "
+}
+
 create_prompt() {
    local PR_MODE="$1"
 
@@ -93,9 +122,12 @@ create_prompt() {
    local PR_BAR=${altchar[q]:--}
    local PR_VBAR=${altchar[x]:-1}
 
+   # Handle errors
+   local PR_ERRORS="`get_prompt_errors`"
+
    # Figure out how much padding goes into the prompt
    local PR_WIDTH=$(( $COLUMNS ))
-   local PR_LINE1="$(print -P -- '--( ${PR_USER}@%m ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV})--#--( %~ )--' )"
+   local PR_LINE1="$(print -P -- '--( ${PR_USER}@%m ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS})--#--( %~ )--' )"
    local PR_LEN=${#PR_LINE1}
    local PR_FILL_LEN=$(( $PR_WIDTH - $PR_LEN ))
    local PR_FILL="\${(l:$PR_FILL_LEN::$PR_BAR:)}"
@@ -109,7 +141,7 @@ create_prompt() {
    RPS1="%B%F{black}${PR_SHIFT_IN}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b ${PR_MODE} %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_SE}${PR_SHIFT_OUT}%f%b"
    RPS2="%B%F{black}${PR_SHIFT_IN}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b ${PR_MODE} %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_SE}${PR_SHIFT_OUT}%f%b"
 
-   PS1="${PR_SET_CHARSET}%B%F{black}${PR_SHIFT_IN}${PR_NW}${PR_SHIFT_OUT}%f%b${PR_SHIFT_IN}${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%m%f%b ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}%B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b %B%F{blue}%~%f%b %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_NE}${PR_SHIFT_OUT}%f%b
+   PS1="${PR_SET_CHARSET}%B%F{black}${PR_SHIFT_IN}${PR_NW}${PR_SHIFT_OUT}%f%b${PR_SHIFT_IN}${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%m%f%b ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS}%B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b %B%F{blue}%~%f%b %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_NE}${PR_SHIFT_OUT}%f%b
 %B%F{black}${PR_SHIFT_IN}${PR_SW}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b %* !%h %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_BAR}${PR_SHIFT_OUT}%f%b%# "
    PS2="%B%F{black}${PR_SHIFT_IN}${PR_VBAR}${PR_SHIFT_OUT}%f%b %_> "
    PS3="%B%F{black}${PR_SHIFT_IN}${PR_VBAR}${PR_SHIFT_OUT}%f%b %_> "
@@ -131,6 +163,7 @@ pre_prompt() {
 setup_hooks() {
    typeset -ga precmd_functions
    typeset -ga preexec_functions
+   typeset -ga prompt_error_check_functions
 
    precmd_functions+=(pre_xterm pre_prompt)
 }
