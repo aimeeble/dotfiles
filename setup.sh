@@ -70,6 +70,7 @@ link_misc() {
    linkit "$DOTFILE_PATH/top/_toprc" "$INSTALL_PATH/.toprc"
 }
 
+umask 077
 validate_env $*
 init_submodules
 
