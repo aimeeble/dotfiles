@@ -1,2 +1,2 @@
 # When logging out of a login shell
-echo "zlougout"
+[[ -f "$HOME/.zsh/logout.zsh" ]] && . "$HOME/.zsh/logout.zsh"
