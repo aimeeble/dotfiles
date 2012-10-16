@@ -124,9 +124,15 @@ pre_xterm() {
    print -Pn "\e]0;%n@%m: %~\a"
 }
 
-precmd() {
-   pre_xterm
+pre_prompt() {
    create_prompt "vi-ins"
+}
+
+setup_hooks() {
+   typeset -ga precmd_functions
+   typeset -ga preexec_functions
+
+   precmd_functions+=(pre_xterm pre_prompt)
 }
 
 setup_keybindings() {
@@ -264,6 +270,7 @@ setup_functions() {
 }
 
 setup_functions
+setup_hooks
 setup_keybindings
 setup_prompt
 setup_completion
