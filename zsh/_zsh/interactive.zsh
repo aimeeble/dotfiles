@@ -108,6 +108,7 @@ create_prompt() {
    local PR_GIT_BRANCH="`prompt_git_branch no`"
    local PR_VIRTUAL_ENV="`prompt_virtual_env no`"
    local PR_USER="`prompt_username no`"
+   local PR_ERRORS="`get_prompt_errors no`"
 
    # Fancy graphics?
    typeset -A altchar
@@ -122,9 +123,6 @@ create_prompt() {
    local PR_BAR=${altchar[q]:--}
    local PR_VBAR=${altchar[x]:-1}
 
-   # Handle errors
-   local PR_ERRORS="`get_prompt_errors`"
-
    # Figure out how much padding goes into the prompt
    local PR_WIDTH=$(( $COLUMNS ))
    local PR_LINE1="$(print -P -- '--( ${PR_USER}@%m ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS})--#--( %~ )--' )"
@@ -136,6 +134,7 @@ create_prompt() {
    local PR_GIT_BRANCH="`prompt_git_branch`"
    local PR_VIRTUAL_ENV="`prompt_virtual_env`"
    local PR_USER="`prompt_username`"
+   local PR_ERRORS="`get_prompt_errors`"
 
    # Finally, set the prompt vars.
    RPS1="%B%F{black}${PR_SHIFT_IN}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b ${PR_MODE} %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_SE}${PR_SHIFT_OUT}%f%b"
