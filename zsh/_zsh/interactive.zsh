@@ -273,9 +273,7 @@ setup_vim() {
 
 setup_virtualenv() {
    # Python virtualenv
-   export VIRTUAL_ENV_DISABLE_PROMPT=1
-   export WORKON_HOME=$HOME/.venvs
-   VENV="/usr/local/share/python/virtualenvwrapper.sh"
+   local VENV="/usr/local/share/python/virtualenvwrapper.sh"
    [ -f $VENV ] && . $VENV
 }
 
