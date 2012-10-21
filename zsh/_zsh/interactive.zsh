@@ -261,7 +261,7 @@ setup_ls() {
    alias ll="$LS $LS_OPTS -l"
    alias la="$LS $LS_OPTS -a"
    alias lla="$LS $LS_OPTS -la"
-   alias l.="$LS $LS_OPTS -d .*"
+   # l. now in fpath
 }
 
 setup_vim() {

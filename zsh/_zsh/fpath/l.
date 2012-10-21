@@ -1,0 +1,33 @@
+#
+# Helper to list dotfiles.
+#
+# vim:ft=zsh
+#
+
+typeset -a PARAMS
+typeset -a PATHS
+
+# Split
+while [[ $# -gt 0 ]]; do
+   if [[ "${1:0:1}" == "-" ]]; then
+      PARAMS+=($1)
+   else
+      PATHS+=($1)
+   fi
+   shift
+done
+
+# Re-combine
+local cmds="$PARAMS"
+if [[ -z $PATHS ]]; then
+   cmds="$cmds .*"
+else
+   for FOO in $PATHS; do
+      FOO="$FOO/.*"
+      FOO=${${(j:/:)FOO}//\/\/##/\/}
+      cmds="$cmds $FOO"
+   done
+fi
+
+# Run
+eval ls -d $cmds
