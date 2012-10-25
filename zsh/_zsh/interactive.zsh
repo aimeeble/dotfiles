@@ -170,6 +170,7 @@ setup_hooks() {
 setup_keybindings() {
    # vi-mode
    bindkey -v
+   bindkey -M viins 'jj' vi-cmd-mode
    # ...but keep ^R for searching command history
    bindkey '^R' history-incremental-search-backward
 

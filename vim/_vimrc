@@ -77,6 +77,8 @@ set flp=^\\s*#\\=\\d\\+[\\]:.)}\\t\ ]\\s*
 nnoremap j gj
 nnoremap k gk
 
+inoremap jj <ESC>
+
 " spell checking
 set spellfile=~/.vim/words.add
 set spelllang=en_us
