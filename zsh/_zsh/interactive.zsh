@@ -184,6 +184,9 @@ setup_keybindings() {
    [[ "${terminfo[kcuu1]:-}" == "O"* ]] && bindkey -M viins "${terminfo[kcuu1]/O/[}" up-line-or-history
    (( ${+terminfo[kcud1]} )) && bindkey -M viins "$terminfo[kcud1]" down-line-or-history
    [[ "${terminfo[kcud1]:-}" == "O"* ]] && bindkey -M viins "${terminfo[kcud1]/O/[}" down-line-or-history
+
+   # VIM-style backspace (delete back beyond the start of insert mode)
+   zle -A .backward-delete-char vi-backward-delete-char
 }
 
 setup_prompt() {
