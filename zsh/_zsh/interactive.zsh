@@ -188,6 +188,10 @@ setup_keybindings() {
 
    # VIM-style backspace (delete back beyond the start of insert mode)
    zle -A .backward-delete-char vi-backward-delete-char
+
+   # Open command line in $EDITOR when pressing v
+   zle -N edit-command-line
+   bindkey -M vicmd v edit-command-line
 }
 
 setup_prompt() {
@@ -301,6 +305,8 @@ setup_functions() {
       local fun="`basename $file`"
       autoload "$fun"
    done
+
+   autoload -U edit-command-line
 }
 
 setup_functions
