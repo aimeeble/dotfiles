@@ -235,7 +235,7 @@ setup_history() {
       HIST_IGNORE_SPACE \
       HIST_NO_STORE \
       HIST_REDUCE_BLANKS
-   HIST_SIZE=1000000
+   HISTSIZE=1000000
    SAVEHIST=1000000
    HISTFILE="$HOME/.zsh/history/$HOST.history"
 }
