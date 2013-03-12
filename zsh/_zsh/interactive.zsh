@@ -113,6 +113,7 @@ create_prompt() {
    # Fancy graphics?
    typeset -A altchar
    set -A altchar ${(s::)terminfo[acsc]}
+   #altchar=()
    local PR_SET_CHARSET="%{$terminfo[enacs]%}"
    local PR_SHIFT_IN="%{$terminfo[smacs]%}"
    local PR_SHIFT_OUT="%{$terminfo[rmacs]%}"
@@ -225,6 +226,14 @@ setup_completion() {
    # Colorize the PID and give menu selection for kill auto-completion.
    zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
    zstyle ':completion:*:*:kill:*' menu yes select
+   zstyle ':completion:*:processes' command 'ps -aU$USER'
+
+   zstyle ':completion:*' squeeze-slashes 'yes'
+
+   #zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+   # Highlight matched part in completion list
+   zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==33=00}:${(s.:.)LS_COLORS}")'
 }
 
 setup_history() {
