@@ -145,6 +145,18 @@ set pastetoggle=<F5>
 " }}}
 
 " Macros {{{
+function! VMcomment()
+   let last=line(".")
+   execute "normal v/(\<CR>hykkO\<CR>/*\<CR>\<BS>\<ESC>"
+   execute "normal 76a-\<ESC>"
+   execute "normal A\<CR>*\<CR>\<ESC>"
+   execute "normal A \<ESC>pA --\<CR>\<CR>\<ESC>"
+   execute "normal 76a-\<ESC>"
+   execute "normal A\<CR>*/"
+   return last+8
+endfunction
+
+map ,vmc :exec VMcomment()<cr>
 " }}}
 
 " Settings...
