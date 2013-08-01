@@ -34,6 +34,10 @@ color darkblue
 set bg=light                     " fixes up some colours to be better
 set bg=dark                      " fix (cont.)
 hi CursorLine guibg=#000080 term=underline cterm=underline
+hi CursorLineNr guifg=#00ff00
+hi LineNr guifg=#008000
+hi SpecialKey guifg=#0030b0
+hi NonText guifg=#0030b0
 " }}}
 
 " Decoration {{{
@@ -42,7 +46,7 @@ set laststatus=2                 " always show the status bar
 set cursorline                   " highlight current line
 set nu                           " line numbering
 set list                         " enable whitespace display
-set listchars=tab:>>,trail:-,extends:>,precedes:<
+set listchars=tab:>…,trail:-,extends:>,precedes:<,eol:⁊
 set statusline=%f\ %{fugitive#statusline()}%=%30(%=b%n\ %y%m%r%w\ %l,%c%V\ %P\%)
 set title                        " update terminal title bar
 " }}}
@@ -52,8 +56,8 @@ syn on                           " syntax highlighting on
 filetype on                      " detect the file type
 set showmatch                    " highlight matching brace
 set tabstop=8                    " tab stops set to 8 columns
-set shiftwidth=3                 " auto-indent width
-set softtabstop=3                " treat as a single tab wrt backspace                 testing long line colouring.... asdjfaskjf djla jdf
+set shiftwidth=4                 " auto-indent width
+set softtabstop=4                " treat as a single tab wrt backspace                 testing long line colouring.... asdjfaskjf djla jdf
 set expandtab                    " use spaces instead of tab character
 set nowrap                       " do not wrap long lines
 set shiftround                   " auto-indent to multiples of shiftwidth
