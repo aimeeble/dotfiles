@@ -66,6 +66,35 @@ link_irssi() {
    linkit "$INSTALL_PATH/.irssi/scripts/trackbar.pl" "$INSTALL_PATH/.irssi/scripts/autorun/trackbar.pl"
 }
 
+link_weechat() {
+    log1 "link_weechat"
+
+    linkit "$DOTFILE_PATH/weechat/alias.conf" "$INSTALL_PATH/.weechat/alias.conf"
+    linkit "$DOTFILE_PATH/weechat/charset.conf" "$INSTALL_PATH/.weechat/charset.conf"
+    linkit "$DOTFILE_PATH/weechat/irc.conf" "$INSTALL_PATH/.weechat/irc.conf"
+    linkit "$DOTFILE_PATH/weechat/iset.conf" "$INSTALL_PATH/.weechat/iset.conf"
+    linkit "$DOTFILE_PATH/weechat/logger.conf" "$INSTALL_PATH/.weechat/logger.conf"
+    linkit "$DOTFILE_PATH/weechat/plugins.conf" "$INSTALL_PATH/.weechat/plugins.conf"
+    linkit "$DOTFILE_PATH/weechat/relay.conf" "$INSTALL_PATH/.weechat/replay.conf"
+    linkit "$DOTFILE_PATH/weechat/rmodifier.conf" "$INSTALL_PATH/.weechat/rmodifier.conf"
+    linkit "$DOTFILE_PATH/weechat/script.conf" "$INSTALL_PATH/.weechat/script.conf"
+    linkit "$DOTFILE_PATH/weechat/sec.conf" "$INSTALL_PATH/.weechat/sec.conf"
+    linkit "$DOTFILE_PATH/weechat/weechat.conf" "$INSTALL_PATH/.weechat/weechat.conf"
+    linkit "$DOTFILE_PATH/weechat/xfer.conf" "$INSTALL_PATH/.weechat/xfer.conf"
+
+    # Plugins
+    linkit "$DOTFILE_PATH/weechat/python/notification_center.py" "$INSTALL_PATH/.weechat/python/notification_center.py"
+    linkit "$DOTFILE_PATH/weechat/python/notify.py" "$INSTALL_PATH/.weechat/python/notify.py"
+    linkit "$DOTFILE_PATH/weechat/python/title.py" "$INSTALL_PATH/.weechat/python/title.py"
+    linkit "$DOTFILE_PATH/weechat/python/tmux_env.py" "$INSTALL_PATH/.weechat/python/tmux_env.py"
+    linkit "$DOTFILE_PATH/weechat/perl/iset.pl" "$INSTALL_PATH/.weechat/perl/iset.pl"
+
+    # Auto-load plugins
+    linkit "$DOTFILE_PATH/weechat/python/title.py" "$INSTALL_PATH/.weechat/python/autoload/title.py"
+    linkit "$DOTFILE_PATH/weechat/python/tmux_env.py" "$INSTALL_PATH/.weechat/python/autoload/tmux_env.py"
+    linkit "$DOTFILE_PATH/weechat/perl/iset.pl" "$INSTALL_PATH/.weechat/perl/autoload/iset.pl"
+}
+
 link_misc() {
    log1 "link_misc"
    linkit "$DOTFILE_PATH/mutt/_muttrc" "$INSTALL_PATH/.muttrc"
@@ -82,3 +111,4 @@ link_vim
 link_scm
 link_screen_mgmt
 link_irssi
+link_weechat
