@@ -309,7 +309,10 @@ setup_warnings() {
 }
 
 setup_functions() {
-   fpath=("$HOME/.zsh/fpath" $fpath)
+   if [[ -d "/usr/local/share/zsh-completions" ]]; then
+      fpath=("/usr/local/share/zsh-completions" $fpath)
+   fi
+   fpath=("$HOME/.zsh/fpath"  $fpath)
    for file in $HOME/.zsh/fpath/*; do
       local fun="`basename $file`"
       autoload "$fun"
