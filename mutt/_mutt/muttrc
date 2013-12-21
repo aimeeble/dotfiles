@@ -60,7 +60,7 @@ set confirmappend=no
 
 # headers
 ignore *
-unignore From: To: Cc: Subject: Date: Reply-To: List-Id: X-Mailer: User-Agent: X-Bugzilla-Assigned-To:
+unignore From: To: Cc: Subject: Date: Reply-To: List-Id: X-Mailer: User-Agent:
 unmy_hdr Bcc:
 unmy_hdr Reply-To:
 hdr_order From: To: Cc: Subject:
@@ -80,6 +80,8 @@ bind pager k previous-line
 bind pager / search
 
 # Other files...
+source `FILE=~/.mutt/identity; if [ ! -e "$FILE" ]; then FILE=/dev/null; fi; echo "$FILE"`
+source `FILE=~/.mutt/crypto; if [ ! -e "$FILE" ]; then FILE=/dev/null; fi; echo "$FILE"`
 source `FILE=~/.mutt/colours; if [ ! -e "$FILE" ]; then FILE=/dev/null; fi; echo "$FILE"`
 source `FILE=~/.mutt/aliases; if [ ! -e "$FILE" ]; then FILE=/dev/null; fi; echo "$FILE"`
 source `FILE=~/.mutt/local; if [ ! -e "$FILE" ]; then FILE=/dev/null; fi; echo "$FILE"`
