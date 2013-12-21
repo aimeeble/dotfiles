@@ -98,6 +98,8 @@ link_weechat() {
 link_misc() {
    log1 "link_misc"
    linkit "$DOTFILE_PATH/mutt/_muttrc" "$INSTALL_PATH/.muttrc"
+   linkit "$DOTFILE_PATH/mutt/_mutt/muttrc" "$INSTALL_PATH/.mutt/muttrc"
+
    linkit "$DOTFILE_PATH/top/_toprc" "$INSTALL_PATH/.toprc"
 }
 
@@ -112,3 +114,4 @@ link_scm
 link_screen_mgmt
 link_irssi
 link_weechat
+link_misc
