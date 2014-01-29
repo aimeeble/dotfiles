@@ -293,15 +293,17 @@ setup_functions() {
    autoload -U edit-command-line
 }
 
+# Bah, these are somewhat needed by other modules...
+setup_functions
+setup_completion
+
 # Import modules
 source ~/.zsh/errors.zsh && errors_init
 source ~/.zsh/tmux.zsh && tmux_init
 
-setup_functions
 setup_hooks
 setup_keybindings
 setup_prompt
-setup_completion
 setup_history
 setup_ls
 setup_vim
