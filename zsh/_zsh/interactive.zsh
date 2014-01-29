@@ -16,6 +16,7 @@ typeset -ga precmd_functions
 typeset -ga preexec_functions
 typeset -ga postexec_functions
 typeset -ga chpwd_functions
+export ZSH_VI_CMD_MODE="vi-ins"
 
 zle_get_mode() {
    case "$KEYMAP" in
@@ -29,7 +30,7 @@ zle_get_mode() {
 }
 
 zle_keymap_select() {
-   create_prompt "`zle_get_mode`"
+   ZSH_VI_CMD_MODE=`zle_get_mode`
    zle reset-prompt
 }
 
@@ -78,8 +79,6 @@ prompt_username() {
 }
 
 create_prompt() {
-   local PR_MODE="$1"
-
    # Initially, grab these w/o color
    local PR_GIT_BRANCH="`prompt_git_branch no`"
    local PR_VIRTUAL_ENV="`prompt_virtual_env no`"
@@ -113,9 +112,10 @@ create_prompt() {
    local PR_USER="`prompt_username`"
    local PR_ERRORS="`get_prompt_errors`"
 
-   # Finally, set the prompt vars.
-   RPS1="%B%F{black}${PR_SHIFT_IN}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b ${PR_MODE} %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_SE}${PR_SHIFT_OUT}%f%b"
-   RPS2="%B%F{black}${PR_SHIFT_IN}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b ${PR_MODE} %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_SE}${PR_SHIFT_OUT}%f%b"
+   # Finally, set the prompt vars. Note: escape ZSH_VI_CMD_MODE so it's
+   # evaluated when the prompt is displayed, not now.
+   RPS1="%B%F{black}${PR_SHIFT_IN}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_SE}${PR_SHIFT_OUT}%f%b"
+   RPS2="%B%F{black}${PR_SHIFT_IN}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_SE}${PR_SHIFT_OUT}%f%b"
 
    PS1="${PR_SET_CHARSET}%B%F{black}${PR_SHIFT_IN}${PR_NW}${PR_SHIFT_OUT}%f%b${PR_SHIFT_IN}${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%m%f%b ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS}%B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b %B%F{blue}%~%f%b %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_NE}${PR_SHIFT_OUT}%f%b
 %B%F{black}${PR_SHIFT_IN}${PR_SW}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b %* !%h %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_BAR}${PR_SHIFT_OUT}%f%b%# "
@@ -124,20 +124,20 @@ create_prompt() {
 }
 
 TRAPWINCH() {
-   create_prompt "vi-ins"
-   zle reset-prompt
+   # Must re-recreate prompt so it can re-calculate the prompt length with the
+   # new term width
+   create_prompt
+   # Redirect errors to /dev/null, since sometimes this gets called when a new
+   # xterm is opened and before zsh hits the line editor.
+   zle reset-prompt 2> /dev/null
 }
 
 pre_xterm() {
    print -Pn "\e]0;%n@%m: %~\a"
 }
 
-pre_prompt() {
-   create_prompt "vi-ins"
-}
-
 setup_hooks() {
-   precmd_functions+=(pre_xterm pre_prompt)
+   precmd_functions+=(pre_xterm)
 }
 
 setup_keybindings() {
@@ -167,12 +167,27 @@ setup_keybindings() {
    bindkey -M vicmd v edit-command-line
 }
 
+prompt_preexec() {
+  if [[ "$1" =~ "git.*(checkout)|(reset)|(rebase)" ]]; then
+    __GIT_REPROMPT=1
+  fi
+}
+prompt_precmd() {
+  if [[ -n "$__GIT_REPROMPT" ]]; then
+    create_prompt
+    unset __GIT_REPROMPT
+  fi
+}
+
 setup_prompt() {
-   create_prompt "vi-ins"
    zle -N zle-keymap-select zle_keymap_select
    setopt \
       PROMPT_SUBST \
       EXTENDED_GLOB
+
+   chpwd_functions+=(create_prompt)
+   preexec_functions+=(prompt_preexec)
+   precmd_functions+=(prompt_precmd)
 }
 
 setup_completion() {
@@ -309,3 +324,5 @@ setup_ls
 setup_vim
 setup_virtualenv
 setup_warnings
+
+create_prompt
