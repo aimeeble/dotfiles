@@ -295,6 +295,7 @@ setup_functions() {
 
 # Import modules
 source ~/.zsh/errors.zsh && errors_init
+source ~/.zsh/tmux.zsh && tmux_init
 
 setup_functions
 setup_hooks
