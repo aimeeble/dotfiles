@@ -99,6 +99,7 @@ link_misc() {
    log1 "link_misc"
    linkit "$DOTFILE_PATH/mutt/_muttrc" "$INSTALL_PATH/.muttrc"
    linkit "$DOTFILE_PATH/mutt/_mutt/muttrc" "$INSTALL_PATH/.mutt/muttrc"
+   linkit "$DOTFILE_PATH/mutt/_mutt/crypto" "$INSTALL_PATH/.mutt/crypto"
 
    linkit "$DOTFILE_PATH/top/_toprc" "$INSTALL_PATH/.toprc"
 }
