@@ -119,3 +119,5 @@ link_screen_mgmt
 link_irssi
 link_weechat
 link_misc
+
+update_stamp

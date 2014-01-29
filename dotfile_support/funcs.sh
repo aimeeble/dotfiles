@@ -118,3 +118,8 @@ make_dir() {
       return
    fi
 }
+
+update_stamp() {
+    SHA=$(git --git-dir="$DOTFILE_PATH/.git" rev-parse HEAD)
+    echo "$SHA:$DOTFILE_PATH" > "$INSTALL_PATH/.dotfile_version"
+}
