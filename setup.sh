@@ -28,6 +28,9 @@ link_zsh() {
    linkit "$DOTFILE_PATH/zsh/_zsh/login-pre.zsh" "$INSTALL_PATH/.zsh/login-pre.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/logout.zsh" "$INSTALL_PATH/.zsh/logout.zsh"
 
+   linkit "$DOTFILE_PATH/zsh/_zsh/errors.zsh" "$INSTALL_PATH/.zsh/errors.zsh"
+   linkit "$DOTFILE_PATH/zsh/_zsh/tmux.zsh" "$INSTALL_PATH/.zsh/tmux.zsh"
+
    linkit_if_exists "$DOTFILE_PATH/zsh/_zshrc-$SYS" "$INSTALL_PATH/.zshrc-$SYS"
    linkit_if_exists "$DOTFILE_PATH/zsh/_zshenv-$SYS" "$INSTALL_PATH/.zshenv-$SYS"
 
