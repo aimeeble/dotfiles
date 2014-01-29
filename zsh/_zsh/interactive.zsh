@@ -12,8 +12,10 @@
 #   http://grml.org/zsh/zsh-lovers.html
 #
 
-typeset -a PROMPT_ERRORS
-PROMPT_ERRORS=()
+typeset -ga precmd_functions
+typeset -ga preexec_functions
+typeset -ga postexec_functions
+typeset -ga chpwd_functions
 
 zle_get_mode() {
    case "$KEYMAP" in
@@ -73,32 +75,6 @@ prompt_username() {
    else
       print -P "%B%F{green}$USER%f%b"
    fi
-}
-
-add_prompt_error() {
-   PROMPT_ERRORS+=("$1")
-}
-
-get_prompt_errors() {
-   if [[ -z $prompt_error_check_functions ]]; then
-      return
-   fi
-
-   PROMPT_ERRORS=""
-   for fun in $prompt_error_check_functions; do
-      eval $fun
-   done
-
-   if [[ -z "$PROMPT_ERRORS" ]]; then
-      return
-   fi
-
-   if [[ -n "$1" ]]; then
-      echo "Errors:($PROMPT_ERRORS ) "
-      return
-   fi
-
-   print -P "%B%F{red}Errors:($PROMPT_ERRORS )%f%b "
 }
 
 create_prompt() {
@@ -161,10 +137,6 @@ pre_prompt() {
 }
 
 setup_hooks() {
-   typeset -ga precmd_functions
-   typeset -ga preexec_functions
-   typeset -ga prompt_error_check_functions
-
    precmd_functions+=(pre_xterm pre_prompt)
 }
 
@@ -320,6 +292,9 @@ setup_functions() {
 
    autoload -U edit-command-line
 }
+
+# Import modules
+source ~/.zsh/errors.zsh && errors_init
 
 setup_functions
 setup_hooks
