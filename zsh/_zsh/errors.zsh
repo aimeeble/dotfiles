@@ -36,6 +36,33 @@ errtest_flagfile() {
   fi
 }
 
+# Less silly--checks that symlinks are up-to-date with dotfile repo commit.
+errtest_dotfile_version() {
+    if [[ ! -e "$HOME/.dotfile_version" ]]; then
+        add_prompt_error "dotfiles out-of-date (no version)"
+        return
+    fi
+
+    INFO=("${(ps.:.)$(cat $HOME/.dotfile_version)}")
+    SHA=${INFO[1]}
+    REPO=${INFO[2]}
+
+    echo "INFO='$INFO'"
+    echo "SHA='$SHA'"
+    echo "REPO='$REPO'"
+
+    if [[ ! -d "$REPO" ]]; then
+        add_prompt_error "dotfiles out-of-date (repo moved)"
+    fi
+
+    CURRENT_SHA=$(git --git-dir=$REPO/.git rev-parse HEAD)
+    echo "CURRENT='$CURRENT_SHA'"
+
+    if [[ "$SHA" != "$CURRENT_SHA" ]]; then
+        add_prompt_error "dotfiles out-of-date (bad SHA)"
+    fi
+}
+
 # Returns the list of all errors that have been set.
 # Arguments:
 #   1 (string): if set, does not colorize the response with print -P
@@ -57,6 +84,6 @@ get_prompt_errors() {
 
 # Initializes this module.
 errors_init() {
-   prompt_error_check_functions+=(errtest_flagfile)
+   prompt_error_check_functions+=(errtest_flagfile errtest_dotfile_version)
    precmd_functions+=(precmd_error_check)
 }
