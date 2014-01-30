@@ -53,6 +53,7 @@ errtest_dotfile_version() {
 
     if [[ ! -d "$REPO" ]]; then
         add_prompt_error "dotfiles out-of-date (repo moved)"
+        return
     fi
 
     CURRENT_SHA=$(git --git-dir=$REPO/.git rev-parse HEAD)
@@ -60,6 +61,7 @@ errtest_dotfile_version() {
 
     if [[ "$SHA" != "$CURRENT_SHA" ]]; then
         add_prompt_error "dotfiles out-of-date (bad SHA)"
+        return
     fi
 }
 
