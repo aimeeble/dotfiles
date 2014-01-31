@@ -247,7 +247,7 @@ setup_ls() {
          LS="ls"
          LS_OPTS="--color=auto"
          ;;
-      "Darwin")
+      "Darwin"|"FreeBSD")
          if [[ -x "/usr/local/bin/gdircolors" ]]; then
             eval `gdircolors ~/.dircolorsrc`
             zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
