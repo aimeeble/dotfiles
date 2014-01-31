@@ -8,12 +8,14 @@ precmd_tmux_env_update() {
   typeset -g TMUX_ENV_VARS
   TMUX_ENV_VARS=("${(@f)$(tmux show-environment)}")
   for var in $TMUX_ENV_VARS; do
-    if [[ "${var:0:1}" == "-" ]]; then
+    KEY="$(echo $var | cut -d'=' -f1)"
+    VAL=("${(@)$(echo $var | cut -d'=' -f2)}")
+    if [[ "${KEY:0:1}" == "-" ]]; then
       # unset
-      eval "unset ${var:1}"
+      eval "unset ${KEY:1}"
     else
       # set
-      eval "$var"
+      eval "$KEY='$VAL'"
     fi
   done
 }
