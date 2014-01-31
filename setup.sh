@@ -105,6 +105,7 @@ link_misc() {
    linkit "$DOTFILE_PATH/mutt/_mutt/crypto" "$INSTALL_PATH/.mutt/crypto"
 
    linkit "$DOTFILE_PATH/top/_toprc" "$INSTALL_PATH/.toprc"
+   linkit "$DOTFILE_PATH/dircolors/default.cfg" "$INSTALL_PATH/.dircolorsrc"
 }
 
 umask 077

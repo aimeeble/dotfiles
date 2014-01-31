@@ -242,12 +242,14 @@ setup_ls() {
 
    case `uname -s` in
       "Linux")
+         eval `dircolors ~/.dircolorsrc`
+         zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
          LS="ls"
          LS_OPTS="--color=auto"
          ;;
       "Darwin")
          if [[ -x "/usr/local/bin/gdircolors" ]]; then
-            eval `gdircolors`
+            eval `gdircolors ~/.dircolorsrc`
             zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
             LS="gls"
             LS_OPTS="--color=auto"
