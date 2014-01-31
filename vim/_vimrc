@@ -17,6 +17,8 @@ set nobackup
 set ttyfast                      " faster redraw on new computers
 set showcmd                      " show typed commands
 set showmode                     " show editing mode
+
+set enc=utf-8
 " }}}
 
 " Searching {{{
