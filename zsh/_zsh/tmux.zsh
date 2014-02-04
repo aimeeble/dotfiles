@@ -11,11 +11,19 @@ precmd_tmux_env_update() {
     KEY="$(echo $var | cut -d'=' -f1)"
     VAL=("${(@)$(echo $var | cut -d'=' -f2)}")
     if [[ "${KEY:0:1}" == "-" ]]; then
+      OLDVAL="${(P)${KEY:1}}"
       # unset
-      eval "unset ${KEY:1}"
+      if [[ -n "${OLDVAL}" ]]; then
+        print -P "%F{red}Unsetting%f ${KEY:1} (was: '${OLDVAL}')"
+        unset "${KEY:1}"
+      fi
     else
+      OLDVAL="${(P)KEY}"
       # set
-      eval "$KEY='$VAL'"
+      if [[ "${OLDVAL}" != "${VAL}" ]]; then
+        print -P "%F{green}Updating%f ${KEY}='${VAL}' (was: '${OLDVAL}')"
+        eval "$KEY='$VAL'"
+      fi
     fi
   done
 }
