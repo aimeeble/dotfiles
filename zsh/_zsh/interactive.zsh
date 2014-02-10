@@ -318,6 +318,7 @@ setup_completion
 # Import modules
 source ~/.zsh/errors.zsh && errors_init
 source ~/.zsh/tmux.zsh && tmux_init
+source ~/.zsh/chezpina.zsh && chezpina_init
 
 setup_hooks
 setup_keybindings
