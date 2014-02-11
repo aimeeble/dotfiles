@@ -72,9 +72,9 @@ prompt_username() {
    fi
 
    if [[ "$USER" == "root" ]]; then
-      print -P "%F{black}%K{red}$USER%k%f"
+      print "%F{black}%K{red}$USER%k%f"
    else
-      print -P "%B%F{green}$USER%f%b"
+      print "%B%F{green}$USER%f%b"
    fi
 }
 
