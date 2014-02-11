@@ -76,11 +76,11 @@ get_prompt_errors() {
    fi
 
    if [[ -n "$1" ]]; then
-      echo "Errors:($PROMPT_ERRORS ) "
+      echo "Errors:(${PROMPT_ERRORS} ) "
       return
    fi
 
-   print -P "%B%F{red}Errors:($PROMPT_ERRORS )%f%b "
+   print "%B%F{red}Errors:(${PROMPT_ERRORS} )%f%b "
 }
 
 

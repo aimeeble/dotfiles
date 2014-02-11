@@ -42,11 +42,11 @@ prompt_git_branch() {
    if [ $? -eq 0 ]; then
       return
    else
-      if [ -z "$1" ]; then
-         print "%B%F{yellow}%{${BRANCH}%}%${#BRANCH}G%f%b "
-      else
+      if [ -n "$1" ]; then
          echo "${BRANCH} "
+         return
       fi
+      print "%B%F{yellow}%{${BRANCH}%}%${#BRANCH}G%f%b "
    fi
 }
 
@@ -79,25 +79,25 @@ prompt_username() {
 }
 
 create_prompt() {
-   # Initially, grab these w/o color
-   local PR_GIT_BRANCH="`prompt_git_branch no`"
-   local PR_VIRTUAL_ENV="`prompt_virtual_env no`"
-   local PR_USER="`prompt_username no`"
-   local PR_ERRORS="`get_prompt_errors no`"
-
    # Fancy graphics?
    typeset -A altchar
    set -A altchar ${(s::)terminfo[acsc]}
-   #altchar=()
-   local PR_SET_CHARSET="%{$terminfo[enacs]%}"
-   local PR_SHIFT_IN="%{$terminfo[smacs]%}"
-   local PR_SHIFT_OUT="%{$terminfo[rmacs]%}"
+   #set -A altchar ()
+   local PR_SET_CHARSET="$terminfo[enacs]"
+   local PR_SHIFT_IN="$terminfo[smacs]"
+   local PR_SHIFT_OUT="$terminfo[rmacs]"
    local PR_NW=${altchar[l]:--}
    local PR_NE=${altchar[k]:--}
    local PR_SW=${altchar[m]:--}
    local PR_SE=${altchar[j]:--}
    local PR_BAR=${altchar[q]:--}
-   local PR_VBAR=${altchar[x]:-1}
+   local PR_VBAR=${altchar[x]:--}
+
+   # Initially, grab these w/o color
+   local PR_GIT_BRANCH="`prompt_git_branch no`"
+   local PR_VIRTUAL_ENV="`prompt_virtual_env no`"
+   local PR_USER="`prompt_username no`"
+   local PR_ERRORS="`get_prompt_errors no`"
 
    # Figure out how much padding goes into the prompt
    local PR_WIDTH=$(( $COLUMNS ))
@@ -114,13 +114,13 @@ create_prompt() {
 
    # Finally, set the prompt vars. Note: escape ZSH_VI_CMD_MODE so it's
    # evaluated when the prompt is displayed, not now.
-   RPS1="%B%F{black}${PR_SHIFT_IN}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_SE}${PR_SHIFT_OUT}%f%b"
-   RPS2="%B%F{black}${PR_SHIFT_IN}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_SE}${PR_SHIFT_OUT}%f%b"
+   RPS1="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%} "
+   RPS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%} "
 
-   PS1="${PR_SET_CHARSET}%B%F{black}${PR_SHIFT_IN}${PR_NW}${PR_SHIFT_OUT}%f%b${PR_SHIFT_IN}${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%m%f%b ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS}%B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b %B%F{blue}%~%f%b %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_NE}${PR_SHIFT_OUT}%f%b
-%B%F{black}${PR_SHIFT_IN}${PR_SW}%f%b${PR_BAR}${PR_SHIFT_OUT}%B%F{white}(%f%b %* !%h %B%F{white})%f%b${PR_SHIFT_IN}${PR_BAR}%B%F{black}${PR_BAR}${PR_SHIFT_OUT}%f%b%# "
-   PS2="%B%F{black}${PR_SHIFT_IN}${PR_VBAR}${PR_SHIFT_OUT}%f%b %_> "
-   PS3="%B%F{black}${PR_SHIFT_IN}${PR_VBAR}${PR_SHIFT_OUT}%f%b %_> "
+   PS1="%{${PR_SET_CHARSET}${PR_SHIFT_IN}%}%B%F{black}${PR_NW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%m%f%b ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS}%B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %B%F{blue}%~%f%b %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_NE}%b%f%{${PR_SHIFT_OUT}%}%{
+%}%{${PR_SHIFT_IN}%}%B%F{black}${PR_SW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %* !%h %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}%f%b%{${PR_SHIFT_OUT}%}%# "
+   PS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
+   PS3="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
 }
 
 TRAPWINCH() {
