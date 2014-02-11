@@ -9,5 +9,5 @@
    tree2 = log --graph --all --oneline --format='format:%C(yellow)%h%C(red)%d %C(white)%s%C(reset) %C(bold white)-- %aN%C(reset)'
 [include]
    path = ~/.gitconfig-local
-[push]
-	default = simple
+#[push]
+#	default = simple
