@@ -125,3 +125,5 @@ link_weechat
 link_misc
 
 update_stamp
+
+log_always "${GREEN}dotfile installation complete!${NORM}"

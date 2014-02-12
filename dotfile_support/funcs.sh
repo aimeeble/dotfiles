@@ -2,6 +2,19 @@
 # Support functions for manipulating the dotfiles.
 #
 
+NUM_COLORS=$(tput colors)
+if [[ "$?" -eq "0" && "${NUM_COLORS}" -gt "0" ]]; then
+  RED='[31m'
+  GREEN='[32m'
+  YELLOW='[33m'
+  NORM='[39m'
+else
+  RED=''
+  GREEN=''
+  YELLOW=''
+  NORM=''
+fi
+
 SYS=`uname -s`
 VERBOSE=0
 
@@ -12,7 +25,7 @@ log2() {
    [[ $VERBOSE -gt 0 ]] && echo "    $*"
 }
 log_always() {
-   echo "   ==> $* <=="
+   echo "==> $* <=="
 }
 
 validate_env() {
@@ -63,7 +76,7 @@ linkit() {
    local DST_DIR="`dirname $DST`"
 
    if [[ -e "$DST" && ! -L "$DST" ]]; then
-      log_always "WARNING! $DST exists and isn't a symlink!"
+      log_always "${RED}WARNING! $DST exists and isn't a symlink!${NORM}"
       return
    elif [[ -L "$DST" ]]; then
       log2 "Already done $DST."
@@ -75,12 +88,12 @@ linkit() {
       mkdir -p "$DST_DIR"
    fi
    if [[ ! -d "$DST_DIR" || ! -w "$DST_DIR" ]]; then
-      log_always "WARNING! Failed to create dest dir $DST_DIR"
+      log_always "${RED}WARNING! Failed to create dest dir ${DST_DIR}${NORM}"
       return
    fi
 
    # Finally, link it!
-   log2 "Linking $DST..."
+   log2 "${GREEN}Linking $DST...${NORM}"
    ln -s "$SRC" "$DST"
 }
 
@@ -89,7 +102,7 @@ linkit_if_exists() {
    local DST="$2"
 
    if [[ ! -e "$SRC" ]]; then
-      log2 "Skipping optional file $SRC"
+      log2 "${YELLOW}Skipping optional file ${SRC}${NORM}"
       return
    fi
 
@@ -100,7 +113,7 @@ make_dir() {
    local DIR="$1"
 
    if [[ -e "$DIR" && ! -d "$DIR" ]]; then
-      log_always "WARNING: $DIR exists and isn't a directory"
+      log_always "${RED}WARNING: $DIR exists and isn't a directory${NORM}"
       return
    fi
 
@@ -110,11 +123,11 @@ make_dir() {
       return
    fi
 
-   log2 "Creating directory $DIR"
+   log2 "${GREEN}Creating directory ${DIR}${NORM}"
    mkdir -p "$DIR"
 
    if [[ ! -d "$DIR" ]]; then
-      log_always "WARNING: failed to create directory $DIR"
+      log_always "${RED}WARNING: failed to create directory ${DIR}${NORM}"
       return
    fi
 }
