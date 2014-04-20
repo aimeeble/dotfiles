@@ -101,6 +101,11 @@ link_weechat() {
     linkit "$DOTFILE_PATH/weechat/perl/iset.pl" "$INSTALL_PATH/.weechat/perl/autoload/iset.pl"
 }
 
+link_bin() {
+    log1 "link_bin"
+    linkit "$DOTFILE_PATH/bin/safe-reattach-to-user-namespace" "$INSTALL_PATH/bin/safe-reattach-to-user-namespace"
+}
+
 link_misc() {
    log1 "link_misc"
    linkit "$DOTFILE_PATH/mutt/_muttrc" "$INSTALL_PATH/.muttrc"
