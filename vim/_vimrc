@@ -122,9 +122,9 @@ set guioptions-=m                " menu
 set guioptions-=T                " toolbar
 set guioptions-=rL               " scrollbars
 if has("mac")
-   set guifont=Inconsolata\ Regular:h13
-elseif has("linux")
-   set guifont=Terminus\ Bold\ 12
+   set guifont=Source\ Code\ Pro:h14
+elseif has("x11")
+   set guifont=Source\ Code\ Pro\ 12
 elseif has("win32")
    set guifont=Terminus:h12:b:cANSI
 endif
