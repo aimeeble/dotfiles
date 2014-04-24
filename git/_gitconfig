@@ -7,6 +7,7 @@
 [alias]
    tree = log --graph --all --oneline --decorate
    tree2 = log --graph --all --oneline --format='format:%C(yellow)%h%C(red)%d %C(white)%s%C(reset) %C(bold white)-- %aN%C(reset)'
+   s = status -sb
 [include]
    path = ~/.gitconfig-local
 #[push]
