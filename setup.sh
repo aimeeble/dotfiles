@@ -116,6 +116,18 @@ link_misc() {
    linkit "$DOTFILE_PATH/dircolors/default.cfg" "$INSTALL_PATH/.dircolorsrc"
 }
 
+link_fonts() {
+    log1 "link_fonts"
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        copyit "$DOTFILE_PATH/fonts/source code pro black.ttf" "$HOME/Library/Fonts/source code pro black.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro bold.ttf" "$HOME/Library/Fonts/source code pro bold.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro extra light.ttf" "$HOME/Library/Fonts/source code pro extra light.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro light.ttf" "$HOME/Library/Fonts/source code pro light.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro regular.ttf" "$HOME/Library/Fonts/source code pro regular.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro semibold.ttf" "$HOME/Library/Fonts/source code pro semibold.ttf"
+    fi
+}
+
 umask 077
 validate_env $*
 init_submodules
@@ -128,6 +140,7 @@ link_screen_mgmt
 link_irssi
 link_weechat
 link_misc
+link_fonts
 
 update_stamp
 
