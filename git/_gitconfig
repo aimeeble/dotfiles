@@ -1,14 +1,13 @@
 [color]
-   diff = auto
-   status = auto
-   branch = auto
-   interactive = auto
-   log = auto
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
+    log = auto
 [alias]
-   tree = log --graph --all --oneline --decorate
-   tree2 = log --graph --all --oneline --format='format:%C(yellow)%h%C(red)%d %C(white)%s%C(reset) %C(bold white)-- %aN%C(reset)'
-   s = status -sb
+    tree = log --graph --all --oneline --decorate
+    tree2 = log --graph --all --oneline --format='format:%C(yellow)%h%C(red)%d %C(white)%s%C(reset) %C(bold white)-- %aN%C(reset)'
+    s = status -sb
 [include]
-   path = ~/.gitconfig-local
-#[push]
-#	default = simple
+    path = ~/.gitconfig-local
+    path = ~/.gitconfig-10711
