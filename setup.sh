@@ -140,6 +140,7 @@ link_screen_mgmt
 link_irssi
 link_weechat
 link_misc
+link_bin
 link_fonts
 
 update_stamp
