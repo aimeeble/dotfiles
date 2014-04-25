@@ -122,12 +122,19 @@ link_misc() {
 link_fonts() {
     log1 "link_fonts"
     if [[ "$(uname -s)" == "Darwin" ]]; then
-        copyit "$DOTFILE_PATH/fonts/source code pro black.ttf" "$HOME/Library/Fonts/source code pro black.ttf"
-        copyit "$DOTFILE_PATH/fonts/source code pro bold.ttf" "$HOME/Library/Fonts/source code pro bold.ttf"
-        copyit "$DOTFILE_PATH/fonts/source code pro extra light.ttf" "$HOME/Library/Fonts/source code pro extra light.ttf"
-        copyit "$DOTFILE_PATH/fonts/source code pro light.ttf" "$HOME/Library/Fonts/source code pro light.ttf"
-        copyit "$DOTFILE_PATH/fonts/source code pro regular.ttf" "$HOME/Library/Fonts/source code pro regular.ttf"
-        copyit "$DOTFILE_PATH/fonts/source code pro semibold.ttf" "$HOME/Library/Fonts/source code pro semibold.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro black.ttf" "$INSTALL_PATH/Library/Fonts/source code pro black.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro bold.ttf" "$INSTALL_PATH/Library/Fonts/source code pro bold.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro extra light.ttf" "$INSTALL_PATH/Library/Fonts/source code pro extra light.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro light.ttf" "$INSTALL_PATH/Library/Fonts/source code pro light.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro regular.ttf" "$INSTALL_PATH/Library/Fonts/source code pro regular.ttf"
+        copyit "$DOTFILE_PATH/fonts/source code pro semibold.ttf" "$INSTALL_PATH/Library/Fonts/source code pro semibold.ttf"
+    elif [[ "$(uname -s)" == "Linux" ]]; then
+        linkit "$DOTFILE_PATH/fonts/source code pro black.ttf" "$INSTALL_PATH/.fonts/source code pro black.ttf"
+        linkit "$DOTFILE_PATH/fonts/source code pro bold.ttf" "$INSTALL_PATH/.fonts/source code pro bold.ttf"
+        linkit "$DOTFILE_PATH/fonts/source code pro extra light.ttf" "$INSTALL_PATH/.fonts/source code pro extra light.ttf"
+        linkit "$DOTFILE_PATH/fonts/source code pro light.ttf" "$INSTALL_PATH/.fonts/source code pro light.ttf"
+        linkit "$DOTFILE_PATH/fonts/source code pro regular.ttf" "$INSTALL_PATH/.fonts/source code pro regular.ttf"
+        linkit "$DOTFILE_PATH/fonts/source code pro semibold.ttf" "$INSTALL_PATH/.fonts/source code pro semibold.ttf"
     fi
 }
 
