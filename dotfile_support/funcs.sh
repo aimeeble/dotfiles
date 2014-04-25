@@ -73,7 +73,7 @@ init_submodules() {
 linkit() {
    local SRC="$1"
    local DST="$2"
-   local DST_DIR="`dirname '$DST'`"
+   local DST_DIR="`dirname "$DST"`"
 
    if [[ -e "$DST" && ! -L "$DST" ]]; then
       log_always "${RED}WARNING! $DST exists and isn't a symlink!${NORM}"
@@ -100,7 +100,7 @@ linkit() {
 copyit() {
     local SRC="$1"
     local DST="$2"
-    local DST_DIR="`dirname '$DST'`"
+    local DST_DIR="`dirname "$DST"`"
 
    if [[ -e "$DST" ]]; then
       log2 "Already done $DST."
