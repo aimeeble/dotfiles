@@ -157,6 +157,26 @@ make_dir() {
 }
 
 update_stamp() {
-    SHA=$(git --git-dir="$DOTFILE_PATH/.git" rev-parse HEAD)
+    local SHA=$(git --git-dir="$DOTFILE_PATH/.git" rev-parse HEAD)
     echo "$SHA:$DOTFILE_PATH" > "$INSTALL_PATH/.dotfile_version"
+}
+
+dotted_version() {
+    local DOTVER="$1"
+    local NUM_DOTS="${2:-3}"
+    local num_done=0
+    local n=0
+    for i in $(echo $DOTVER | tr '.' ' '); do
+        n=$(($n * 100))
+        n=$(($n + $i))
+        num_done=$(($num_done + 1))
+        if [[ $num_done -ge $NUM_DOTS ]]; then
+            break
+        fi
+    done
+    while [[ $num_done -lt $NUM_DOTS ]]; do
+        n=$(($n * 100))
+        num_done=$(($num_done + 1))
+    done
+    echo "$n"
 }
