@@ -64,9 +64,7 @@ link_scm() {
    linkit "$DOTFILE_PATH/git/_gitconfig" "$INSTALL_PATH/.gitconfig"
 
    local GITVER=$(git --version | cut -d' ' -f3)
-   if [[ $(dotted_version $GITVER 3) -gt 10711 ]]; then
-       linkit "$DOTFILE_PATH/git/_gitconfig-10711" "$INSTALL_PATH/.gitconfig-10711"
-   fi
+   link_if_newer "$DOTFILE_PATH/git/_gitconfig-10711" "$INSTALL_PATH/.gitconfig-10711" "$GITVER" "1.7.11"
 }
 
 link_irssi() {

@@ -133,6 +133,19 @@ linkit_if_exists() {
    linkit "$SRC" "$DST"
 }
 
+link_if_newer() {
+    local SRC="$1"
+    local DST="$2"
+    local TEST_VER="$3"
+    local REQ_VER="$4"
+
+    if [[ $(dotted_version $TEST_VER) -ge $(dotted_version $REQ_VER) ]]; then
+        linkit "$SRC" "$DST"
+    else
+      log2 "${YELLOW}Version check failed; skipping file ${SRC}${NORM}"
+    fi
+}
+
 make_dir() {
    local DIR="$1"
 
