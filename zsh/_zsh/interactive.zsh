@@ -79,6 +79,10 @@ prompt_username() {
 }
 
 create_prompt() {
+   if ! which get_prompt_errors &>/dev/null; then
+     return
+   fi
+
    # Fancy graphics?
    typeset -A altchar
    set -A altchar ${(s::)terminfo[acsc]}
@@ -137,7 +141,7 @@ pre_xterm() {
 }
 
 setup_hooks() {
-   precmd_functions+=(pre_xterm)
+   precmd_functions+=(pre_xterm create_prompt)
 }
 
 setup_keybindings() {
