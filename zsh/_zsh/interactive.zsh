@@ -151,17 +151,20 @@ setup_keybindings() {
    # ...but keep ^R for searching command history
    bindkey '^R' history-incremental-search-backward
 
+   bindkey -M vicmd 'k' up-line-or-local-history
+   bindkey -M vicmd 'j' down-line-or-local-history
+
    # Fix some stuff that Debian distros like to mess with. Basically, it likes
    # to set vi-up-line-or-history, which places the cursor at the beginning of
    # the line. I prefer having the cursor at the end of the line.
    #
    # Ref: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=383737
    #
-   (( ${+terminfo[cuu1]}  )) && bindkey -M viins "$terminfo[cuu1]" up-line-or-history
-   (( ${+terminfo[kcuu1]} )) && bindkey -M viins "$terminfo[kcuu1]" up-line-or-history
-   [[ "${terminfo[kcuu1]:-}" == "O"* ]] && bindkey -M viins "${terminfo[kcuu1]/O/[}" up-line-or-history
-   (( ${+terminfo[kcud1]} )) && bindkey -M viins "$terminfo[kcud1]" down-line-or-history
-   [[ "${terminfo[kcud1]:-}" == "O"* ]] && bindkey -M viins "${terminfo[kcud1]/O/[}" down-line-or-history
+   (( ${+terminfo[cuu1]}  )) && bindkey -M viins "$terminfo[cuu1]" up-line-or-local-history
+   (( ${+terminfo[kcuu1]} )) && bindkey -M viins "$terminfo[kcuu1]" up-line-or-local-history
+   [[ "${terminfo[kcuu1]:-}" == "O"* ]] && bindkey -M viins "${terminfo[kcuu1]/O/[}" up-line-or-local-history
+   (( ${+terminfo[kcud1]} )) && bindkey -M viins "$terminfo[kcud1]" down-line-or-local-history
+   [[ "${terminfo[kcud1]:-}" == "O"* ]] && bindkey -M viins "${terminfo[kcud1]/O/[}" down-line-or-local-history
 
    # VIM-style backspace (delete back beyond the start of insert mode)
    zle -A .backward-delete-char vi-backward-delete-char
@@ -227,10 +230,23 @@ setup_completion() {
    zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==33=00}:${(s.:.)LS_COLORS}")'
 }
 
+up-line-or-local-history() {
+  zle set-local-history 1
+  zle up-line-or-history
+  zle set-local-history 0
+}
+down-line-or-local-history() {
+  zle set-local-history 1
+  zle down-line-or-history
+  zle set-local-history 0
+}
+
 setup_history() {
    setopt \
       APPEND_HISTORY \
+      INC_APPEND_HISTORY \
       EXTENDED_HISTORY \
+      SHARE_HISTORY \
       HIST_FIND_NO_DUPS \
       HIST_IGNORE_SPACE \
       HIST_NO_STORE \
@@ -238,6 +254,9 @@ setup_history() {
    HISTSIZE=1000000
    SAVEHIST=1000000
    HISTFILE="$HOME/.zsh/history/$HOST.history"
+
+   zle -N up-line-or-local-history
+   zle -N down-line-or-local-history
 }
 
 setup_ls() {
