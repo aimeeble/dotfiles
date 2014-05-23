@@ -128,6 +128,8 @@ link_fonts() {
         copyit "$DOTFILE_PATH/fonts/source code pro light.ttf" "$INSTALL_PATH/Library/Fonts/source code pro light.ttf"
         copyit "$DOTFILE_PATH/fonts/source code pro regular.ttf" "$INSTALL_PATH/Library/Fonts/source code pro regular.ttf"
         copyit "$DOTFILE_PATH/fonts/source code pro semibold.ttf" "$INSTALL_PATH/Library/Fonts/source code pro semibold.ttf"
+        copyit "$DOTFILE_PATH/fonts/Terminus.ttf" "$INSTALL_PATH/Library/Fonts/Terminus.ttf"
+        copyit "$DOTFILE_PATH/fonts/TerminusBold.ttf" "$INSTALL_PATH/Library/Fonts/TerminusBold.ttf"
     elif [[ "$(uname -s)" == "Linux" ]]; then
         linkit "$DOTFILE_PATH/fonts/source code pro black.ttf" "$INSTALL_PATH/.fonts/source code pro black.ttf"
         linkit "$DOTFILE_PATH/fonts/source code pro bold.ttf" "$INSTALL_PATH/.fonts/source code pro bold.ttf"
@@ -135,6 +137,8 @@ link_fonts() {
         linkit "$DOTFILE_PATH/fonts/source code pro light.ttf" "$INSTALL_PATH/.fonts/source code pro light.ttf"
         linkit "$DOTFILE_PATH/fonts/source code pro regular.ttf" "$INSTALL_PATH/.fonts/source code pro regular.ttf"
         linkit "$DOTFILE_PATH/fonts/source code pro semibold.ttf" "$INSTALL_PATH/.fonts/source code pro semibold.ttf"
+        linkit "$DOTFILE_PATH/fonts/Terminus.ttf" "$INSTALL_PATH/.fonts/Terminus.ttf"
+        linkit "$DOTFILE_PATH/fonts/TerminusBold.ttf" "$INSTALL_PATH/.fonts/TerminusBold.ttf"
     fi
 }
 
