@@ -95,12 +95,14 @@ link_weechat() {
     linkit "$DOTFILE_PATH/weechat/python/title.py" "$INSTALL_PATH/.weechat/python/title.py"
     linkit "$DOTFILE_PATH/weechat/python/tmux_env.py" "$INSTALL_PATH/.weechat/python/tmux_env.py"
     linkit "$DOTFILE_PATH/weechat/python/screen_away.py" "$INSTALL_PATH/.weechat/python/screen_away.py"
+    linkit "$DOTFILE_PATH/weechat/python/flip.py" "$INSTALL_PATH/.weechat/python/flip.py"
     linkit "$DOTFILE_PATH/weechat/perl/iset.pl" "$INSTALL_PATH/.weechat/perl/iset.pl"
 
     # Auto-load plugins
     linkit "$DOTFILE_PATH/weechat/python/title.py" "$INSTALL_PATH/.weechat/python/autoload/title.py"
     linkit "$DOTFILE_PATH/weechat/python/tmux_env.py" "$INSTALL_PATH/.weechat/python/autoload/tmux_env.py"
     linkit "$DOTFILE_PATH/weechat/python/screen_away.py" "$INSTALL_PATH/.weechat/python/autoload/screen_away.py"
+    linkit "$DOTFILE_PATH/weechat/python/flip.py" "$INSTALL_PATH/.weechat/python/autoload/flip.py"
     linkit "$DOTFILE_PATH/weechat/perl/iset.pl" "$INSTALL_PATH/.weechat/perl/autoload/iset.pl"
 }
 
