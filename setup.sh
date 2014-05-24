@@ -107,6 +107,7 @@ link_weechat() {
 link_bin() {
     log1 "link_bin"
     linkit "$DOTFILE_PATH/bin/safe-reattach-to-user-namespace" "$INSTALL_PATH/bin/safe-reattach-to-user-namespace"
+    linkit "$DOTFILE_PATH/bin/colors" "$INSTALL_PATH/bin/colors"
 }
 
 link_misc() {
