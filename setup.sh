@@ -118,6 +118,8 @@ link_misc() {
 
    linkit "$DOTFILE_PATH/top/_toprc" "$INSTALL_PATH/.toprc"
    linkit "$DOTFILE_PATH/dircolors/default.cfg" "$INSTALL_PATH/.dircolorsrc"
+
+   linkit "$DOTFILE_PATH/gpg/_gnupg/gpg.conf" "$INSTALL_PATH/.gnupg/gpg.conf"
 }
 
 link_fonts() {
