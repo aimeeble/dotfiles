@@ -89,6 +89,8 @@ link_weechat() {
     linkit "$DOTFILE_PATH/weechat/weechat.conf" "$INSTALL_PATH/.weechat/weechat.conf"
     linkit "$DOTFILE_PATH/weechat/xfer.conf" "$INSTALL_PATH/.weechat/xfer.conf"
 
+    linkit "$DOTFILE_PATH/weechat/ca-certificates.crt" "$INSTALL_PATH/.weechat/ca-certificates.crt"
+
     # Plugins
     linkit "$DOTFILE_PATH/weechat/python/notification_center.py" "$INSTALL_PATH/.weechat/python/notification_center.py"
     linkit "$DOTFILE_PATH/weechat/python/notify.py" "$INSTALL_PATH/.weechat/python/notify.py"
