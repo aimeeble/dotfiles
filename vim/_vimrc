@@ -31,17 +31,6 @@ set smartcase                    " ...unless you change case, then respect it
 set gdefault                     " apply substitution to all occurrences
 " }}}
 
-" Colours {{{
-color darkblue
-set bg=light                     " fixes up some colours to be better
-set bg=dark                      " fix (cont.)
-hi CursorLine guibg=#000080 term=underline cterm=underline
-hi CursorLineNr guifg=#00ff00
-hi LineNr guifg=#008000
-hi SpecialKey guifg=#0030b0
-hi NonText guifg=#0030b0
-" }}}
-
 " Decoration {{{
 set cmdheight=1                  " command editor only 1 row
 set laststatus=2                 " always show the status bar
@@ -99,6 +88,16 @@ if has("autocmd")
    au BufNewFile,BufRead,BufEnter *.ldg,*.ledger setf ledger
    au BufNewFile,BufRead,BufEnter BUILD setf python
 endif
+" }}}
+
+" Colours {{{
+set bg=light                     " fixes up some colours to be better
+set bg=dark                      " fix (cont.)
+hi CursorLine term=underline cterm=underline
+hi CursorLineNr guifg=#00ff00
+hi LineNr guifg=#008000
+hi SpecialKey guifg=#0030b0
+hi NonText guifg=#0030b0
 
 " highlight in yellow things after 80 columns
 " **NOTE** this slows things down considerably in some files.
@@ -114,6 +113,12 @@ if exists("+colorcolumn")
    " draw a line at 80 columns
    set colorcolumn=80
    hi ColorColumn guibg=#000050
+endif
+
+if !has("gui_running")
+    colorscheme darkblue
+else
+    colorscheme monokai
 endif
 " }}}
 
