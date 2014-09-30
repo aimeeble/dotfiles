@@ -305,6 +305,8 @@ setup_virtualenv() {
    # Python virtualenv
    local VENV="/usr/local/share/python/virtualenvwrapper.sh"
    [ -f $VENV ] && . $VENV
+   local VENV="/usr/local/bin/virtualenvwrapper.sh"
+   [ -f $VENV ] && . $VENV
 }
 
 setup_local_config() {
