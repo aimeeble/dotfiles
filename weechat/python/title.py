@@ -63,6 +63,7 @@ def update_title(data, signal, signal_data):
         title = w.buffer_get_string(w.current_buffer(), 'name')
 
     hotlist = w.infolist_get('hotlist', '', '')
+    hot_text = ''
     while w.infolist_next(hotlist):
         priority = w.infolist_integer(hotlist, 'priority')
         if priority >= int(w.config_get_plugin('title_priority')):
@@ -70,7 +71,9 @@ def update_title(data, signal, signal_data):
             thebuffer = w.infolist_pointer(hotlist, 'buffer_pointer')
             name = w.buffer_get_string(thebuffer, 'short_name')
 
-            title += ' %s:%s' % (number, name)
+            hot_text += ' %s' % number
+    if hot_text:
+        title += ' [A:%s]' % hot_text
     w.infolist_free(hotlist)
 
     w.window_set_title(title)
