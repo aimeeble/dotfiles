@@ -37,7 +37,7 @@ set laststatus=2                 " always show the status bar
 set cursorline                   " highlight current line
 set nu                           " line numbering
 set list                         " enable whitespace display
-set listchars=tab:>…,trail:-,extends:>,precedes:<,eol:¬
+set listchars=tab:\|…,trail:·,extends:>,precedes:<,eol:¬,nbsp:%
 set statusline=%f\ %{fugitive#statusline()}%=%30(%=b%n\ %y%m%r%w\ %l,%c%V\ %P\%)
 set title                        " update terminal title bar
 " }}}
