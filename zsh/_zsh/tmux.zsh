@@ -24,7 +24,7 @@ precmd_tmux_env_update() {
   TMUX_ENV_VARS=("${(@f)$(tmux show-environment)}")
   for var in $TMUX_ENV_VARS; do
     KEY="$(echo $var | cut -d'=' -f1)"
-    VAL=("${(@)$(echo $var | cut -d'=' -f2)}")
+    VAL=("${(@)$(echo $var | cut -d'=' -f2-)}")
     if [[ "${KEY:0:1}" == "-" ]]; then
       OLDVAL="${(P)${KEY:1}}"
       # unset
