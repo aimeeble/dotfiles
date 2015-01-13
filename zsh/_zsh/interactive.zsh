@@ -78,6 +78,16 @@ prompt_username() {
    fi
 }
 
+collapse_pwd() {
+    local MYPWD="$(print -P %~)"
+    local MAX=$(( $COLUMNS / 4 ))
+    if [[ $#MYPWD -gt $MAX ]]; then
+        MAX=$(( $MAX - 3 ))
+        MYPWD="...${(l:$MAX:)${MYPWD}}"
+    fi
+    echo $MYPWD
+}
+
 create_prompt() {
    if ! which get_prompt_errors &>/dev/null; then
      return
@@ -105,7 +115,7 @@ create_prompt() {
 
    # Figure out how much padding goes into the prompt
    local PR_WIDTH=$(( $COLUMNS ))
-   local PR_LINE1="$(print -P -- '--( ${PR_USER}@%2m ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS})--#--( %~ )--' )"
+   local PR_LINE1="$(print -P -- '--( ${PR_USER}@%2m ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS})--#--( $(collapse_pwd) )--' )"
    local PR_LEN=${#PR_LINE1}
    local PR_FILL_LEN=$(( $PR_WIDTH - $PR_LEN ))
    local PR_FILL="\${(l:$PR_FILL_LEN::$PR_BAR:)}"
@@ -121,7 +131,7 @@ create_prompt() {
    RPS1="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%}"
    RPS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%}"
 
-   PS1="%{${PR_SET_CHARSET}${PR_SHIFT_IN}%}%B%F{black}${PR_NW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%2m%f%b ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS}%B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %B%F{blue}%~%f%b %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_NE}%b%f%{${PR_SHIFT_OUT}%}
+   PS1="%{${PR_SET_CHARSET}${PR_SHIFT_IN}%}%B%F{black}${PR_NW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%2m%f%b ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS}%B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %B%F{blue}$(collapse_pwd)%f%b %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_NE}%b%f%{${PR_SHIFT_OUT}%}
 %{${PR_SHIFT_IN}%}%B%F{black}${PR_SW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %* !%h %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}%f%b%{${PR_SHIFT_OUT}%}%# "
    PS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
    PS3="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
