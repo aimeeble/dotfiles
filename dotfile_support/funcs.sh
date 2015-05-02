@@ -74,12 +74,13 @@ linkit() {
    local SRC="$1"
    local DST="$2"
    local DST_DIR="`dirname "$DST"`"
+   local EXISTING="`readlink "$DST"`"
 
    if [[ -e "$DST" && ! -L "$DST" ]]; then
       log_always "${RED}WARNING! $DST exists and isn't a symlink!${NORM}"
       return
-   elif [[ -L "$DST" && $(readlink $DST) != "$SRC" ]]; then
-      log_always "${YELLOW}Warning: ${DST} exists but links to $(readlink ${DST}) and not ${SRC}${NORM}"
+   elif [[ -L "$DST" && "$EXISTING" != "$SRC" ]]; then
+      log_always "${YELLOW}Warning: ${DST} exists but links to ${EXISTING} and not ${SRC}${NORM}"
       if [[ -z "${FORCE}" ]]; then
         return
       fi
