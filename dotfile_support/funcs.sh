@@ -78,6 +78,13 @@ linkit() {
    if [[ -e "$DST" && ! -L "$DST" ]]; then
       log_always "${RED}WARNING! $DST exists and isn't a symlink!${NORM}"
       return
+   elif [[ -L "$DST" && $(readlink $DST) != "$SRC" ]]; then
+      log_always "${YELLOW}Warning: ${DST} exists but links to $(readlink ${DST}) and not ${SRC}${NORM}"
+      if [[ -z "${FORCE}" ]]; then
+        return
+      fi
+      log_always "  FORCE set; continuing"
+      rm "$DST"
    elif [[ -L "$DST" ]]; then
       log2 "Already done $DST."
       return
