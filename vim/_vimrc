@@ -164,13 +164,14 @@ function! VMcomment()
    return last+8
 endfunction
 
-map ,vmc :exec VMcomment()<cr>
+map <leader>vmc :exec VMcomment()<cr>
 " }}}
 
 " Settings...
 let g:yankring_history_dir = "$HOME/.vim"
 let g:ledger_maxwidth = 80
 let g:session_autoload = 'no'
+let g:session_autosave = 'no'
 
 if exists("~/.vimrc-local")
    source ~/.vimrc-local
