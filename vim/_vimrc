@@ -1,6 +1,7 @@
 " see http://www.8t8.us/configs/vimrc
 " see http://eseth.org/filez/prefs/vimrc
 " see https://github.com/erynofwales/dotfiles/blob/master/vimrc
+" vim:foldmethod=marker
 
 syn off
 filetype off
@@ -15,6 +16,7 @@ if has("gui") && has("win32")    " make alt-space work in windows
 endif
 set nobackup
 set ttyfast                      " faster redraw on new computers
+set lazyredraw                   " don't redraw mid-macro
 set showcmd                      " show typed commands
 set showmode                     " show editing mode
 
@@ -35,7 +37,7 @@ set gdefault                     " apply substitution to all occurrences
 set cmdheight=1                  " command editor only 1 row
 set laststatus=2                 " always show the status bar
 set cursorline                   " highlight current line
-set nu                           " line numbering
+set number                       " line numbering
 set list                         " enable whitespace display
 set listchars=tab:\|…,trail:·,extends:>,precedes:<,eol:¬,nbsp:%
 set statusline=%f\ %{fugitive#statusline()}%=%30(%=b%n\ %y%m%r%w\ %l,%c%V\ %P\%)
@@ -46,7 +48,7 @@ set title                        " update terminal title bar
 syn on                           " syntax highlighting on
 filetype on                      " detect the file type
 set showmatch                    " highlight matching brace
-set tabstop=8                    " tab stops set to 8 columns
+set tabstop=4                    " tab stops set to 4 columns
 set shiftwidth=4                 " auto-indent width
 set softtabstop=4                " treat as a single tab wrt backspace                 testing long line colouring.... asdjfaskjf djla jdf
 set expandtab                    " use spaces instead of tab character
@@ -67,12 +69,6 @@ endif
 set fo+=n                        " format numbered lists properly
 set flp=^\\s*#\\=\\d\\+[\\]:.)}\\t\ ]\\s*
                                  " standard + allow preceding number sign.
-
-" Move around by screen lines instead of file lines
-nnoremap j gj
-nnoremap k gk
-
-inoremap jj <ESC>
 
 " spell checking
 set spellfile=~/.vim/words.add
@@ -145,11 +141,21 @@ endif
 " Toggle spellcheck
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
-" Toggle NERDTree file browser
-map <F4> :NERDTreeToggle<CR>
-
 " Paste mode
 set pastetoggle=<F5>
+
+" Move around by screen lines instead of file lines
+nnoremap j gj
+nnoremap k gk
+
+" Bind jj to escape (pause after j if a second j is needed).
+inoremap jj <ESC>
+
+let mapleader=","
+
+nnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>n :NERDTreeToggle<CR>
+
 " }}}
 
 " Macros {{{
