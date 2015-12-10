@@ -201,3 +201,14 @@ dotted_version() {
     done
     echo "$n"
 }
+
+set_default() {
+    if [[ "$(uname -s)" != "Darwin" ]]; then
+        return
+    fi
+    APP="$1"
+    PROP="$2"
+    VALUE="$3"
+
+    defaults write "$APP" "$PROP" "$VALUE"
+}

@@ -149,9 +149,16 @@ link_fonts() {
     fi
 }
 
+set_preferences() {
+    mkdir -p  "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
+    set_default com.apple.screencapture location "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
+}
+
 umask 077
 validate_env $*
 init_submodules
+
+set_preferences
 
 link_bash
 link_zsh
