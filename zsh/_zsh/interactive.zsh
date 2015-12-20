@@ -363,5 +363,6 @@ setup_ls
 setup_vim
 setup_virtualenv
 setup_warnings
+setup_local_config
 
 create_prompt
