@@ -12,11 +12,16 @@
 #   http://grml.org/zsh/zsh-lovers.html
 #
 
+typeset -ga preshell_functions
 typeset -ga precmd_functions
 typeset -ga preexec_functions
 typeset -ga postexec_functions
 typeset -ga chpwd_functions
+typeset -ga _aimee_zsh_modules
+typeset -ga _aimee_mod_fragments
 export ZSH_VI_CMD_MODE="vi-ins"
+
+MODDIR="$HOME/.zsh/modules.d"
 
 zle_get_mode() {
    case "$KEYMAP" in
@@ -32,33 +37,6 @@ zle_get_mode() {
 zle_keymap_select() {
    ZSH_VI_CMD_MODE=`zle_get_mode`
    zle reset-prompt
-}
-
-prompt_git_branch() {
-   local BRANCH
-   BRANCH=`git symbolic-ref HEAD 2>&1 | sed "s/refs\/heads\///"`
-
-   echo "$BRANCH" | grep -qs fatal
-   if [ $? -eq 0 ]; then
-      return
-   else
-      if [ -n "$1" ]; then
-         echo "${BRANCH} "
-         return
-      fi
-      print "%B%F{yellow}%{${BRANCH}%}%${#BRANCH}G%f%b "
-   fi
-}
-
-prompt_virtual_env() {
-   if [ -z "$VIRTUAL_ENV" ]; then
-      return
-   fi
-   if [ -z "$1" ]; then
-      print "%F{red}`basename ${VIRTUAL_ENV}`%f "
-   else
-      echo "`basename ${VIRTUAL_ENV}` "
-   fi
 }
 
 prompt_username() {
@@ -88,10 +66,9 @@ collapse_pwd() {
     echo $MYPWD
 }
 
-create_prompt() {
-   if ! which get_prompt_errors &>/dev/null; then
-     return
-   fi
+_calculate_prompt() {
+   # NOTE: this must be first.
+   local RC=$?
 
    # Fancy graphics?
    typeset -A altchar
@@ -108,31 +85,43 @@ create_prompt() {
    local PR_VBAR=${altchar[x]:--}
 
    # Initially, grab these w/o color
-   local PR_GIT_BRANCH="`prompt_git_branch no`"
-   local PR_VIRTUAL_ENV="`prompt_virtual_env no`"
    local PR_USER="`prompt_username no`"
-   local PR_ERRORS="`get_prompt_errors no`"
+   local PR_MOD_FRAGMENTS
+   for pf in $_aimee_mod_fragments; do
+      local NEW="$($pf no)"
+      PR_MOD_FRAGMENTS="${PR_MOD_FRAGMENTS}${NEW}"
+   done
 
    # Figure out how much padding goes into the prompt
    local PR_WIDTH=$(( $COLUMNS ))
-   local PR_LINE1="$(print -P -- '--( ${PR_USER}@%2m ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS})--#--( $(collapse_pwd) )--' )"
+   local PR_LINE1="$(print -P -- '--( ${PR_USER}@%2m ${PR_MOD_FRAGMENTS})--#--( $(collapse_pwd) )--' )"
    local PR_LEN=${#PR_LINE1}
    local PR_FILL_LEN=$(( $PR_WIDTH - $PR_LEN ))
    local PR_FILL="\${(l:$PR_FILL_LEN::$PR_BAR:)}"
 
    # Reset, now with color!
-   local PR_GIT_BRANCH="`prompt_git_branch`"
-   local PR_VIRTUAL_ENV="`prompt_virtual_env`"
    local PR_USER="`prompt_username`"
-   local PR_ERRORS="`get_prompt_errors`"
+   PR_MOD_FRAGMENTS=""
+   for pf in $_aimee_mod_fragments; do
+      local NEW="$($pf)"
+      PR_MOD_FRAGMENTS="${PR_MOD_FRAGMENTS}${NEW}"
+   done
+
+   # Based on command status, decide what color the second line appears in
+   local RC_COLOR_ON=""
+   local RC_COLOR_OFF=""
+   if [[ "$RC" -ne "0" ]]; then
+     RC_COLOR_ON="%B%F{red}"
+     RC_COLOR_OFF="%f%b"
+   fi
 
    # Finally, set the prompt vars. Note: escape ZSH_VI_CMD_MODE so it's
    # evaluated when the prompt is displayed, not now.
    RPS1="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%}"
    RPS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%}"
 
-   PS1="%{${PR_SET_CHARSET}${PR_SHIFT_IN}%}%B%F{black}${PR_NW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%2m%f%b ${PR_GIT_BRANCH}${PR_VIRTUAL_ENV}${PR_ERRORS}%B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %B%F{blue}$(collapse_pwd)%f%b %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_NE}%b%f%{${PR_SHIFT_OUT}%}
-%{${PR_SHIFT_IN}%}%B%F{black}${PR_SW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %* !%h %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}%f%b%{${PR_SHIFT_OUT}%}%# "
+   PS1="%{${PR_SET_CHARSET}${PR_SHIFT_IN}%}%B%F{black}${PR_NW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%2m%f%b ${PR_MOD_FRAGMENTS}%B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %B%F{blue}$(collapse_pwd)%f%b %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_NE}%b%f%{${PR_SHIFT_OUT}%}
+%{${PR_SHIFT_IN}%}%B%F{black}${PR_SW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${RC_COLOR_ON}%* !%h${RC_COLOR_OFF} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}%f%b%{${PR_SHIFT_OUT}%}%# "
    PS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
    PS3="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
 }
@@ -140,60 +129,18 @@ create_prompt() {
 TRAPWINCH() {
    # Must re-recreate prompt so it can re-calculate the prompt length with the
    # new term width
-   create_prompt
+   _calculate_prompt
    # Redirect errors to /dev/null, since sometimes this gets called when a new
    # xterm is opened and before zsh hits the line editor.
    zle reset-prompt 2> /dev/null
 }
 
-pre_xterm() {
+_set_xterm_title() {
    print -Pn "\e]0;%n@%2m: %~\a"
 }
 
 setup_hooks() {
-   precmd_functions+=(pre_xterm create_prompt)
-}
-
-setup_keybindings() {
-   # vi-mode
-   bindkey -v
-   bindkey -M viins 'jj' vi-cmd-mode
-   # ...but keep ^R for searching command history
-   bindkey '^R' history-incremental-search-backward
-
-   bindkey -M vicmd 'k' up-line-or-local-history
-   bindkey -M vicmd 'j' down-line-or-local-history
-
-   # Fix some stuff that Debian distros like to mess with. Basically, it likes
-   # to set vi-up-line-or-history, which places the cursor at the beginning of
-   # the line. I prefer having the cursor at the end of the line.
-   #
-   # Ref: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=383737
-   #
-   (( ${+terminfo[cuu1]}  )) && bindkey -M viins "$terminfo[cuu1]" up-line-or-local-history
-   (( ${+terminfo[kcuu1]} )) && bindkey -M viins "$terminfo[kcuu1]" up-line-or-local-history
-   [[ "${terminfo[kcuu1]:-}" == "O"* ]] && bindkey -M viins "${terminfo[kcuu1]/O/[}" up-line-or-local-history
-   (( ${+terminfo[kcud1]} )) && bindkey -M viins "$terminfo[kcud1]" down-line-or-local-history
-   [[ "${terminfo[kcud1]:-}" == "O"* ]] && bindkey -M viins "${terminfo[kcud1]/O/[}" down-line-or-local-history
-
-   # VIM-style backspace (delete back beyond the start of insert mode)
-   zle -A .backward-delete-char vi-backward-delete-char
-
-   # Open command line in $EDITOR when pressing v
-   zle -N edit-command-line
-   bindkey -M vicmd v edit-command-line
-}
-
-prompt_preexec() {
-  if [[ "$1" =~ "git.*(checkout)|(reset)|(rebase)" ]]; then
-    __GIT_REPROMPT=1
-  fi
-}
-prompt_precmd() {
-  if [[ -n "$__GIT_REPROMPT" ]]; then
-    create_prompt
-    unset __GIT_REPROMPT
-  fi
+   precmd_functions+=(_set_xterm_title _calculate_prompt)
 }
 
 setup_prompt() {
@@ -202,9 +149,7 @@ setup_prompt() {
       PROMPT_SUBST \
       EXTENDED_GLOB
 
-   chpwd_functions+=(create_prompt)
-   preexec_functions+=(prompt_preexec)
-   precmd_functions+=(prompt_precmd)
+   chpwd_functions+=(_calculate_prompt)
 }
 
 setup_completion() {
@@ -311,14 +256,6 @@ setup_vim() {
    # TODO(aimeeble) find the homebrew version if it exists
 }
 
-setup_virtualenv() {
-   # Python virtualenv
-   local VENV="/usr/local/share/python/virtualenvwrapper.sh"
-   [ -f $VENV ] && . $VENV
-   local VENV="/usr/local/bin/virtualenvwrapper.sh"
-   [ -f $VENV ] && . $VENV
-}
-
 setup_local_config() {
    # Pull in various other config files
    PLATFORMRC="$HOME/.zshrc-`uname -s`"
@@ -327,7 +264,7 @@ setup_local_config() {
    [ -f "$LOCALRC" ] && . "$LOCALRC"
 }
 
-setup_warnings() {
+_check_zsh_is_shell() {
    if [[ ! "$SHELL" =~ "zsh" ]]; then
       echo "Warning: shell not set to zsh: '$SHELL'"
    fi
@@ -346,23 +283,70 @@ setup_functions() {
    autoload -U edit-command-line
 }
 
-# Bah, these are somewhat needed by other modules...
-setup_functions
-setup_completion
+##############################################################################
+# zsh module management functions
 
-# Import modules
-source ~/.zsh/errors.zsh && errors_init
-source ~/.zsh/tmux.zsh && tmux_init
-source ~/.zsh/chezpina.zsh && chezpina_init
+module_add() {
+  if [[ $# -ne 2 ]]; then
+    echo "usage: module_add MOD_NAME INIT_FUNCTION"
+    return 1
+  fi
+  typeset -la mod
+  mod=("$1" "$2")
+  _aimee_zsh_modules+=($mod)
+}
 
+module_add_prompt_fragment() {
+  if [[ $# -ne 1 ]]; then
+    echo "usage: module_add_prompt_fragment FUNCTION"
+    return 1
+  fi
+  _aimee_mod_fragments+=($1)
+}
+
+##############################################################################
+# Load up modules. First, add the internal/core modules. Then, find all the
+# modules in the add-on directory and load all of them.
+
+# Early internal support modules.
+module_add "zsh fpath functions"  setup_functions
+module_add "completions"          setup_completion
+
+# Load modules from the dynamic module directory.
+if [[ -d "$MODDIR" ]]; then
+  for mod in ${MODDIR}/*.zsh; do
+    source $mod
+  done
+fi
+
+##############################################################################
+# Done with the core support code. Now do actual initialization of the shell
+# environment.
+
+print -P "%F{green}Initializing modules...%f"
+for mod_name mod_init in ${_aimee_zsh_modules}; do
+  print "    $mod_name"
+  eval $mod_init
+done
+print
+
+_check_zsh_is_shell
 setup_hooks
-setup_keybindings
 setup_prompt
 setup_history
 setup_ls
 setup_vim
-setup_virtualenv
-setup_warnings
-setup_local_config
 
-create_prompt
+# Calculate the initial PS1 value.
+_calculate_prompt
+
+# Call new-shell hooks
+for f in ${preshell_functions}; do
+  eval $f
+done
+
+# Run anything
+if [[ "$1" == "eval" ]]; then
+  eval "${(q)@}"
+  set --
+fi

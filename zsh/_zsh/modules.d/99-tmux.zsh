@@ -1,6 +1,6 @@
 # If the shell is running in tmux, get the tmux environment variable update
 # from the client that attached and update the shell's environment.
-precmd_tmux_env_update() {
+_tmux_precmd_env_update() {
   if [[ -z "$TMUX" ]]; then
     return
   fi
@@ -44,6 +44,8 @@ precmd_tmux_env_update() {
 }
 
 # Initializes this module.
-tmux_init() {
-  precmd_functions+=(precmd_tmux_env_update)
+_tmux_init() {
+  precmd_functions+=(_tmux_precmd_env_update)
 }
+
+module_add "tmux env integration" _tmux_init
