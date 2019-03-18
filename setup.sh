@@ -9,6 +9,7 @@ fi
 link_bash() {
    log1 "link_bash"
    linkit "$DOTFILE_PATH/bash/_bashrc" "$INSTALL_PATH/.bashrc"
+   linkit "$DOTFILE_PATH/bash/_bashrc.prod" "$INSTALL_PATH/.bashrc.prod"
    linkit "$DOTFILE_PATH/bash/_git-completion.bash" "$INSTALL_PATH/.git-completion.bash"
    linkit_if_exists "$DOTFILE_PATH/bash/_bashrc-$SYS" "$INSTALL_PATH/.bashrc-$SYS"
 }
@@ -21,16 +22,14 @@ link_zsh() {
    linkit "$DOTFILE_PATH/zsh/_zprofile" "$INSTALL_PATH/.zprofile"
    linkit "$DOTFILE_PATH/zsh/_zshenv" "$INSTALL_PATH/.zshenv"
 
-   linkit "$DOTFILE_PATH/zsh/_zsh/fpath" "$INSTALL_PATH/.zsh/fpath"
    linkit "$DOTFILE_PATH/zsh/_zsh/env.zsh" "$INSTALL_PATH/.zsh/env.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/interactive.zsh" "$INSTALL_PATH/.zsh/interactive.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/login-post.zsh" "$INSTALL_PATH/.zsh/login-post.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/login-pre.zsh" "$INSTALL_PATH/.zsh/login-pre.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/logout.zsh" "$INSTALL_PATH/.zsh/logout.zsh"
 
-   linkit "$DOTFILE_PATH/zsh/_zsh/errors.zsh" "$INSTALL_PATH/.zsh/errors.zsh"
-   linkit "$DOTFILE_PATH/zsh/_zsh/tmux.zsh" "$INSTALL_PATH/.zsh/tmux.zsh"
-   linkit "$DOTFILE_PATH/zsh/_zsh/chezpina.zsh" "$INSTALL_PATH/.zsh/chezpina.zsh"
+   link_all_in_dir "$DOTFILE_PATH/zsh/_zsh/fpath" "$INSTALL_PATH/.zsh/fpath"
+   link_all_in_dir "$DOTFILE_PATH/zsh/_zsh/modules.d" "$INSTALL_PATH/.zsh/modules.d"
 
    linkit_if_exists "$DOTFILE_PATH/zsh/_zshrc-$SYS" "$INSTALL_PATH/.zshrc-$SYS"
    linkit_if_exists "$DOTFILE_PATH/zsh/_zshenv-$SYS" "$INSTALL_PATH/.zshenv-$SYS"
@@ -88,6 +87,7 @@ link_weechat() {
     linkit "$DOTFILE_PATH/weechat/sec.conf" "$INSTALL_PATH/.weechat/sec.conf"
     linkit "$DOTFILE_PATH/weechat/weechat.conf" "$INSTALL_PATH/.weechat/weechat.conf"
     linkit "$DOTFILE_PATH/weechat/xfer.conf" "$INSTALL_PATH/.weechat/xfer.conf"
+    linkit "$DOTFILE_PATH/weechat/trigger.conf" "$INSTALL_PATH/.weechat/trigger.conf"
 
     linkit "$DOTFILE_PATH/weechat/ca-certificates.crt" "$INSTALL_PATH/.weechat/ca-certificates.crt"
 
@@ -110,8 +110,15 @@ link_weechat() {
 
 link_bin() {
     log1 "link_bin"
-    linkit "$DOTFILE_PATH/bin/safe-reattach-to-user-namespace" "$INSTALL_PATH/bin/safe-reattach-to-user-namespace"
-    linkit "$DOTFILE_PATH/bin/colors" "$INSTALL_PATH/bin/colors"
+    link_all_in_dir "$DOTFILE_PATH/bin" "$INSTALL_PATH/bin"
+}
+
+link_i3() {
+  log1 "link_i3"
+  linkit "$DOTFILE_PATH/i3/_i3/config" "$INSTALL_PATH/.i3/config"
+  linkit "$DOTFILE_PATH/i3/_i3/config.chromoting" "$INSTALL_PATH/.i3/config.chromoting"
+  linkit "$DOTFILE_PATH/i3/_i3/i3status.conf" "$INSTALL_PATH/.i3/i3status.conf"
+  linkit "$DOTFILE_PATH/i3/_i3/statusbar.py" "$INSTALL_PATH/.i3/statusbar.py"
 }
 
 link_misc() {
@@ -124,6 +131,8 @@ link_misc() {
    linkit "$DOTFILE_PATH/dircolors/default.cfg" "$INSTALL_PATH/.dircolorsrc"
 
    linkit "$DOTFILE_PATH/gpg/_gnupg/gpg.conf" "$INSTALL_PATH/.gnupg/gpg.conf"
+   linkit "$DOTFILE_PATH/X/_Xdefaults" "$INSTALL_PATH/.Xdefaults"
+   linkit "$DOTFILE_PATH/X/_xbindkeysrc" "$INSTALL_PATH/.xbindkeysrc"
 }
 
 link_fonts() {
@@ -150,8 +159,14 @@ link_fonts() {
 }
 
 set_preferences() {
+    log1 "setting preferences"
     mkdir -p  "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
-    set_default com.apple.screencapture location "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        log2 "Setting screenshot pref"
+        set_default com.apple.screencapture location "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
+    else
+        log2 "${YELLOW}Skipping screenshot pref for non-Darwin${NORM}"
+    fi
 }
 
 umask 077

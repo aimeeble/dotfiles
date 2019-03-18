@@ -48,9 +48,9 @@ set title                        " update terminal title bar
 syn on                           " syntax highlighting on
 filetype on                      " detect the file type
 set showmatch                    " highlight matching brace
-set tabstop=4                    " tab stops set to 4 columns
-set shiftwidth=4                 " auto-indent width
-set softtabstop=4                " treat as a single tab wrt backspace                 testing long line colouring.... asdjfaskjf djla jdf
+set tabstop=8                    " tab stops set to 4 columns
+set shiftwidth=2                 " auto-indent width
+set softtabstop=2                " treat as a single tab wrt backspace                 testing long line colouring.... asdjfaskjf djla jdf
 set expandtab                    " use spaces instead of tab character
 set nowrap                       " do not wrap long lines
 set shiftround                   " auto-indent to multiples of shiftwidth
@@ -169,9 +169,6 @@ function! VMcomment()
    execute "normal A\<CR>*/"
    return last+8
 endfunction
-
-map <leader>vmc :exec VMcomment()<cr>
-" }}}
 
 " Settings...
 let g:yankring_history_dir = "$HOME/.vim"

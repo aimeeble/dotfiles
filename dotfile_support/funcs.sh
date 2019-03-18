@@ -105,6 +105,17 @@ linkit() {
    ln -s "$SRC" "$DST"
 }
 
+link_all_in_dir() {
+    SRC_DIR="$1"
+    DST_DIR="$2"
+    for f in $SRC_DIR/*; do
+      BASE="$(basename $f)"
+      SRC="$SRC_DIR/$BASE"
+      DST="$DST_DIR/$BASE"
+      linkit "$SRC" "$DST"
+    done
+}
+
 copyit() {
     local SRC="$1"
     local DST="$2"

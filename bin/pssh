@@ -1,0 +1,116 @@
+#!/bin/zsh
+#
+# SSH wrapper for connecting to Google production hosts. Passes along and uses
+# a local bashrc file before interactive shell is given.
+#
+
+set -eu
+
+pick_random_bns() {
+  local BNS="$1"
+  local ALL_MCPS_BNS="$(lockserv resolveall "$BNS")"
+  local ALL_MCPSHOSTS="$(echo "$ALL_MCPS_BNS" | grep '/bns/../borg/../' | awk '{print $2}')"
+  local RANDOM_MCPHOST="$(echo "$ALL_MCPSHOSTS" | sort --random-sort | head -1)"
+  echo "$RANDOM_MCPHOST"
+}
+
+# Grab command line args
+VERBOSE=""
+if [[ "$1" == "-v" ]]; then
+  set -x
+  VERBOSE="-v"
+  shift
+fi
+
+typeset -ga FLAGS
+for f in "$@"; do
+  if [[ "${f:0:1}" == "-" ]]; then
+    FLAGS+=("$f")
+    shift
+  else
+    break
+  fi
+done
+
+USERHOST="${1:-}"
+SSH_USER="${USERHOST%%@*}"
+SSH_HOST="${USERHOST##*@}"
+if [[ "$SSH_USER" == "$USERHOST" ]]; then
+  SSH_USER=""
+fi
+
+# Validate and cook some of the raw args.
+if [[ -z "$USERHOST" ]]; then
+  echo "$0 [user@]hostname"
+  return 1
+fi
+if [[ -z "$SSH_USER" ]]; then
+  SSH_USER="$USER"
+fi
+if [[ "$USERHOST" == "mcp" ]]; then
+  USERHOST="/abns/mcp-setup/prod.mcp"
+fi
+if [[ "$USERHOST" =~ '^/a?bns/' ]]; then
+  SSH_HOST="$(pick_random_bns "$USERHOST")"
+  if [[ -z "$SSH_HOST" ]]; then
+    print -P "%F{red}Failed to resolve $USERHOST%f"
+    exit 1
+  fi
+  echo "Using randomly selected host $SSH_HOST"
+fi
+
+# Test for Virtual Cluster
+IS_VIRTUAL_CLUSTER=""
+if [[ "$SSH_HOST" =~ "^z[xy]" ]]; then
+  IS_VIRTUAL_CLUSTER="yes"
+fi
+
+shift
+CMD="$*"
+
+if [[ -z "${TMPDIR:-}" ]]; then
+  TMPDIR="/tmp"
+fi
+
+P="$$"
+BASHRC="$HOME/.bashrc.prod"
+LSOCK="$TMPDIR/rcsock.$P"
+RSOCK="/tmp/rcsock.$P"
+TERM=xterm
+
+TERMFLAG="-t"
+if [[ -n "$CMD" ]]; then
+  TERMFLAG="-T"
+fi
+
+# Steam some binaries over (these should all be statically linked for best
+# compatibility).
+if [[ -e "/tmp/bins.sock" ]]; then rm /tmp/bins.sock; fi
+tar zcf - -C "$HOME/.prodbins" --dereference . | socat -u stdin unix-listen:"/tmp/bins.sock",unlink-close=1 > /dev/null 2>&1 &
+
+# Stream bashrc over.
+socat -u open:"$BASHRC" unix-listen:"$LSOCK.bashrc",unlink-close=1 > /dev/null 2>&1 &
+
+if [[ -n "$IS_VIRTUAL_CLUSTER" ]]; then
+  print -Pn '\ekVC:bash\e\\'
+  /google/data/ro/projects/prodvm/binaries/vcmanage ssh \
+    "$SSH_HOST" \
+    -- \
+    ${FLAGS} \
+    -q -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null \
+    -R "$RSOCK.bashrc":"$LSOCK.bashrc" \
+    -R "/tmp/bins.sock":"/tmp/bins.sock" \
+    "$TERMFLAG" \
+    'bash --rcfile <(socat -u unix-connect:'"$RSOCK"'.bashrc,unlink-close=1 stdout) '${CMD:+-c }"${CMD:+\"$CMD\"}"
+  tmux setw automatic-rename
+else
+  runlocalssh ssh \
+    ${FLAGS} \
+    -q -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null \
+    -R "$RSOCK.bashrc":"$LSOCK.bashrc" \
+    -R "/tmp/bins.sock":"/tmp/bins.sock" \
+    -l "$SSH_USER" \
+    "$SSH_HOST" \
+    "$TERMFLAG" \
+    'bash --rcfile <(socat -u unix-connect:'"$RSOCK"'.bashrc,unlink-close=1 stdout) '${CMD:+-c }"${CMD:+\"$CMD\"}"
+fi
