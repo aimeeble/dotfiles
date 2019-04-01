@@ -9,7 +9,8 @@
     tree2 = log --graph --all --oneline --format='format:%C(yellow)%h%C(red)%d %C(white)%s%C(reset) %C(bold white)-- %aN%C(reset)'
     s = status -sb
     last = log -1 --stat
-    commit = commit -v
+[commit]
+    verbose = true
 [include]
     path = ~/.gitconfig-local
     path = ~/.gitconfig-10711
