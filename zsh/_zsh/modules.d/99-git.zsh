@@ -1,4 +1,4 @@
-_git_branch() {
+_aimee_git_branch() {
    local BRANCH
    BRANCH=`git symbolic-ref HEAD 2>&1 | sed "s/refs\/heads\///"`
 
@@ -14,8 +14,8 @@ _git_branch() {
    fi
 }
 
-_git_init() {
-  module_add_prompt_fragment _git_branch
+_aimee_git_init() {
+  module_add_prompt_fragment _aimee_git_branch
 }
 
-module_add "git" _git_init
+module_add "git" _aimee_git_init
