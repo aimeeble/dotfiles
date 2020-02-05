@@ -7,10 +7,10 @@ _aimee_git_branch() {
       return
    else
       if [ -n "$1" ]; then
-         echo "${BRANCH} "
+         echo "git:${BRANCH} "
          return
       fi
-      print "%B%F{yellow}%{${BRANCH}%}%${#BRANCH}G%f%b "
+      print "git:%B%F{yellow}%{${BRANCH}%}%${#BRANCH}G%f%b "
    fi
 }
 
