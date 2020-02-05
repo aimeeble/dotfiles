@@ -19,6 +19,7 @@ typeset -ga postexec_functions
 typeset -ga chpwd_functions
 typeset -ga _aimee_zsh_modules
 typeset -ga _aimee_mod_fragments
+typeset -ga _aimee_mod_pings
 export ZSH_VI_CMD_MODE="vi-ins"
 
 MODDIR="$HOME/.zsh/modules.d"
@@ -139,9 +140,15 @@ _set_xterm_title() {
    print -Pn "\e]0;%n@%2m: %~\a"
 }
 
+_module_ping() {
+  for mp in $_aimee_mod_pings; do
+    $mp
+  done
+}
+
 setup_hooks() {
    print -P "    Setting up hooks..."
-   precmd_functions+=(_set_xterm_title _calculate_prompt)
+   precmd_functions+=(_set_xterm_title _calculate_prompt _module_ping)
 }
 
 setup_prompt() {
@@ -306,6 +313,14 @@ module_add_prompt_fragment() {
     return 1
   fi
   _aimee_mod_fragments+=($1)
+}
+
+module_add_ping() {
+  if [[ $# -ne 1 ]]; then
+    echo "usage: module_add_ping FUNCTION"
+    return 1
+  fi
+  _aimee_mod_pings+=($1)
 }
 
 ##############################################################################
