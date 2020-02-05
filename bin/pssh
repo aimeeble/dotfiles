@@ -1,7 +1,7 @@
 #!/bin/zsh
 #
-# SSH wrapper for connecting to Google production hosts. Passes along and uses
-# a local bashrc file before interactive shell is given.
+# SSH wrapper for connecting to production hosts. Passes along and uses a local
+# bashrc file before interactive shell is given.
 #
 
 set -eu
@@ -59,12 +59,6 @@ if [[ "$USERHOST" =~ '^/a?bns/' ]]; then
   echo "Using randomly selected host $SSH_HOST"
 fi
 
-# Test for Virtual Cluster
-IS_VIRTUAL_CLUSTER=""
-if [[ "$SSH_HOST" =~ "^z[xy]" ]]; then
-  IS_VIRTUAL_CLUSTER="yes"
-fi
-
 shift
 CMD="$*"
 
@@ -91,26 +85,12 @@ tar zcf - -C "$HOME/.prodbins" --dereference . | socat -u stdin unix-listen:"/tm
 # Stream bashrc over.
 socat -u open:"$BASHRC" unix-listen:"$LSOCK.bashrc",unlink-close=1 > /dev/null 2>&1 &
 
-if [[ -n "$IS_VIRTUAL_CLUSTER" ]]; then
-  print -Pn '\ekVC:bash\e\\'
-  /google/data/ro/projects/prodvm/binaries/vcmanage ssh \
-    "$SSH_HOST" \
-    -- \
-    ${FLAGS} \
-    -q -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null \
-    -R "$RSOCK.bashrc":"$LSOCK.bashrc" \
-    -R "/tmp/bins.sock":"/tmp/bins.sock" \
-    "$TERMFLAG" \
-    'bash --rcfile <(socat -u unix-connect:'"$RSOCK"'.bashrc,unlink-close=1 stdout) '${CMD:+-c }"${CMD:+\"$CMD\"}"
-  tmux setw automatic-rename
-else
-  runlocalssh ssh \
-    ${FLAGS} \
-    -q -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null \
-    -R "$RSOCK.bashrc":"$LSOCK.bashrc" \
-    -R "/tmp/bins.sock":"/tmp/bins.sock" \
-    -l "$SSH_USER" \
-    "$SSH_HOST" \
-    "$TERMFLAG" \
-    'bash --rcfile <(socat -u unix-connect:'"$RSOCK"'.bashrc,unlink-close=1 stdout) '${CMD:+-c }"${CMD:+\"$CMD\"}"
-fi
+ssh \
+  ${FLAGS} \
+  -q -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null \
+  -R "$RSOCK.bashrc":"$LSOCK.bashrc" \
+  -R "/tmp/bins.sock":"/tmp/bins.sock" \
+  -l "$SSH_USER" \
+  "$SSH_HOST" \
+  "$TERMFLAG" \
+  'bash --rcfile <(socat -u unix-connect:'"$RSOCK"'.bashrc,unlink-close=1 stdout) '${CMD:+-c }"${CMD:+\"$CMD\"}"
