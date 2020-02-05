@@ -25,7 +25,7 @@ _precmd_error_check() {
 
    if [[ "$OLD_PROMPT_ERRORS" != "$PROMPT_ERRORS" ]]; then
       # Recreate prompt if something changed
-      create_prompt
+      _calculate_prompt
    fi
 }
 
