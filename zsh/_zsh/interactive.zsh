@@ -140,10 +140,12 @@ _set_xterm_title() {
 }
 
 setup_hooks() {
+   print -P "    Setting up hooks..."
    precmd_functions+=(_set_xterm_title _calculate_prompt)
 }
 
 setup_prompt() {
+   print -P "    Setting up prompt..."
    zle -N zle-keymap-select zle_keymap_select
    setopt \
       PROMPT_SUBST \
@@ -197,6 +199,8 @@ down-line-or-local-history() {
 }
 
 setup_history() {
+   print "    Setting up history..."
+
    setopt \
       APPEND_HISTORY \
       INC_APPEND_HISTORY \
@@ -323,6 +327,11 @@ fi
 # Done with the core support code. Now do actual initialization of the shell
 # environment.
 
+print -P "%F{green}Initializing core...%f"
+setup_hooks
+setup_prompt
+setup_history
+
 print -P "%F{green}Initializing modules...%f"
 for mod_name mod_init in ${_aimee_zsh_modules}; do
   print "    $mod_name"
@@ -331,9 +340,6 @@ done
 print
 
 _check_zsh_is_shell
-setup_hooks
-setup_prompt
-setup_history
 setup_ls
 setup_vim
 
