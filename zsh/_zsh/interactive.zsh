@@ -15,11 +15,11 @@
 typeset -ga preshell_functions
 typeset -ga precmd_functions
 typeset -ga preexec_functions
-typeset -ga postexec_functions
 typeset -ga chpwd_functions
 typeset -ga _aimee_zsh_modules
 typeset -ga _aimee_mod_fragments
 typeset -ga _aimee_mod_pings
+typeset -g _aimee_last_rc
 export ZSH_VI_CMD_MODE="vi-ins"
 
 MODDIR="$HOME/.zsh/modules.d"
@@ -69,7 +69,7 @@ collapse_pwd() {
 
 _calculate_prompt() {
    # NOTE: this must be first.
-   local RC=$?
+   local RC=${_aimee_last_rc:-0}
 
    # Fancy graphics?
    typeset -A altchar
@@ -146,9 +146,13 @@ _module_ping() {
   done
 }
 
+_capture_exit_status() {
+  _aimee_last_rc=$?
+}
+
 setup_hooks() {
    print -P "    Setting up hooks..."
-   precmd_functions+=(_set_xterm_title _calculate_prompt _module_ping)
+   precmd_functions+=(_capture_exit_status _set_xterm_title _module_ping _calculate_prompt)
 }
 
 setup_prompt() {

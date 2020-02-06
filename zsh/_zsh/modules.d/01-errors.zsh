@@ -15,7 +15,7 @@ _precmd_error_check() {
       return
    fi
 
-   typeset OLD_PROMPT_ERRORS
+   typeset -a OLD_PROMPT_ERRORS
    OLD_PROMPT_ERRORS=$PROMPT_ERRORS
    PROMPT_ERRORS=""
 
@@ -26,6 +26,7 @@ _precmd_error_check() {
    if [[ "$OLD_PROMPT_ERRORS" != "$PROMPT_ERRORS" ]]; then
       # Recreate prompt if something changed
       _calculate_prompt
+      _aimee_touchbar_ping
    fi
 }
 
@@ -33,6 +34,12 @@ _precmd_error_check() {
 _errtest_flagfile() {
   if [[ -e /tmp/err ]]; then
     add_prompt_error "flag file exists"
+  fi
+}
+
+_exitstatus_err() {
+  if [[ "${_aimee_last_rc:-0}" -ne 0 ]]; then
+    add_prompt_error "exit status $_aimee_last_rc"
   fi
 }
 
@@ -83,10 +90,9 @@ _get_prompt_errors() {
    print "%B%F{red}Errors:(${PROMPT_ERRORS} )%f%b "
 }
 
-
 # Initializes this module.
 _errors_init() {
-   prompt_error_check_functions+=(_errtest_flagfile _errtest_dotfile_version)
+   prompt_error_check_functions+=(_errtest_flagfile _errtest_dotfile_version _exitstatus_err)
    precmd_functions+=(_precmd_error_check)
    module_add_prompt_fragment _get_prompt_errors
 }
