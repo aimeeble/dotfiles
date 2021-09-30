@@ -1,13 +1,14 @@
 " vim:foldmethod=marker
 
-
 call plug#begin(stdpath('data') . '/plugged')
 
 Plug 'hoob3rt/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'preservim/nerdtree'
 Plug 'neovim/nvim-lspconfig'
+Plug 'jbyuki/venn.nvim'
 
+" Language plugins
 Plug 'fatih/vim-go'
 Plug 'hhvm/vim-hack'
 
@@ -79,10 +80,9 @@ set spelllang=en_us
 " GUI Options {{{
 " }}}
 
-" Keybindings {{{
+" Generic keybindings {{{
 " Toggle spellcheck
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
-
 
 set pastetoggle=<F5>            " Paste mode
 
@@ -94,12 +94,13 @@ nnoremap k gk
 inoremap jj <ESC>
 
 let mapleader=","
-
-nnoremap <leader>n :NERDTreeToggle<CR>
-
 " }}}
 
-" Lua {{{
+" NERDtree {{{
+nnoremap <leader>n :NERDTreeToggle<CR>
+" }}}
+
+" lsp-config {{{
 lua << EOF
 local custom_lsp_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -123,8 +124,11 @@ require('lspconfig').ccls.setup {
   },
   on_attach = custom_lsp_attach,
 }
+EOF
+" }}}
 
-
+" lualine {{{
+lua << EOF
 require('lualine').setup{
   options = {
     icons_enabled = true,
@@ -175,6 +179,31 @@ let g:go_fmt_options = {'gofmt': '-s'}
 let g:go_doc_popup_window = 1
 let g:go_bin_path = getenv('HOME') . '/go/mono3/bin'
 " let g:go_debug = ['lsp']
+
+" }}}
+
+" venn.nvim {{{
+lua << EOF
+function _G.toggle_venn()
+  local venn_enabled = vim.inspect(vim.b.venn_enabled)
+  if (venn_enabled == "nil") then
+    vim.b.venn_enabled = true
+    vim.cmd[[setlocal ve=all]]
+    vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap=true})
+    vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap=true})
+    vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap=true})
+    vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap=true})
+    vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap=true})
+  else
+    vim.cmd[[setlocal ve=]]
+    vim.cmd[[mapclear <buffer>]]
+    vim.b.venn_enabled = nil
+  end
+end
+
+
+EOF
+nnoremap <leader>v :lua toggle_venn()<CR>
 
 " }}}
 
