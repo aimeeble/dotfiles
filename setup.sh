@@ -52,6 +52,11 @@ link_vim() {
    done
 }
 
+link_nvim() {
+   log1 "link_nvim"
+   linkit "$DOTFILE_PATH/nvim/init.vim" "$INSTALL_PATH/.config/nvim/init.vim"
+}
+
 link_screen_mgmt() {
    log1 "link_screen_mgmt"
    linkit "$DOTFILE_PATH/screen/_screenrc" "$INSTALL_PATH/.screenrc"
@@ -178,6 +183,7 @@ set_preferences
 link_bash
 link_zsh
 link_vim
+link_nvim
 link_scm
 link_screen_mgmt
 link_irssi

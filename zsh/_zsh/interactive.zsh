@@ -268,6 +268,9 @@ setup_vim() {
       alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
       alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g"
    fi
+   if [[ -f "$HOME/bin/nvim.appimage" ]]; then
+     alias nvim="$HOME/bin/nvim.appimage"
+   fi
    # TODO(aimeeble) find the homebrew version if it exists
 }
 
