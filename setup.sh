@@ -71,9 +71,6 @@ link_screen_mgmt() {
 link_scm() {
    log1 "link_scm"
    linkit "$DOTFILE_PATH/git/_gitconfig" "$INSTALL_PATH/.gitconfig"
-
-   local GITVER=$(git --version | cut -d' ' -f3)
-   link_if_newer "$DOTFILE_PATH/git/_gitconfig-10711" "$INSTALL_PATH/.gitconfig-10711" "$GITVER" "1.7.11"
 }
 
 link_irssi() {
@@ -141,8 +138,6 @@ link_misc() {
    linkit "$DOTFILE_PATH/dircolors/default.cfg" "$INSTALL_PATH/.dircolorsrc"
 
    linkit "$DOTFILE_PATH/gpg/_gnupg/gpg.conf" "$INSTALL_PATH/.gnupg/gpg.conf"
-   linkit "$DOTFILE_PATH/X/_Xdefaults" "$INSTALL_PATH/.Xdefaults"
-   linkit "$DOTFILE_PATH/X/_xbindkeysrc" "$INSTALL_PATH/.xbindkeysrc"
 }
 
 link_fonts() {
