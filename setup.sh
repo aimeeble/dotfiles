@@ -54,7 +54,12 @@ link_vim() {
 
 link_nvim() {
    log1 "link_nvim"
+   mkdir -p "$INSTALL_PATH/.config/nvim"
+   mkdir -p "$INSTALL_PATH/.local/share/nvim/site/autoload"
+
    linkit "$DOTFILE_PATH/nvim/init.vim" "$INSTALL_PATH/.config/nvim/init.vim"
+   linkit "$DOTFILE_PATH/nvim/plug.vim" "$INSTALL_PATH/.local/share/nvim/site/autoload/plug.vim"
+
 }
 
 link_screen_mgmt() {
