@@ -25,7 +25,7 @@ _precmd_error_check() {
 
    if [[ "$OLD_PROMPT_ERRORS" != "$PROMPT_ERRORS" ]]; then
       # Recreate prompt if something changed
-      _calculate_prompt
+      _prompt_calculate
       _aimee_touchbar_ping
    fi
 }
