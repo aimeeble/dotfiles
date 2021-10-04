@@ -12,8 +12,6 @@
     diffw = diff --word-diff=color
 [commit]
     verbose = true
-[include]
-    path = ~/.gitconfig-local
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
@@ -21,3 +19,5 @@
     required = true
 [push]
     default = simple
+[include]
+    path = ~/.gitconfig-local
