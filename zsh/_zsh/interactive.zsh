@@ -67,75 +67,6 @@ collapse_pwd() {
     echo $MYPWD
 }
 
-_calculate_prompt() {
-   # NOTE: this must be first.
-   local RC=${_aimee_last_rc:-0}
-
-   # Fancy graphics?
-   typeset -A altchar
-   set -A altchar ${(s::)terminfo[acsc]}
-   #set -A altchar ()
-   local PR_SET_CHARSET="$terminfo[enacs]"
-   local PR_SHIFT_IN="$terminfo[smacs]"
-   local PR_SHIFT_OUT="$terminfo[rmacs]"
-   local PR_NW=${altchar[l]:--}
-   local PR_NE=${altchar[k]:--}
-   local PR_SW=${altchar[m]:--}
-   local PR_SE=${altchar[j]:--}
-   local PR_BAR=${altchar[q]:--}
-   local PR_VBAR=${altchar[x]:--}
-
-   # Initially, grab these w/o color
-   local PR_USER="`prompt_username no`"
-   local PR_MOD_FRAGMENTS
-   for pf in $_aimee_mod_fragments; do
-      local NEW="$($pf no)"
-      PR_MOD_FRAGMENTS="${PR_MOD_FRAGMENTS}${NEW}"
-   done
-
-   # Figure out how much padding goes into the prompt
-   local PR_WIDTH=$(( $COLUMNS ))
-   local PR_LINE1="$(print -P -- '--( ${PR_USER}@%2m ${PR_MOD_FRAGMENTS})--#--( $(collapse_pwd) )--' )"
-   local PR_LEN=${#PR_LINE1}
-   local PR_FILL_LEN=$(( $PR_WIDTH - $PR_LEN ))
-   local PR_FILL="\${(l:$PR_FILL_LEN::$PR_BAR:)}"
-
-   # Reset, now with color!
-   local PR_USER="`prompt_username`"
-   PR_MOD_FRAGMENTS=""
-   for pf in $_aimee_mod_fragments; do
-      local NEW="$($pf)"
-      PR_MOD_FRAGMENTS="${PR_MOD_FRAGMENTS}${NEW}"
-   done
-
-   # Based on command status, decide what color the second line appears in
-   local RC_COLOR_ON=""
-   local RC_COLOR_OFF=""
-   if [[ "$RC" -ne "0" ]]; then
-     RC_COLOR_ON="%B%F{red}"
-     RC_COLOR_OFF="%f%b"
-   fi
-
-   # Finally, set the prompt vars. Note: escape ZSH_VI_CMD_MODE so it's
-   # evaluated when the prompt is displayed, not now.
-   RPS1="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%}"
-   RPS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%}"
-
-   PS1="%{${PR_SET_CHARSET}${PR_SHIFT_IN}%}%B%F{black}${PR_NW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%2m%f%b ${PR_MOD_FRAGMENTS}%B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %B%F{blue}$(collapse_pwd)%f%b %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_NE}%b%f%{${PR_SHIFT_OUT}%}
-%{${PR_SHIFT_IN}%}%B%F{black}${PR_SW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${RC_COLOR_ON}%* !%h${RC_COLOR_OFF} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}%f%b%{${PR_SHIFT_OUT}%}%# "
-   PS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
-   PS3="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
-}
-
-TRAPWINCH() {
-   # Must re-recreate prompt so it can re-calculate the prompt length with the
-   # new term width
-   _calculate_prompt
-   # Redirect errors to /dev/null, since sometimes this gets called when a new
-   # xterm is opened and before zsh hits the line editor.
-   zle reset-prompt 2> /dev/null
-}
-
 _set_xterm_title() {
    print -Pn "\e]0;%n@%2m: %~\a"
 }
@@ -152,17 +83,7 @@ _capture_exit_status() {
 
 setup_hooks() {
    print -P "    Setting up hooks..."
-   precmd_functions+=(_capture_exit_status _set_xterm_title _module_ping _calculate_prompt)
-}
-
-setup_prompt() {
-   print -P "    Setting up prompt..."
-   zle -N zle-keymap-select zle_keymap_select
-   setopt \
-      PROMPT_SUBST \
-      EXTENDED_GLOB
-
-   chpwd_functions+=(_calculate_prompt)
+   precmd_functions+=(_capture_exit_status _set_xterm_title _module_ping)
 }
 
 setup_completion() {
@@ -317,7 +238,6 @@ fi
 
 print -P "%F{green}Initializing core...%f"
 setup_hooks
-setup_prompt
 setup_history
 
 print -P "%F{green}Initializing modules...%f"
@@ -329,9 +249,6 @@ print
 
 _check_zsh_is_shell
 setup_vim
-
-# Calculate the initial PS1 value.
-_calculate_prompt
 
 # Call new-shell hooks
 for f in ${preshell_functions}; do
