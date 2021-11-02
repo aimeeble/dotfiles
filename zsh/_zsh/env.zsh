@@ -1,4 +1,37 @@
-export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+SYS="$(uname -s)"
+ARC="$(uname -m)"
+
+HOMEBREW_BASE=""
+if [[ "$SYS" == "Darwin" ]]; then
+  if [[ "$ARC" == "arm64" ]]; then
+    HOMEBREW_BASE="/opt/homebrew"
+  else
+    HOMEBREW_BASE="/usr/local"
+  fi
+fi
+
+_PATH=(
+  "$HOME/bin"
+)
+
+if [[ -n "$HOMEBREW_BASE" ]]; then
+  _PATH+=(
+    "$HOMEBREW_BASE/bin"
+    "$HOMEBREW_BASE/sbin"
+  )
+fi
+_PATH+=(
+  "/usr/local/bin"
+  "/usr/local/sbin"
+  "/usr/bin"
+  "/usr/sbin"
+  "/bin"
+  "/sbin"
+)
+_PATH=(${(u)_PATH[@]})
+
+export PATH=${(pj.:.)_PATH}
+
 
 export VISUAL=vim
 export EDITOR=vim
