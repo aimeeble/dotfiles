@@ -3,6 +3,15 @@ _setup_ls() {
    local LS="ls"
    local LS_OPTS=""
 
+   local HOMEBREW_BASE=""
+    if [[ "$SYS" == "Darwin" ]]; then
+      if [[ "$ARC" == "arm64" ]]; then
+        HOMEBREW_BASE="/opt/homebrew"
+      else
+        HOMEBREW_BASE="/usr/local"
+      fi
+    fi
+
    case `uname -s` in
       "Linux")
          eval `dircolors ~/.dircolorsrc`
@@ -11,8 +20,8 @@ _setup_ls() {
          LS_OPTS="--color=auto"
          ;;
       "Darwin"|"FreeBSD")
-         if [[ -x "/usr/local/bin/gdircolors" ]]; then
-            eval `gdircolors ~/.dircolorsrc`
+         if [[ -x "$HOMEBREW_BASE/bin/gdircolors" ]]; then
+            eval `$HOMEBREW_BASE/bin/gdircolors ~/.dircolorsrc`
             zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
             LS="gls"
             LS_OPTS="--color=auto"
