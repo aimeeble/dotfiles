@@ -151,6 +151,15 @@ link_fonts() {
         copyit "$DOTFILE_PATH/fonts/source code pro semibold.ttf" "$INSTALL_PATH/Library/Fonts/source code pro semibold.ttf"
         copyit "$DOTFILE_PATH/fonts/Terminus.ttf" "$INSTALL_PATH/Library/Fonts/Terminus.ttf"
         copyit "$DOTFILE_PATH/fonts/TerminusBold.ttf" "$INSTALL_PATH/Library/Fonts/TerminusBold.ttf"
+
+        copyit "$DOTFILE_PATH/fonts/Go Mono Bold Italic Nerd Font Complete Mono.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Bold Italic Nerd Font Complete Mono.ttf"
+        copyit "$DOTFILE_PATH/fonts/Go Mono Bold Italic Nerd Font Complete.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Bold Italic Nerd Font Complete.ttf"
+        copyit "$DOTFILE_PATH/fonts/Go Mono Bold Nerd Font Complete Mono.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Bold Nerd Font Complete Mono.ttf"
+        copyit "$DOTFILE_PATH/fonts/Go Mono Bold Nerd Font Complete.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Bold Nerd Font Complete.ttf"
+        copyit "$DOTFILE_PATH/fonts/Go Mono Italic Nerd Font Complete Mono.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Italic Nerd Font Complete Mono.ttf"
+        copyit "$DOTFILE_PATH/fonts/Go Mono Italic Nerd Font Complete.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Italic Nerd Font Complete.ttf"
+        copyit "$DOTFILE_PATH/fonts/Go Mono Nerd Font Complete Mono.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Nerd Font Complete Mono.ttf"
+        copyit "$DOTFILE_PATH/fonts/Go Mono Nerd Font Complete.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Nerd Font Complete.ttf"
     elif [[ "$(uname -s)" == "Linux" ]]; then
         linkit "$DOTFILE_PATH/fonts/source code pro black.ttf" "$INSTALL_PATH/.fonts/source code pro black.ttf"
         linkit "$DOTFILE_PATH/fonts/source code pro bold.ttf" "$INSTALL_PATH/.fonts/source code pro bold.ttf"
@@ -160,6 +169,15 @@ link_fonts() {
         linkit "$DOTFILE_PATH/fonts/source code pro semibold.ttf" "$INSTALL_PATH/.fonts/source code pro semibold.ttf"
         linkit "$DOTFILE_PATH/fonts/Terminus.ttf" "$INSTALL_PATH/.fonts/Terminus.ttf"
         linkit "$DOTFILE_PATH/fonts/TerminusBold.ttf" "$INSTALL_PATH/.fonts/TerminusBold.ttf"
+
+        linkit "$DOTFILE_PATH/fonts/Go Mono Bold Italic Nerd Font Complete Mono.ttf" "$INSTALL_PATH/.fonts/Go Mono Bold Italic Nerd Font Complete Mono.ttf"
+        linkit "$DOTFILE_PATH/fonts/Go Mono Bold Italic Nerd Font Complete.ttf" "$INSTALL_PATH/.fonts/Go Mono Bold Italic Nerd Font Complete.ttf"
+        linkit "$DOTFILE_PATH/fonts/Go Mono Bold Nerd Font Complete Mono.ttf" "$INSTALL_PATH/.fonts/Go Mono Bold Nerd Font Complete Mono.ttf"
+        linkit "$DOTFILE_PATH/fonts/Go Mono Bold Nerd Font Complete.ttf" "$INSTALL_PATH/.fonts/Go Mono Bold Nerd Font Complete.ttf"
+        linkit "$DOTFILE_PATH/fonts/Go Mono Italic Nerd Font Complete Mono.ttf" "$INSTALL_PATH/.fonts/Go Mono Italic Nerd Font Complete Mono.ttf"
+        linkit "$DOTFILE_PATH/fonts/Go Mono Italic Nerd Font Complete.ttf" "$INSTALL_PATH/.fonts/Go Mono Italic Nerd Font Complete.ttf"
+        linkit "$DOTFILE_PATH/fonts/Go Mono Nerd Font Complete Mono.ttf" "$INSTALL_PATH/.fonts/Go Mono Nerd Font Complete Mono.ttf"
+        linkit "$DOTFILE_PATH/fonts/Go Mono Nerd Font Complete.ttf" "$INSTALL_PATH/.fonts/Go Mono Nerd Font Complete.ttf"
     fi
 }
 
