@@ -7,6 +7,8 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'preservim/nerdtree'
 Plug 'neovim/nvim-lspconfig'
 Plug 'jbyuki/venn.nvim'
+Plug 'uarun/vim-protobuf'
+Plug 'airblade/vim-gitgutter'
 
 " Language plugins
 Plug 'fatih/vim-go'
@@ -205,6 +207,17 @@ end
 EOF
 nnoremap <leader>v :lua toggle_venn()<CR>
 
+" }}}
+
+" gitgutter {{{
+let g:gitgutter_override_sign_column_highlight = 1
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_modified = '~'
+let g:gitgutter_sign_removed_first_line = '^'
+let g:gitgutter_sign_modified_removed = 'v'
+
+hi SignColumn ctermbg=black guibg=black
 " }}}
 
 if exists("~/.vimrc-local")
