@@ -31,6 +31,9 @@ _sshagent_preshell() {
     eval "$ENV"
   fi
 
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    ssh-add --apple-load-keychain >/dev/null 2>&1
+  fi
   ssh-add -l
 }
 
