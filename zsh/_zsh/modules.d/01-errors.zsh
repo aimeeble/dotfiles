@@ -17,7 +17,7 @@ _precmd_error_check() {
 
    typeset -a OLD_PROMPT_ERRORS
    OLD_PROMPT_ERRORS=$PROMPT_ERRORS
-   PROMPT_ERRORS=""
+   PROMPT_ERRORS=()
 
    for fun in $prompt_error_check_functions; do
       eval $fun > /dev/null
@@ -78,16 +78,16 @@ _errtest_dotfile_version() {
 # Returns:
 #   a concatenation of all errors and a handy-dandy prefix.
 _get_prompt_errors() {
-   if [[ -z "$PROMPT_ERRORS" ]]; then
-      return
-   fi
+  if [[ -z "$PROMPT_ERRORS" ]]; then
+    return
+  fi
 
-   if [[ -n "$1" ]]; then
-      echo "Errors:(${PROMPT_ERRORS} ) "
-      return
-   fi
+  if [[ -n "$1" ]]; then
+    echo "Errors:(${(j:; :)PROMPT_ERRORS}) "
+    return
+  fi
 
-   print "%B%F{red}Errors:(${PROMPT_ERRORS} )%f%b "
+  print "%B%F{red}Errors:(${(j:; :)PROMPT_ERRORS})%f%b "
 }
 
 # Initializes this module.
