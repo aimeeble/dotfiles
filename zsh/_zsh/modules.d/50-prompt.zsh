@@ -1,8 +1,37 @@
 
 
 _prompt_calculate() {
-   # NOTE: this must be first.
-   local RC=${_aimee_last_rc:-0}
+  # NOTE: this must be first.
+  local RC=${_aimee_last_rc:-0}
+
+  if [[ "$ITERM_PROFILE" == "Present" ]]; then
+    _basicPrompt "$RC"
+    return
+  fi
+
+  _fancyPrompt "$RC"
+}
+
+_basicPrompt() {
+  local RC="$1"
+
+  local PR_MOD_FRAGMENTS
+  for pf in $_aimee_mod_fragments; do
+    local NEW="$($pf)"
+    PR_MOD_FRAGMENTS="${PR_MOD_FRAGMENTS}${NEW}"
+  done
+  PR_MOD_FRAGMENTS="$(echo "${PR_MOD_FRAGMENTS}" | xargs)"
+  if [[ -n "$PR_MOD_FRAGMENTS" ]] then
+    PR_MOD_FRAGMENTS="[${PR_MOD_FRAGMENTS}] "
+  fi
+
+  PS1="${PR_MOD_FRAGMENTS}%m:%~ %# "
+  PS2="%_> "
+  PS3="%_> "
+}
+
+_fancyPrompt() {
+   local RC="$1"
 
    # Fancy graphics?
    typeset -A altchar
@@ -19,6 +48,7 @@ _prompt_calculate() {
    local PR_VBAR=${altchar[x]:--}
 
    # Initially, grab these w/o color
+   #
    local PR_USER="`prompt_username no`"
    local PR_MOD_FRAGMENTS
    for pf in $_aimee_mod_fragments; do
