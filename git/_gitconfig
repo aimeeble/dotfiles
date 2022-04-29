@@ -4,6 +4,9 @@
     branch = auto
     interactive = auto
     log = auto
+[diff]
+    colorMoved = zebra
+    wsErrorHighlight = all
 [alias]
     tree = log --graph --all --oneline --decorate
     tree2 = log --graph --all --oneline --format='format:%C(yellow)%h%C(red)%d %C(white)%s%C(reset) %C(bold white)-- %aN%C(reset)'
@@ -19,5 +22,9 @@
     required = true
 [push]
     default = simple
+[pull]
+    rebase = true
+[fetch]
+    prune = true
 [include]
     path = ~/.gitconfig-local
