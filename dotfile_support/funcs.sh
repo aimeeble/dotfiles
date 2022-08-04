@@ -217,9 +217,12 @@ set_default() {
     if [[ "$(uname -s)" != "Darwin" ]]; then
         return
     fi
-    APP="$1"
-    PROP="$2"
-    VALUE="$3"
+    LOG="$1"
+    APP="$2"
+    PROP="$3"
+    VALUE="$4"
+    MODE="${5:-}"
 
-    defaults write "$APP" "$PROP" "$VALUE"
+    log2 "$LOG"
+    defaults write "$APP" "$PROP" ${MODE} "$VALUE"
 }

@@ -182,13 +182,19 @@ link_fonts() {
 }
 
 set_preferences() {
-    log1 "setting preferences"
+    log1 "Setting preferences"
     mkdir -p  "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
     if [[ "$(uname -s)" == "Darwin" ]]; then
-        log2 "Setting screenshot pref"
-        set_default com.apple.screencapture location "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
+        set_default "Specify screenshot location"         "com.apple.screencapture"     "location"                          "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
+        set_default "Enable keyboard navigation"          "NSGlobalDomain"              "AppleKeyboardUIMode"               2 -int
+        set_default "Don't autohide menubar (normal)"     "Apple Global Domain"         "_HIHideMenuBar"                    0 -int
+        set_default "Don't autohide menubar (fullscreen)" "Apple Global Domain"         "AppleMenuBarVisibleInFullscreen"   1 -int
+        set_default "Dark mode UI"                        "Apple Global Domain"         "AppleInterfaceStyle"               "Dark"
+        set_default "Purple highlight colour"             "Apple Global Domain"         "AppleHighlightColor"               "0.968627 0.831373 1.000000 Purple"
+        set_default "Always show scrollbars"              "Apple Global Domain"         "AppleShowScrollBars"               "Always"
+        set_default "Analog menubar clock (native)"       "com.apple.menuextra.clock"   "IsAnalog"                          1 -int
     else
-        log2 "${YELLOW}Skipping screenshot pref for non-Darwin${NORM}"
+        log2 "${YELLOW}Skipping setting preferences for non-Darwin${NORM}"
     fi
 }
 
