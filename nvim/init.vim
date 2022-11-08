@@ -51,6 +51,9 @@ set sidescroll=1                 " scroll horizontally 1 cols at a time
 set sidescrolloff=15             " 15 cols between cursor and screen edge causes scroll
 set scrolloff=2                  " 2 rows between cursor and screen edge
 
+set termguicolors                " enable many colours in terminal.
+colorscheme darkblue
+
 hi CursorLine term=underline cterm=underline
 hi CursorLineNr guifg=#ffffff ctermfg=white
 hi LineNr guifg=#008000 ctermfg=darkgreen
