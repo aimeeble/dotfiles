@@ -39,6 +39,8 @@ _setup_ls() {
    alias ll="$LS $LS_OPTS -l"
    alias la="$LS $LS_OPTS -a"
    alias lla="$LS $LS_OPTS -la"
+
+   alias k='kubectl'
    # l. now in fpath
 }
 
