@@ -12,7 +12,6 @@ Plug 'airblade/vim-gitgutter'
 
 " Language plugins
 Plug 'fatih/vim-go'
-Plug 'hhvm/vim-hack'
 
 call plug#end()
 
