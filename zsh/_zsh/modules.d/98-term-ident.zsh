@@ -1,18 +1,14 @@
 
+__iterm2_is_tmux() {
+    [[ $TERM == screen* || $TERM == tmux* ]] && echo 1
+}
+
 __iterm2_print_osc() {
-    if [[ $TERM == screen* || $TERM == tmux* ]]; then
-        printf "\033Ptmux;\033\033]"
-    else
-        printf "\033]"
-    fi
+    printf "\033]"
 }
 
 __iterm2_print_st() {
-    if [[ $TERM == screen* || $TERM == tmux* ]]; then
-        printf "\a\033\\"
-    else
-        printf "\a"
-    fi
+    printf "\a"
 }
 
 __iterm2_print_image() {
@@ -130,7 +126,7 @@ __EOF
   if [[ -n "${IMGDATA}" ]]; then
     echo
     echo "${TEXT}"
-    if [[ "${LC_TERMINAL:-}" == "iTerm2" ]]; then
+    if [[ "${LC_TERMINAL:-}" == "iTerm2" && -z $(__iterm2_is_tmux) ]]; then
       __iterm2_print_image "" 1 "${IMGDATA}" 0 "" "5" "1" ""
     else
       echo; echo; echo; echo; echo
