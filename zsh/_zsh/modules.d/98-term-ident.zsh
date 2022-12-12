@@ -130,7 +130,7 @@ __EOF
   if [[ -n "${IMGDATA}" ]]; then
     echo
     echo "${TEXT}"
-    if [[ "${TERM_PROGRAM:-}" == "iTerm.app" ]]; then
+    if [[ "${LC_TERMINAL:-}" == "iTerm2" ]]; then
       __iterm2_print_image "" 1 "${IMGDATA}" 0 "" "5" "1" ""
     else
       echo; echo; echo; echo; echo
