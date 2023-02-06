@@ -9,6 +9,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'jbyuki/venn.nvim'
 Plug 'uarun/vim-protobuf'
 Plug 'airblade/vim-gitgutter'
+Plug 'gagoar/StripWhiteSpaces'
 
 " Language plugins
 Plug 'fatih/vim-go'
