@@ -223,6 +223,19 @@ let g:gitgutter_sign_modified_removed = 'v'
 hi SignColumn ctermbg=black guibg=black
 " }}}
 
+" neovide graphical goodness {{{
+let g:neovide_cursor_vfx_mode                 = "torpedo"
+let g:neovide_cursor_vfx_opacity              = 200.0
+let g:neovide_cursor_vfx_particle_curl        = 0.1
+let g:neovide_cursor_vfx_particle_phase       = 1.5
+let g:neovide_cursor_vfx_particle_speed       = 10.0
+let g:neovide_cursor_animate_command_line     = v:true
+let g:neovide_cursor_animate_in_insert_mode   = v:true
+
+let g:neovide_hide_mouse_while_typing         = v:true
+" }}}
+
+
 if exists("~/.vimrc-local")
    source ~/.vimrc-local
 endif
