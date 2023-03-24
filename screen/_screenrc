@@ -3,7 +3,7 @@ escape ^Tt
 autodetach on
 vbell on
 deflogin off
-shell bash
+shell zsh
 
 hardstatus alwayslastline "%{=b}%{G} %{b}%w %=%{kG} %Y-%m-%d %c"
 
