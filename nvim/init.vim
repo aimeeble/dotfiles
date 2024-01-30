@@ -120,6 +120,8 @@ local custom_lsp_attach = function(client, bufnr)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 
+  buf_set_keymap('n', '<leader>i', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})<cr>', opts)
+
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
@@ -129,7 +131,44 @@ require('lspconfig').ccls.setup {
   },
   on_attach = custom_lsp_attach,
 }
+
+require'lspconfig'.rust_analyzer.setup({
+  on_attach = custom_lsp_attach,
+  settings = {
+    ["rust-analyzer"] = {
+      imports = {
+        granularity = {
+          group = 'module',
+        },
+        prefix = 'self',
+      },
+      cargo= {
+        buildScripts = {
+          enable = true,
+        },
+      },
+      procMacro = {
+        enable = false,
+      }
+    }
+  }
+})
+
 EOF
+" }}}
+
+" diagnostic {{{
+
+lua << EOF
+
+vim.diagnostic.config(
+  {
+    virtual_text = true,
+  }
+)
+
+EOF
+
 " }}}
 
 " lualine {{{
