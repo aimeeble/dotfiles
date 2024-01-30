@@ -25,6 +25,8 @@
     autoSetupRemote = true
 [pull]
     rebase = true
+[branch]
+    sort = -committerdate
 [init]
     defaultBranch = main
 [fetch]
