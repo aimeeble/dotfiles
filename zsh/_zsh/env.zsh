@@ -1,6 +1,9 @@
 SYS="$(uname -s)"
 ARC="$(uname -m)"
 
+if [[ "$COLORSCHEMES_DIR" =~ "cool-retro-term" ]]; then
+  ARC="arm64"
+fi
 HOMEBREW_BASE=""
 if [[ "$SYS" == "Darwin" ]]; then
   if [[ "$ARC" == "arm64" ]]; then
