@@ -39,9 +39,6 @@ _setup_ls() {
    alias ll="$LS $LS_OPTS -l"
    alias la="$LS $LS_OPTS -a"
    alias lla="$LS $LS_OPTS -la"
-
-   alias k='kubectl'
-   # l. now in fpath
 }
 
 _setup_ip() {
@@ -56,6 +53,9 @@ _setup_ip() {
 _aliases_init() {
   _setup_ls
   _setup_ip
+
+  alias less='less --use-color -R'
+  alias k='kubectl'
 }
 
 module_add "aliases" _aliases_init
