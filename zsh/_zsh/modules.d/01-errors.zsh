@@ -1,3 +1,5 @@
+. "$HOME/.zsh/colour.zsh"
+
 typeset -ga prompt_error_check_functions
 typeset -ga PROMPT_ERRORS
 
@@ -87,7 +89,7 @@ _get_prompt_errors() {
     return
   fi
 
-  print "%B%F{red}Errors:(${(j:; :)PROMPT_ERRORS})%f%b "
+  print "${CL_ERROR_ON}Errors:(${(j:; :)PROMPT_ERRORS})${CL_ERROR_OFF} "
 }
 
 # Initializes this module.

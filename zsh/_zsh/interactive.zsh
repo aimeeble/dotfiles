@@ -12,6 +12,8 @@
 #   http://grml.org/zsh/zsh-lovers.html
 #
 
+. "$HOME/.zsh/colour.zsh"
+
 typeset -ga preshell_functions
 typeset -ga precmd_functions
 typeset -ga preexec_functions
@@ -236,11 +238,11 @@ fi
 # Done with the core support code. Now do actual initialization of the shell
 # environment.
 
-print -P "%F{green}Initializing core...%f"
+print -P "${CL_NORM_ON}Initializing core...${CL_NORM_OFF}"
 setup_hooks
 setup_history
 
-print -P "%F{green}Initializing modules...%f"
+print -P "${CL_NORM_ON}Initializing modules...${CL_NORM_OFF}"
 for mod_name mod_init in ${_aimee_zsh_modules}; do
   print "    $mod_name"
   eval $mod_init

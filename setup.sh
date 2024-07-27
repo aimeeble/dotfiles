@@ -27,6 +27,7 @@ link_zsh() {
    linkit "$DOTFILE_PATH/zsh/_zsh/login-post.zsh" "$INSTALL_PATH/.zsh/login-post.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/login-pre.zsh" "$INSTALL_PATH/.zsh/login-pre.zsh"
    linkit "$DOTFILE_PATH/zsh/_zsh/logout.zsh" "$INSTALL_PATH/.zsh/logout.zsh"
+   linkit "$DOTFILE_PATH/zsh/_zsh/colour.zsh" "$INSTALL_PATH/.zsh/colour.zsh"
 
    link_all_in_dir "$DOTFILE_PATH/zsh/_zsh/fpath" "$INSTALL_PATH/.zsh/fpath"
    link_all_in_dir "$DOTFILE_PATH/zsh/_zsh/modules.d" "$INSTALL_PATH/.zsh/modules.d"

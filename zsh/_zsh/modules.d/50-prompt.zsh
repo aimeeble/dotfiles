@@ -1,4 +1,4 @@
-
+. "$HOME/.zsh/colour.zsh"
 
 _prompt_calculate() {
   # NOTE: this must be first.
@@ -75,19 +75,19 @@ _fancyPrompt() {
    local RC_COLOR_ON=""
    local RC_COLOR_OFF=""
    if [[ "$RC" -ne "0" ]]; then
-     RC_COLOR_ON="%B%F{red}"
-     RC_COLOR_OFF="%f%b"
+     RC_COLOR_ON="${CL_ERROR_ON}"
+     RC_COLOR_OFF="${CL_ERROR_OFF}"
    fi
 
    # Finally, set the prompt vars. Note: escape ZSH_VI_CMD_MODE so it's
    # evaluated when the prompt is displayed, not now.
-   RPS1="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%}"
-   RPS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b \${ZSH_VI_CMD_MODE} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_SE}%f%b%{${PR_SHIFT_OUT}%}"
+   RPS1="%{${PR_SHIFT_IN}%}${CL_SHADED_ON}${PR_BAR}${CL_SHADED_OFF}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}%{${PR_SHIFT_OUT}%}${CL_HIGHLIGHT_ON}(${CL_HIGHLIGHT_OFF} \${ZSH_VI_CMD_MODE} ${CL_HIGHLIGHT_ON})${CL_HIGHLIGHT_OFF}%{${PR_SHIFT_IN}%}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}${CL_SHADED_ON}${PR_SE}${CL_SHADED_OFF}%{${PR_SHIFT_OUT}%}"
+   RPS2="%{${PR_SHIFT_IN}%}${CL_SHADED_ON}${PR_BAR}${CL_SHADED_OFF}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}%{${PR_SHIFT_OUT}%}${CL_HIGHLIGHT_ON}(${CL_HIGHLIGHT_OFF} \${ZSH_VI_CMD_MODE} ${CL_HIGHLIGHT_ON})${CL_HIGHLIGHT_OFF}%{${PR_SHIFT_IN}%}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}${CL_SHADED_ON}${PR_SE}${CL_SHADED_OFF}%{${PR_SHIFT_OUT}%}"
 
-   PS1="%{${PR_SET_CHARSET}${PR_SHIFT_IN}%}%B%F{black}${PR_NW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${PR_USER}%B%F{green}@%2m%f%b ${PR_MOD_FRAGMENTS}%B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}${(e)PR_FILL}${PR_BAR}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b %B%F{blue}$(collapse_pwd)%f%b %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_NE}%b%f%{${PR_SHIFT_OUT}%}
-%{${PR_SHIFT_IN}%}%B%F{black}${PR_SW}%f%b${PR_BAR}%{${PR_SHIFT_OUT}%}%B%F{white}(%f%b ${RC_COLOR_ON}%* !%h${RC_COLOR_OFF} %B%F{white})%f%b%{${PR_SHIFT_IN}%}${PR_BAR}%B%F{black}${PR_BAR}%f%b%{${PR_SHIFT_OUT}%}%# "
-   PS2="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
-   PS3="%{${PR_SHIFT_IN}%}%B%F{black}${PR_VBAR}%f%b%{${PR_SHIFT_OUT}%} %_> "
+   PS1="%{${PR_SET_CHARSET}${PR_SHIFT_IN}%}${CL_SHADED_ON}${PR_NW}${CL_SHADED_OFF}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}%{${PR_SHIFT_OUT}%}${CL_HIGHLIGHT_ON}(${CL_HIGHLIGHT_OFF} ${PR_USER}${CL_HOST_ON}@%2m${CL_HOST_OFF} ${PR_MOD_FRAGMENTS}${CL_HIGHLIGHT_ON})${CL_HIGHLIGHT_OFF}%{${PR_SHIFT_IN}%}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}${CL_SHADED_ON}${PR_BAR}${(e)PR_FILL}${PR_BAR}${CL_SHADED_OFF}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}%{${PR_SHIFT_OUT}%}${CL_HIGHLIGHT_ON}(${CL_HIGHLIGHT_OFF} ${CL_PWD_ON}$(collapse_pwd)${CL_PWD_OFF} ${CL_HIGHLIGHT_ON})${CL_HIGHLIGHT_OFF}%{${PR_SHIFT_IN}%}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}${CL_SHADED_ON}${PR_NE}${CL_SHADED_OFF}%{${PR_SHIFT_OUT}%}
+%{${PR_SHIFT_IN}%}${CL_SHADED_ON}${PR_SW}${CL_SHADED_OFF}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}%{${PR_SHIFT_OUT}%}${CL_HIGHLIGHT_ON}(${CL_HIGHLIGHT_OFF} ${RC_COLOR_ON}%* !%h${RC_COLOR_OFF} ${CL_HIGHLIGHT_ON})${CL_HIGHLIGHT_OFF}%{${PR_SHIFT_IN}%}${CL_NORM_ON}${PR_BAR}${CL_NORM_OFF}${CL_SHADED_ON}${PR_BAR}${CL_SHADED_OFF}%{${PR_SHIFT_OUT}%}%# "
+   PS2="%{${PR_SHIFT_IN}%}${CL_SHADED_ON}${PR_VBAR}${CL_SHADED_OFF}%{${PR_SHIFT_OUT}%} %_> "
+   PS3="%{${PR_SHIFT_IN}%}${CL_SHADED_ON}${PR_VBAR}${CL_SHADED_OFF}%{${PR_SHIFT_OUT}%} %_> "
 }
 
 TRAPWINCH() {

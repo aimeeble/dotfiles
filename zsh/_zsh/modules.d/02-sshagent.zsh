@@ -1,3 +1,4 @@
+. "$HOME/.zsh/colour.zsh"
 
 _sshagent_maybe_launch() {
   typeset -g SSH_AUTH_SOCK
@@ -14,10 +15,10 @@ _sshagent_maybe_launch() {
     unset SSH_AUTH_SOCK
   fi
 
-  print -P "%F{green}SSH agent:%f launching new instance..."
+  print -P "${CL_NORM_ON}SSH agent:${CL_NORM_OFF} launching new instance..."
   ENV="$(ssh-agent -a "$HOME/.ssh/agent-$(hostname)")"
   if [[ $? -ne 0 ]]; then
-    print -P "%F{red}SSH agent:%f failed to launch."
+    print -P "${CL_ERROR_ON}SSH agent:${CL_ERROR_OFF} failed to launch."
     return 1
   fi
   eval "$ENV"
@@ -31,26 +32,26 @@ _sshagent_preshell() {
   if [[ -n "$SSH_AUTH_SOCK" && -n "$SSH_CLIENT" ]]; then
     _sshagent_maybe_launch
     if [[ $? -eq 42 ]]; then
-      print -P "%F{green}SSH agent:%f forwarded over SSH..."
+      print -P "${CL_NORM_ON}SSH agent:${CL_NORM_OFF} forwarded over SSH..."
     fi
   elif [[ -n "$SSH_AGENT_PID" ]]; then
     _sshagent_maybe_launch
     if [[ $? -eq 42 ]]; then
-      print -P "%F{green}SSH agent:%f reattaching to PID..."
+      print -P "${CL_NORM_ON}SSH agent:${CL_NORM_OFF} reattaching to PID..."
     fi
   elif [[ -n "$SSH_AUTH_SOCK" ]]; then
     _sshagent_maybe_launch
     if [[ $? -eq 42 ]]; then
-      print -P "%F{green}SSH agent:%f reattaching to UDS (system)..."
+      print -P "${CL_NORM_ON}SSH agent:${CL_NORM_OFF} reattaching to UDS (system)..."
     fi
   elif [[ -S "${WANT_SSH_AUTH_SOCK}" ]]; then
     export SSH_AUTH_SOCK="${WANT_SSH_AUTH_SOCK}"
     _sshagent_maybe_launch
     if [[ $? -eq 42 ]]; then
-      print -P "%F{green}SSH agent:%f reattaching to UDS (custom)..."
+      print -P "${CL_NORM_ON}SSH agent:${CL_NORM_OFF} reattaching to UDS (custom)..."
     fi
   else
-    print -P "%F{red}SSH agent not detected.%f"
+    print -P "${CL_ERROR_ON}SSH agent not detected.${CL_NORM_OFF}"
     _sshagent_maybe_launch
   fi
 
