@@ -165,6 +165,32 @@ banner4() {
   rainbow_banner "$REPEATED_TEXT" $RAINBOW
 }
 
+
+##############################################################################
+banner5() {
+  IFS="" read -r -d '' TEXT << '__EOF'
+              %B%F{green}AIMEEBLE%f%b
+          %F{green}AIME%BA%F{yellow}AAIMEEBLE%b%f
+            %B%F{green}AAA%bAIMEEBLEE%f
+         %B%F{green}AIAAAIMEEBLEELE%bE%f
+          %F{green}AIM%BAIMEEBLEEE%b%F{yellow}LE%F{green}EEBLE%f
+         %F{green}%BA%bAIME%BAI%bAIAIMEEBLEEEE%f
+    %F{green}%BAAIMEEBLEEE%bE%F{yellow}/%F{green}A%BAIMEEBLELEEEBLE%b%f
+   %F{green}%BA%bAIM%BAIMEEBLEE%F{yellow}/~%F{green}AIMAIMEEBLELE%bELE%BE%b%f
+  %F{yellow}AIMEEBLE%F{green}E%F{yellow}%BE%F{green}L%bELE%F{yellow}\\/~| /%F{green}%BAIMEEBLE%F{yellow}E%F{green}EE%f%b
+%F{yellow}AIMEEBLE%F{green}AIMEEBLELE%F{yellow}/~/%F{green}AI%F{yellow}%BAIMEEBLE%bE%F{green}BLE%f
+     %F{green}%BAIMEAIMEEBLE  %b%F{yellow}/%B/~ %F{green}AIMEEBLEE%f%b
+             %F{yellow}\\__%B\\_\\_%b/%B/~_%b\%f
+                    %F{yellow}\\ %B/~%b%f
+                     %F{yellow}/~~%f
+       %B%F{black}:%F{green}___________%F{yellow}./~~~\.%F{green}___________%F{black}:%f%b
+        %B%F{black}\\                           /%f%b
+         %B%F{black}\\_________________________/%f%b
+         %B%F{black}(_)                     (_)%f%b
+__EOF
+  shifted_banner "$TEXT" 41
+}
+
 ##############################################################################
 ##############################################################################
 ##############################################################################
@@ -175,6 +201,7 @@ BANNERS=(
   banner2
   banner3
   banner4
+  banner5
 )
 RANDOM=$(date +%s)
 BANNER_IDX=$(( $RANDOM % ${#BANNERS[@]} + 1 ))
