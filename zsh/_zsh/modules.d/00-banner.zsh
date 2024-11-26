@@ -203,9 +203,15 @@ BANNERS=(
   banner4
   banner5
 )
-RANDOM=$(date +%s)
-BANNER_IDX=$(( $RANDOM % ${#BANNERS[@]} + 1 ))
-BANNER=${BANNERS[$BANNER_IDX]}
+R=$RANDOM
+BANNER_IDX=$(( $R % ${#BANNERS[@]} ))
+BANNER=${BANNERS[$(( $BANNER_IDX + 1 ))]}
 
 ruler
+
+if [[ "$_DEBUG_BANNER" -eq 1 ]]; then
+  echo "RANDOM SEED .. $R"
+  echo "NUM BANNERS .. ${#BANNERS[@]}"
+  echo "BANNER_IDX ... $R % ${#BANNERS[@]} = $BANNER_IDX"
+fi
 $BANNER
