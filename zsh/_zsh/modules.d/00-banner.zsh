@@ -36,7 +36,7 @@ rainbow_banner() {
   shift
 
   TEXT="$(
-    echo # blank line for padding at top
+    echo
     while [[ $# -gt 0 ]]; do
       COLOUR="$1"
       shift
