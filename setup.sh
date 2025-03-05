@@ -184,18 +184,12 @@ link_fonts() {
 
 set_preferences() {
     log1 "Setting preferences"
-    mkdir -p  "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-        set_default "Specify screenshot location"         "com.apple.screencapture"     "location"                          "$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
-        set_default "Enable keyboard navigation"          "NSGlobalDomain"              "AppleKeyboardUIMode"               2 -int
-        set_default "Don't autohide menubar (normal)"     "Apple Global Domain"         "_HIHideMenuBar"                    0 -int
-        set_default "Don't autohide menubar (fullscreen)" "Apple Global Domain"         "AppleMenuBarVisibleInFullscreen"   1 -int
-        set_default "Dark mode UI"                        "Apple Global Domain"         "AppleInterfaceStyle"               "Dark"
-        set_default "Purple highlight colour"             "Apple Global Domain"         "AppleHighlightColor"               "0.968627 0.831373 1.000000 Purple"
-        set_default "Always show scrollbars"              "Apple Global Domain"         "AppleShowScrollBars"               "Always"
-        set_default "Analog menubar clock (native)"       "com.apple.menuextra.clock"   "IsAnalog"                          1 -int
-    else
-        log2 "${YELLOW}Skipping setting preferences for non-Darwin${NORM}"
+    OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+    OS_PREF_SH="${DOTFILE_PATH}/prefs/${OS}.sh"
+
+    if [[ -f "${OS_PREF_SH}" ]]; then
+      . ${OS_PREF_SH}
+      set_os_prefs
     fi
 }
 
