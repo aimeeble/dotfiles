@@ -89,7 +89,9 @@ set spelllang=en_us
 " Toggle spellcheck
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
-set pastetoggle=<F5>            " Paste mode
+if !has('nvim-0.9')
+  set pastetoggle=<F5>            " Paste mode
+endif
 
 " Move around by screen lines instead of file lines
 nnoremap j gj
