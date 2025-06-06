@@ -50,9 +50,18 @@ _setup_ip() {
   alias ip='ip --color'
 }
 
+_setup_nvim() {
+  if ! which nvim &> /dev/null; then
+    return
+  fi
+
+  alias vim="$(which nvim)"
+}
+
 _aliases_init() {
   _setup_ls
   _setup_ip
+  _setup_nvim
 
   alias less='less --use-color -R'
   alias k='kubectl'
