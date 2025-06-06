@@ -51,11 +51,13 @@ _setup_ip() {
 }
 
 _setup_nvim() {
-  if ! which nvim &> /dev/null; then
-    return
+  if [[ -f "$HOME/bin/nvim.appimage" ]]; then
+    alias nvim="$HOME/bin/nvim.appimage"
   fi
 
-  alias vim="$(which nvim)"
+  if command which nvim &> /dev/null; then
+    alias vim="$(command which nvim)"
+  fi
 }
 
 _aliases_init() {

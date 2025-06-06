@@ -152,17 +152,6 @@ setup_history() {
    zle -N down-line-or-local-history
 }
 
-setup_vim() {
-   if [[ -d "/Applications/MacVim.app" ]]; then
-      alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
-      alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g"
-   fi
-   if [[ -f "$HOME/bin/nvim.appimage" ]]; then
-     alias nvim="$HOME/bin/nvim.appimage"
-   fi
-   # TODO(aimeeble) find the homebrew version if it exists
-}
-
 setup_local_config() {
    # Pull in various other config files
    PLATFORMRC="$HOME/.zshrc-`uname -s`"
@@ -250,7 +239,6 @@ done
 print
 
 _check_zsh_is_shell
-setup_vim
 
 # Call new-shell hooks
 for f in ${preshell_functions}; do
