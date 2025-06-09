@@ -19,6 +19,7 @@ set_os_prefs() {
   set_default "Dock on bottom"                      "com.apple.dock"              "orientation"                       "bottom"
   set_default "Dock icon size"                      "com.apple.dock"              "tilesize"                          36 -int
   set_default "Dock autohide"                       "com.apple.dock"              "autohide"                          true -bool
+  set_default "Task switcher on all screens"        "com.apple.dock"              "appswitcher-all-displays"          true -bool
 
   # Finder
   set_default "Finder show pathbar"                 "com.apple.finder"            "ShowPathbar"                       true -bool
