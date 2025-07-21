@@ -161,6 +161,9 @@ link_fonts() {
         copyit "$DOTFILE_PATH/fonts/Go Mono Italic Nerd Font Complete.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Italic Nerd Font Complete.ttf"
         copyit "$DOTFILE_PATH/fonts/Go Mono Nerd Font Complete Mono.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Nerd Font Complete Mono.ttf"
         copyit "$DOTFILE_PATH/fonts/Go Mono Nerd Font Complete.ttf" "$INSTALL_PATH/Library/Fonts/Go Mono Nerd Font Complete.ttf"
+
+        copyit "$DOTFILE_PATH/fonts/Comic Mono Nerd Font Complete.ttf" "$INSTALL_PATH/Library/Fonts/Comic Mono Nerd Font Complete.ttf"
+        copyit "$DOTFILE_PATH/fonts/Comic Mono Bold Nerd Font Complete.ttf" "$INSTALL_PATH/Library/Fonts/Comic Mono Bold Nerd Font Complete.ttf"
     elif [[ "$(uname -s)" == "Linux" ]]; then
         linkit "$DOTFILE_PATH/fonts/source code pro black.ttf" "$INSTALL_PATH/.fonts/source code pro black.ttf"
         linkit "$DOTFILE_PATH/fonts/source code pro bold.ttf" "$INSTALL_PATH/.fonts/source code pro bold.ttf"
@@ -179,6 +182,9 @@ link_fonts() {
         linkit "$DOTFILE_PATH/fonts/Go Mono Italic Nerd Font Complete.ttf" "$INSTALL_PATH/.fonts/Go Mono Italic Nerd Font Complete.ttf"
         linkit "$DOTFILE_PATH/fonts/Go Mono Nerd Font Complete Mono.ttf" "$INSTALL_PATH/.fonts/Go Mono Nerd Font Complete Mono.ttf"
         linkit "$DOTFILE_PATH/fonts/Go Mono Nerd Font Complete.ttf" "$INSTALL_PATH/.fonts/Go Mono Nerd Font Complete.ttf"
+
+        linkit "$DOTFILE_PATH/fonts/Comic Mono Nerd Font Complete.ttf" "$INSTALL_PATH/.fonts/Comic Mono Nerd Font Complete.ttf"
+        linkit "$DOTFILE_PATH/fonts/Comic Mono Bold Nerd Font Complete.ttf" "$INSTALL_PATH/.fonts/Comic Mono Bold Nerd Font Complete.ttf"
     fi
 }
 
