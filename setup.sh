@@ -191,8 +191,7 @@ link_fonts() {
 
 set_preferences() {
   log1 "Setting preferences"
-  OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
-  OS_PREF_SH="${DOTFILE_PATH}/prefs/${OS}.sh"
+  OS_PREF_SH="${DOTFILE_PATH}/prefs/${SYS}.sh"
 
   if [[ -f "${OS_PREF_SH}" ]]; then
     . "${OS_PREF_SH}"
