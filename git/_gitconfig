@@ -10,6 +10,7 @@
 [alias]
     tree = log --graph --all --oneline --decorate
     tree2 = log --graph --all --oneline --format='format:%C(yellow)%h%C(red)%d %C(white)%s%C(reset) %C(bold white)-- %aN%C(reset)'
+    branchtree = log --graph --all --oneline --decorate --simplify-by-decoration
     s = status -sb
     last = log -1 --stat
     diffw = diff --word-diff=color
