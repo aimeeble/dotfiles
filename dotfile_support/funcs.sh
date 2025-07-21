@@ -16,7 +16,7 @@ else
   NORM=''
 fi
 
-DOTFILE_PATH="$(pwd)"
+CHECKOUT_PATH="$(pwd)"
 INSTALL_PATH="${HOME}"
 SYS="$(uname -s)"
 VERBOSE=0
@@ -37,7 +37,7 @@ parse_flags() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
       -s|--source|--src)
-        DOTFILE_PATH="$2"
+        CHECKOUT_PATH="$2"
         shift
         shift
         ;;
@@ -58,7 +58,7 @@ parse_flags() {
         echo "./setup.sh [OPTIONS]"
         echo ""
         echo "  -s|--source|--src"
-        echo "      Specify alternate source. Currently ${DOTFILE_PATH}"
+        echo "      Specify alternate source. Currently ${CHECKOUT_PATH}"
         echo "  -d|--destination|--dest|-t|--target"
         echo "      Specify destination/target path to install dotfile repo into. Currently ${INSTALL_PATH}"
         echo "  -v|--verbose"
@@ -81,8 +81,8 @@ parse_flags() {
   set -- "${POSARGS[@]:-}"
 
   # Check for our source dotfile repo based on priority list.
-  if [[ -z "${DOTFILE_PATH}" || ! -f "${DOTFILE_PATH}/.dotfiles" ]]; then
-    echo "Cannot find dotfile source indicator file '${DOTFILE_PATH}/.dotfiles'"
+  if [[ -z "${CHECKOUT_PATH}" || ! -f "${CHECKOUT_PATH}/.dotfiles" ]]; then
+    echo "Cannot find dotfile source indicator file '${CHECKOUT_PATH}/.dotfiles'"
     exit 1
   fi
 
@@ -94,7 +94,7 @@ parse_flags() {
   fi
 
   log1 "parse_flags:"
-  log2 "source ............ ${DOTFILE_PATH}"
+  log2 "source ............ ${CHECKOUT_PATH}"
   log2 "destination ....... ${INSTALL_PATH}"
   log2 "VERBOSE ........... ${VERBOSE}"
   log2 "install packages .. ${INSTALL_PKGS}"
@@ -225,8 +225,8 @@ make_dir() {
 }
 
 update_stamp() {
-  local SHA=$(git --git-dir="$DOTFILE_PATH/.git" rev-parse HEAD)
-  echo "$SHA:$DOTFILE_PATH" > "$INSTALL_PATH/.dotfile_version"
+  local SHA=$(git --git-dir="$CHECKOUT_PATH/.git" rev-parse HEAD)
+  echo "$SHA:$CHECKOUT_PATH" > "$INSTALL_PATH/.dotfile_version"
 }
 
 dotted_version() {

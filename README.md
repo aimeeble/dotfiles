@@ -10,10 +10,10 @@ This repo holds Aimee's dotfiles--configs for her commonly used CLI programs.
 
 #### usage/options
 
-`% ./setup [-v] [DOTFILE_PATH] [INSTALL_PATH]`
+`% ./setup [-v] [-s CHECKOUT_PATH] [-d INSTALL_PATH]`
 
 * `-v` increases verbosity of logs
-* `DOTFILE_PATH` is the directory the dotfiles repo was cloned to (defaults to current directory).
-* `INSTALL_PATH` base path to symlink configs into (defaults to `$HOME`).
+* -s `CHECKOUT_PATH` is the source directory the dotfiles repo was cloned to (defaults to current directory).
+* -d `INSTALL_PATH` base path to symlink configs into (defaults to `$HOME`).
 
 Paths can also be specified by environment variable.
