@@ -33,6 +33,6 @@ install_os_packages() {
   fi
 
   log2 "Installing ${HOMEBREW_PACKAGES[@]}"
-  "${B}" update
-  "${B}" install ${HOMEBREW_PACKAGES[@]}
+  "${B}" update --quiet
+  "${B}" install --quiet ${HOMEBREW_PACKAGES[@]}
 }
