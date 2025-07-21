@@ -199,6 +199,18 @@ set_preferences() {
   fi
 }
 
+install_packages() {
+  if [[ ${INSTALL_PKGS} -eq 0 ]]; then
+    return
+  fi
+  log_always "Installing 3rd-party packages"
+  OS_PKG_SH="${DOTFILE_PATH}/pkgs/${SYS}.sh"
+  if [[ -f "${OS_PREF_SH}" ]]; then
+    . "${OS_PKG_SH}"
+    install_os_packages
+  fi
+}
+
 umask 077
 parse_flags $*
 init_submodules
@@ -216,6 +228,8 @@ link_weechat
 link_misc
 link_bin
 link_fonts
+
+install_packages
 
 update_stamp
 
