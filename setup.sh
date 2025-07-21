@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu -o pipefail
+
 if [[ ! -f "dotfile_support/funcs.sh" ]]; then
   echo "Missing `pwd`/dotfile_support/funcs.sh"
   exit 1
@@ -199,7 +201,7 @@ set_preferences() {
 }
 
 umask 077
-validate_env $*
+parse_flags $*
 init_submodules
 
 set_preferences

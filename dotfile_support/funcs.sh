@@ -16,53 +16,88 @@ else
   NORM=''
 fi
 
-SYS=`uname -s`
+DOTFILE_PATH="$(pwd)"
+INSTALL_PATH="${HOME}"
+SYS="$(uname -s)"
 VERBOSE=0
+INSTALL_PKGS=0
 
 log1() {
-  [[ $VERBOSE -gt 0 ]] && echo "==> $*"
+  if [[ $VERBOSE -gt 0 ]]; then echo "==> $*"; fi
 }
 log2() {
-  [[ $VERBOSE -gt 0 ]] && echo "    $*"
+  if [[ $VERBOSE -gt 0 ]]; then echo "    $*"; fi
 }
 log_always() {
   echo "==> $* <=="
 }
 
-validate_env() {
-  if [[ "$1" == "-v" ]]; then
-    VERBOSE=1
-    shift
-  fi
+parse_flags() {
+  local -a POSARGS
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -s|--source|--src)
+        DOTFILE_PATH="$2"
+        shift
+        shift
+        ;;
+      -d|--destination|--dest|--dst|-t|--target)
+        INSTALL_PATH="$2"
+        shift
+        shift
+        ;;
+      -v|--verbose)
+        VERBOSE=1
+        shift
+        ;;
+      -p|--pkgs)
+        INSTALL_PKGS=1
+        shift
+        ;;
+      -h|--help)
+        echo "./setup.sh [OPTIONS]"
+        echo ""
+        echo "  -s|--source|--src"
+        echo "      Specify alternate source. Currently ${DOTFILE_PATH}"
+        echo "  -d|--destination|--dest|-t|--target"
+        echo "      Specify destination/target path to install dotfile repo into. Currently ${INSTALL_PATH}"
+        echo "  -v|--verbose"
+        echo "      Verbose mode -- more logs. Currently ${VERBOSE}"
+        echo "  -p|--pkgs"
+        echo "      Install 3rd-party packages. Currently ${INSTALL_PKGS}"
+        echo ""
+        exit 1
+        ;;
+      -*|--*)
+        echo "Unknown arg '$1'"
+        exit 1
+        ;;
+      *)
+        POSARGS+=("$1")
+        shift
+        ;;
+    esac
+  done
+  set -- "${POSARGS[@]:-}"
 
-  if [[ -z "$DOTFILE_PATH" ]]; then
-    DOTFILE_PATH=$1
-    shift
-  fi
-  if [[ -z "$DOTFILE_PATH" ]]; then
-    DOTFILE_PATH="`pwd`"
-  fi
-  if [[ ! -f "$DOTFILE_PATH/.dotfiles" ]]; then
-    echo "Cannot find dotfiles in DOTFILE_PATH=$DOTFILE_PATH"
+  # Check for our source dotfile repo based on priority list.
+  if [[ -z "${DOTFILE_PATH}" || ! -f "${DOTFILE_PATH}/.dotfiles" ]]; then
+    echo "Cannot find dotfile source indicator file '${DOTFILE_PATH}/.dotfiles'"
     exit 1
   fi
 
-  if [[ -z "$INSTALL_PATH" ]]; then
-    INSTALL_PATH=$1
-    shift
-  fi
-  if [[ -z "$INSTALL_PATH" ]]; then
-    INSTALL_PATH=$HOME
-  fi
-  if [[ ! -d "$INSTALL_PATH" || ! -w "$INSTALL_PATH" ]]; then
-    echo "Cannot find write to destination directory $INSTALL_PATH"
+  # Check the install path
+  INSTALL_PATH="${INSTALL_PATH:-"${HOME}"}"
+  if [[ ! -d "${INSTALL_PATH}" || ! -w "${INSTALL_PATH}" ]]; then
+    echo "Cannot write to destination directory '${INSTALL_PATH}'"
     exit 1
   fi
 
-  log1 "validate_env"
-  log2 "VERBOSE ....... $VERBOSE"
-  log2 "source ........ $DOTFILE_PATH"
-  log2 "destination ... $INSTALL_PATH"
+  log1 "parse_flags:"
+  log2 "source ............ ${DOTFILE_PATH}"
+  log2 "destination ....... ${INSTALL_PATH}"
+  log2 "VERBOSE ........... ${VERBOSE}"
+  log2 "install packages .. ${INSTALL_PKGS}"
 }
 
 init_submodules() {
