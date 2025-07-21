@@ -239,6 +239,7 @@ done
 print
 
 _check_zsh_is_shell
+setup_local_config
 
 # Call new-shell hooks
 for f in ${preshell_functions}; do
