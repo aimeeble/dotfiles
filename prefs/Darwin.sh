@@ -1,6 +1,7 @@
+#!/bin/bash
 
 set_os_prefs() {
-  SCREENSHOT_PATH="$HOME/Google Drive/Pictures/Screenshots/$(hostname -s)/"
+  SCREENSHOT_PATH="${HOME}/Google Drive/Pictures/Screenshots/$(hostname -s)/"
 
   # Screenshots
   mkdir -p "${SCREENSHOT_PATH}"
