@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -eu -o pipefail
+# TODO: make this work
+# set -eu -o pipefail
 
 if [[ ! -f "dotfile_support/funcs.sh" ]]; then
   echo "Missing $(pwd)/dotfile_support/funcs.sh"
