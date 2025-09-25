@@ -14,6 +14,8 @@
     s = status -sb
     last = log -1 --stat
     diffw = diff --word-diff=color
+    diffws = diff --word-diff=plain --word-diff-regex=.
+    difft = -c diff.external=difft diff
 [commit]
     verbose = true
 [filter "lfs"]
