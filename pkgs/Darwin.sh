@@ -1,7 +1,9 @@
 #!/bin/bash
 
 HOMEBREW_PACKAGES=(
+  "difftastic"      # Diff that understands syntax
   "colordiff"       # Color-highlighted diff(1) output
+
   "coreutils"       # GNU File, Shell, and Text utilities
   "duf"             # Disk Usage/Free Utility - a better 'df' alternative
   "dust"            # More intuitive version of du in rust
