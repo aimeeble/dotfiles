@@ -99,6 +99,8 @@ nnoremap k gk
 
 " Bind jj to escape (pause after j if a second j is needed).
 inoremap jj <ESC>
+" Bind kj to escape.
+inoremap kj <ESC>
 
 let mapleader=","
 " }}}

@@ -2,6 +2,7 @@ _keybindings_init() {
    # vi-mode
    bindkey -v
    bindkey -M viins 'jj' vi-cmd-mode
+   bindkey -M viins 'kj' vi-cmd-mode
    # ...but keep ^R for searching command history
    bindkey '^R' history-incremental-search-backward
 
